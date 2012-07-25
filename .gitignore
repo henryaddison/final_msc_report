@@ -28,3 +28,6 @@
 
 #textmate files
 *.tmproj
+
+#default report pdf
+report.pdf
