@@ -1,0 +1,56 @@
+\chapter{Model}
+  \section{Objects}
+    \subsection{Cox}
+      \subsubsection{Description of duties and abilities}
+      \subsubsection{Simplification for modelling}
+      
+    \subsection{Boat}
+      \subsubsection{Physical description}
+      \subsubsection{Simplification for modelling}
+        \paragraph{Speed in terms of gears and speed multiplier}
+        
+    \subsection{River}
+      \subsubsection{Physical description}
+      \subsubsection{Simplification from 3D space to into three 1D lanes}
+        \paragraph{Reason for treating river as three parallel lines}
+        \paragraph{Justification of 3 lanes}
+        \paragraph{Network}
+        \paragraph{Nodes}
+        \paragraph{Edges}
+        
+      \subsubsection{Lock}
+        \paragraph{description - where it is and whether boats can move past it}
+        
+    \subsection{Boathouse}
+      \subsubsection{description - starting and finishing place of boats and its location}
+    
+    \subsection{Outing Plans}
+      \subsubsection{description - relate it to boat speed, distance travelled and time taken}
+    
+  \section{Decision making}
+    \subsection{Actions}
+      \subsubsection{Launching}
+      \subsubsection{Changing Speed}
+        \paragraph{Gears}
+      \subsubsection{Changing Lane}
+      \subsubsection{Spinning}
+      \subsubsection{Landing}
+    
+    \subsection{Control Policy/Action Scheduling}
+      \subsubsection{TR Programs}
+    
+  \section{Movement}
+    \subsection{Forward movement and a boat's momentum - both physically and in sense that the rowers will continue until told to stop}
+    \subsection{Steering}
+    \subsection{Crashing}
+      \subsubsection{Defining}
+        \paragraph{Edge occupation}
+        \paragraph{Boat size}
+      \subsubsection{Effects}
+        \paragraph{Moving slowly in a crash versus reversing}
+  
+  \section{Observations}
+    \subsection{How to model how the cox observes the river}
+      \subsubsection{River as a series of connected nodes to which a cox reacts as a model of cox's vision}
+    \subsection{How to model how the cox observes other boats}
+      \subsubsection{Cox can record distance in terms of number of edges to next boat both in front and behind in the 3 lanes as a model of cox's vision}
