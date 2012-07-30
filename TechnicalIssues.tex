@@ -1,9 +1,10 @@
-  \chapter{Technical Issues}
+\chapter{Technical Issues}
   \section{ABM frameworks}
     \paragraph{What is an ABM framework?}
-    \paragraph{Why use an ABM framework?}
-
+    \paragraph{Why use an ABM framework? - Gilbert and Bankes paper}
+    
     \subsection{ABM frameworks considered}
+      \paragraph{Review of ABM frameworks - Allen and Berryman papers, hands}
       \subsubsection{Repast}
         \paragraph{descriptions of features/pros and cons of Repast}
       \subsubsection{NetLogo}
@@ -16,4 +17,23 @@
     \subsection{Rastorization vs vectorization}
       \paragraph{Storing river as a series of squares/pixels}
       \paragraph{Storing river as a series of vectors (or nodes separated by vectors)}
-      \paragraph{Breaking down river into 1D lanes adds benefits to vecotrization}
+      \paragraph{Breaking down river into 1D lanes adds benefits to vectorization}
+
+  \section{Action execution}
+    \subsection{Ensuring misuse of action does not break system}
+      \paragraph{Making sure actions default to something sensible when they cannot be sensibly executed}
+      \paragraph{What that default action is}
+      
+    \subsection{Ordering of cox actions and boat "reaction"}
+      \paragraph{Ensuring that the cox cannot influence the boat too directly}
+      \paragraph{Ensuring the boat's movement comes after the cox has execute his action to ensure response}
+      \paragraph{Dealing with actions that take multiply timesteps}
+      
+  \section{Time discretization and scale}
+    
+    
+  \section{creating a suitable visualization}
+    \paragraph{motivation for visualization}
+    \subsection{challenges}
+      \paragraph{drawing the river}
+      \paragraph{drawing the boat}
