@@ -1,16 +1,12 @@
 \chapter{Model}
+  \paragraph{introduction to how I went about forming the model}
+  \section{Overview of model - introduce the model}
+    \paragraph{Diagram of the model - can zoom to parts of it for following sections}
   \section{Objects}
-    \subsection{Cox}
-      \subsubsection{Description of duties and abilities}
-      \subsubsection{Simplification for modelling}
-      
-    \subsection{Boat}
-      \subsubsection{Physical description}
-      \subsubsection{Simplification for modelling}
-        \paragraph{Speed in terms of gears and speed multiplier}
-        
+    \paragraph{introducing the main objects that make up the universe of simulation}
+
     \subsection{River}
-      \subsubsection{Physical description}
+      \paragraph{Physical description}
       \subsubsection{Simplification from 3D space to into three 1D lanes}
         \paragraph{Reason for treating river as three parallel lines}
         \paragraph{Justification of 3 lanes}
@@ -22,35 +18,70 @@
         \paragraph{description - where it is and whether boats can move past it}
         
     \subsection{Boathouse}
-      \subsubsection{description - starting and finishing place of boats and its location}
+      \paragraph{description - starting and finishing place of boats and its location}
+    
+    \subsection{Cox}
+      \paragraph{Description of duties and abilities}
+      \subsubsection{Simplification for modelling}
+        \paragraph{overall goal - get back to the boathouse}
+      \subsubsection{How to model how the cox observes the river}
+        \paragraph{River as a series of connected nodes to which a cox reacts as a model of cox's vision}
+      \subsubsection{How to model how the cox observes other boats}
+        \paragraph{Cox can record distance in terms of number of edges to next boat both in front and behind in the 3 lanes as a model of cox's vision}
+        
+    \subsection{Boat}
+      \paragraph{Physical description}
+      \subsubsection{Simplification for modelling}
+        \paragraph{Speed in terms of gears and speed multiplier}
+        
+
     
     \subsection{Outing Plans}
-      \subsubsection{description - relate it to boat speed, distance travelled and time taken}
+      \paragraph{description - relate it to boat speed, distance travelled and time taken}
+      \paragraph{how they were modelled}
     
   \section{Decision making}
-    \subsection{Actions}
-      \subsubsection{Launching}
-      \subsubsection{Changing Speed}
-        \paragraph{Gears}
-      \subsubsection{Changing Lane}
-      \subsubsection{Spinning}
-      \subsubsection{Landing}
-    
+    \paragraph{introduction to what observation-decision-execution cycle}
+
+    \subsection{Observations}
+      \paragraph{introduction to observations as the information available to a cox}
+      
+      \subsubsection{Observations available to a cox}
+      
     \subsection{Control Policy/Action Scheduling}
-      \subsubsection{TR Programs}
+      \paragraph{description as the decision making process based on observations}
+      \subsubsection{TR Program}
+    
+    \subsection{Actions}
+      \paragraph{introduction to actions as the manner in which a cox has an effect on the environment}
+      \subsubsection{Launching}
+        \paragraph{describe - where launched, what lane}
+      \subsubsection{Changing Speed}
+        \paragraph{Describe how a cox alters speed through changing "gears"}
+      \subsubsection{Letting Boat Run}
+        \paragraph{description as default action - causes no change to the boat}
+      \subsubsection{Changing Lane}
+        \paragraph{describe - when can do it, where end up, what part of river it fills}
+      \subsubsection{Spinning}
+        \paragraph{describe - where can do it, what part of river it fills}
+      \subsubsection{Landing}
+        \paragraph{describe - where can land}
     
   \section{Movement}
-    \subsection{Forward movement and a boat's momentum - both physically and in sense that the rowers will continue until told to stop}
+    \subsection{Forward}
+      \paragraph{forward movement and a boat's momentum - both physically and in sense that the rowers will continue until told to stop}
     \subsection{Steering}
+      \paragraph{done automatically using information from nodes as a boat moves over them}
     \subsection{Crashing}
-      \subsubsection{Defining}
+      \subsubsection{Defining in model context}
         \paragraph{Edge occupation}
-        \paragraph{Boat size}
+        \paragraph{Relating lane edges to boat size}
       \subsubsection{Effects}
-        \paragraph{Moving slowly in a crash versus reversing}
+        \paragraph{description of real world}
+        \paragraph{description in simulation}
+        \paragraph{Why Moving slowly in a crash versus reversing - can ensure boats move monotonically forward}
+        \paragraph{justification}
+        \paragraph{why only let one boat move? - prevent boats staying in a permanently crashed state}
+        \paragraph{justification}
   
-  \section{Observations}
-    \subsection{How to model how the cox observes the river}
-      \subsubsection{River as a series of connected nodes to which a cox reacts as a model of cox's vision}
-    \subsection{How to model how the cox observes other boats}
-      \subsubsection{Cox can record distance in terms of number of edges to next boat both in front and behind in the 3 lanes as a model of cox's vision}
+
