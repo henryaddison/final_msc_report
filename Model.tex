@@ -1,7 +1,29 @@
 \chapter{Model}
-  \paragraph{introduction to how I went about forming the model}
-  \section{Overview of model - introduce the model}
-    \paragraph{Diagram of the model - can zoom to parts of it for following sections}
+  The model is the most important part of the project. An invalid model can only hope to produce an invalid simulation. This chapter will describe the model used during this project, comparing it with the real world and attempting to note and justify any simplifications or assumptions used. The first section gives an overview of the model. The following sections then looks at specific parts in more detail.
+  
+  \section{Overview}
+    The aim of modelling is to highlight which the features in the environment to be simulated are important and which can be ignored\cite{Sterling2009}. For an agent-based model we wish to break these features down into the agents and their environment and their interactions with that environment so that the agents may assess their situation and make decisions\cite{Bonabeau2002}. In this section there is a quick summary of the important features of the model and their relationships.
+    
+    The agents in this model are coxes. The main features of their environment are the boat in which they sit and those in containing other coxes and the river on which these boats sit. The coxes interacts with the environment through actions which will determine how the boat behaves, with the cox aiming to safely navigate the boat from one end of the river to the other. It should also be noted that at one end of the river sits a Boat House from which new boats are launched and to which a cox must return its boat and land.
+    
+    The model is cox-centric. For instance, the model does not aim to replicate how the rowers in a boat implement a cox's orders. However, the best way to describe the model is to work from the bottom up spatially. At the bottom there is the river. This is the entity shared by all boats and defines the positional constraints placed upon them. Every boat must be fully on the river. The river is made up of 3 lanes which can be thought of as 1 dimensional spaces broken up by regular marker nodes, in other words a graph where each node represents a particular point on the river and each edge represents a connection to the next point in the lane either upstream or downstream (so each node only has one edge in and one edge out). By mapping each node's location to a 2 dimensional space and assuming that there is a channel of water about 10 metres wide between each connected node, the river can then be drawn as the union of these lanes.
+    
+    In the middle is the boat. The boat can be considered as the embodiment of the cox. It is the boats that sit on the river and should not be allowed to overlap with the bank or another boat. When the cox carries out an action it is by altering properties of the boat such as it's speed and direction. No attempt has been made to model directly the rowers who in reality do the hard work of actually propelling the boat along the river. At each tick of the clock the boat will move based on the current value of its properties, which may have just been altered by the cox. It should be noted that outside forces other than the cox can act on the boat. For instance, should two boats try and travel along the same edge in a lane then they will crash and come to a complete standstill for a while.
+    
+    At the top, sits the cox. The cox can make observations about the state of its own boat and the river nearby (should the boat be travelling faster? are there any nearby boats? is the boat nearing the end of river?). At each tick of the clock the cox uses these observations to decide which action to perform next and then executes it. It should be noted the actions themselves will may then behaviour differently depending on the boat's situation, for example, a boat at its maximum speed will not change speed even if the cox decides to execute the Speed Up action.
+    
+    One final feature that is worth mentioning and sits slightly apart from the cox-boat-river layered view of the model is the Boat House. It might itself be considered an agent since it autonomously launches boats, but as neither launching nor landing can be considered intelligent processes from the Boat House's point of view for the purposes of describing the model it fits more naturally as part of a part of the river since it also marks one end of the river beyond which a boat cannot pass.
+    
+    Figure \ref{fig:modeloverview} provides a summary the relations between the 4 main features of the model just described. The following sections will then describe in more detail the river, the boats and the coxes and their decision making processes.
+    
+    \begin{figure}[H]
+    \begin{center}
+    	\includegraphics[scale=0.3]{images/ModelOverview.png}
+    	\caption{Model Overview}
+    	\label{fig:modeloverview}
+    \end{center}
+    \end{figure}
+    
   \section{Objects}
     \paragraph{introducing the main objects that make up the universe of simulation}
 
