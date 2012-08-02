@@ -39,22 +39,34 @@
       A true traffic simulation modelling conditions on the Cam might aim to carefully replicate the launch rates, perhaps noting how they vary throughout the day and week, and types of boat launched (e.g. fast, experienced crew or slow, novice crew). However, this is beyond the scope of this project and unfortunately collecting this data would be difficult as the traffic pattern changes drastically when the University's term end. Instead the boathouse will launch boats in a random fashion. This will still allow coxes to experience different situations such as lots of boats launching.
       
       \subsubsection{Simplification from 3D space to into three 1D lanes}
+
+      \paragraph{Reason for treating river as three parallel lines}      
+      The biggest simplification is to consider the river as 3 parallel lanes. Since the length of a boat is about the same as the width of the river it is safe to consider this lanes as 1D spaces along which the boat can move since it is only feasible for a boat to travel up and down the river (i.e. with or against the stream) but not feasible for a boat to travel to across the river other than briefly when changing lanes or spinning. The restriction to 1 dimension then makes it much simpler to move the boats around and detect collisions.
       
-      The biggest simplification is to consider the river as 3 parallel lanes. Since the length of a boat is about the same as the width of the river it is safe to consider this lanes as 1D spaces along which the boat can move since it is only feasible for a boat to travel up and down the river (i.e. with or against the stream) but not feasible for a boat to travel to across the river other than briefly when changing lanes or spinning.
+      \paragraph{Justification of 3 lanes}
+      Less justifiable is to have 3 lanes for the entire length of the Cam. For most of the river two-way traffic is possible but three-abreast traffic is limited to quite a small part. However, 3 lanes allow for some interesting behaviour with a central lane for overtaking. Also while this project takes rowing on the Cam for inspiration as much as possible the software produced should be able to simulate other rivers without too much alteration.
       
-      Less justifiable is to have 3 lanes for the entire length of the Cam. For most of the river two-way traffic is possible but three-abreast traffic is limited to quite a small part. However, 3 lanes allow for some more interesting behaviour 
+      \subsubsection{Lanes}
+      \paragraph{Network}
+      Each lane can be thought of as a simple directed graph with each node connected by one edge in and one edge out. By making the graph directed there is a unique node that is the next node depending on whether the boat is travelling downstream (away from the boathouse) or upstream (towards the boathouse) which map to travelling with the direction of the edges or against the direction of the edges. See Figure \ref{fig:model:lanes} for a diagram representing the 3 main lanes.
       
+      \begin{figure}[h]
+      \begin{center}
+      	\includegraphics[scale=0.3]{images/lanes.png}
+      	\caption{Representation of river as 3 lanes with a temporary path for lane changing}
+      	\label{fig:model:lanes}
+      \end{center}
+      \end{figure}
       
-        \paragraph{Reason for treating river as three parallel lines}
-        \paragraph{Justification of 3 lanes}
-        \paragraph{Network}
-        \paragraph{Nodes}
-        \paragraph{Edges}
+      \paragraph{Nodes}  
+      The nodes are landmarks and have a position attribute. They are a way of modelling a cox's vision so they know how to steer safely along the river. When a cox's boat reaches a node, the cox aims the boat at the next node in the graph.
+      
+      \paragraph{Edges}
+      The nodes are chosen so that their locations are 20m apart from the next one in the graph. In other words the edges between the nodes have a length or weight that is roughly the same as the length of a boat. This is because a boat is considered to be on an edge as is travels down the edge. A boat will remain on an edge for as long as it takes to travel 20m as which point it will move to the next edge in the graph. This allows for a simple collision detection mechanism. If two or more boats try to occupy the same edge then they are considered to have crashed. More detail on crashing can be found in \ref{model:movement:crashing}.
         
-      
+        \paragraph{Lane Changing}
+        The one edge in, one edge out rule is temporarily broken when a cox decides to change lane. In this case a new set of nodes and edges are temporarily added to the graph of the target node. These nodes and edges are marked so that other coxes will ignore them. These new nodes and edges start from the boat's current location and join up with a node further along in the target lane. These new nodes are located so that the cox will smoothly steer the boat into the new lane in the visualization. For collision detection purposes the boat is considered to occupy edges in both the starting lane and the target lane until the boat is fully in the the target lane and back to following the predefined graph of the target lane. In other words when a boat is travelling along on of the red temporary edges in Figure \ref{fig:model:lanes} then it is considered to occupy the two black permanent lanes sandwiching temporary edge above and below.
         
-    
-    
     \section{Cox}
       \paragraph{Description of duties and abilities}
       \subsubsection{Simplification for modelling}
@@ -107,7 +119,7 @@
       \paragraph{forward movement and a boat's momentum - both physically and in sense that the rowers will continue until told to stop}
     \subsection{Steering}
       \paragraph{done automatically using information from nodes as a boat moves over them}
-    \subsection{Crashing}
+    \subsection{Crashing}\label{model:movement:crashing}
       \subsubsection{Defining in model context}
         \paragraph{Edge occupation}
         \paragraph{Relating lane edges to boat size}
