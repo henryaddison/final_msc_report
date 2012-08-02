@@ -23,26 +23,39 @@
     	\label{fig:modeloverview}
     \end{center}
     \end{figure}
-    
-  \section{Objects}
-    \paragraph{introducing the main objects that make up the universe of simulation}
 
-    \subsection{River}
+    \section{River}
       \paragraph{Physical description}
+      Most rowing on the Cam takes places in the 5km between Jesus Lock and Baits Bite Lock. A few crews sometimes carry their boats over Baits Bite Lock to another stretch of river up to Bottisham lock. The boathouses used by rowers are clustered near Jesus Lock. The first 2km from Jesus Lock are quite narrow and windy. This section is used for warm-ups and warm-downs and in theory on this part of the river crews are not supposed to row at full pressure. It is in the 3km about to Baits Bite lock that the most varied rowing takes place. The river has been known to flood but for the most part it is static and its stream has no effect on boats. The river bank is varied and there are many landmarks such as corners, bridges, trees, and buildings by the river. The width of the river varies between wide enough to allow 3 crews to be side-by-side down to a bottleneck where only one crew can pass at a time.
+      
+      \subsection{Simplified Model}
+      
+      \subsubsection{Lock}
+      A crew carrying their boat over Baits Bite Lock happens infrequently enough that it can safely be ignored and Baits Bite Lock can be treated as the end of the river. Therefore the river can be considered to stop at Baits Bite lock. Other than acting as a barrier the lock has no other effect on boats and so no more work has gone into it. Indeed it is not even visualized in the simulation (the river just finishes).
+      
+      \subsubsection{Boathouse}
+      Similarly the boathouses are all placed on the first 2km of the river from Jesus Lock and behaviour in this stretch of the river is sufficiently different that it is reasonable to merge this section of the river into a boathouse which marks the start of the river and only consider the final 3m of the river up to Baits Bite lock. It is from this Boathouse that boats are launched and to where boats aim to return at the end of their outing.
+      
+      A true traffic simulation modelling conditions on the Cam might aim to carefully replicate the launch rates, perhaps noting how they vary throughout the day and week, and types of boat launched (e.g. fast, experienced crew or slow, novice crew). However, this is beyond the scope of this project and unfortunately collecting this data would be difficult as the traffic pattern changes drastically when the University's term end. Instead the boathouse will launch boats in a random fashion. This will still allow coxes to experience different situations such as lots of boats launching.
+      
       \subsubsection{Simplification from 3D space to into three 1D lanes}
+      
+      The biggest simplification is to consider the river as 3 parallel lanes. Since the length of a boat is about the same as the width of the river it is safe to consider this lanes as 1D spaces along which the boat can move since it is only feasible for a boat to travel up and down the river (i.e. with or against the stream) but not feasible for a boat to travel to across the river other than briefly when changing lanes or spinning.
+      
+      Less justifiable is to have 3 lanes for the entire length of the Cam. For most of the river two-way traffic is possible but three-abreast traffic is limited to quite a small part. However, 3 lanes allow for some more interesting behaviour 
+      
+      
         \paragraph{Reason for treating river as three parallel lines}
         \paragraph{Justification of 3 lanes}
         \paragraph{Network}
         \paragraph{Nodes}
         \paragraph{Edges}
         
-      \subsubsection{Lock}
-        \paragraph{description - where it is and whether boats can move past it}
+      
         
-    \subsection{Boathouse}
-      \paragraph{description - starting and finishing place of boats and its location}
     
-    \subsection{Cox}
+    
+    \section{Cox}
       \paragraph{Description of duties and abilities}
       \subsubsection{Simplification for modelling}
         \paragraph{overall goal - get back to the boathouse}
@@ -51,7 +64,7 @@
       \subsubsection{How to model how the cox observes other boats}
         \paragraph{Cox can record distance in terms of number of edges to next boat both in front and behind in the 3 lanes as a model of cox's vision}
         
-    \subsection{Boat}
+    \section{Boat}
       \paragraph{Physical description}
       \subsubsection{Simplification for modelling}
         \paragraph{Speed in terms of gears and speed multiplier}
