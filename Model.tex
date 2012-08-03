@@ -64,9 +64,52 @@
       \paragraph{Edges}
       The nodes are chosen so that their locations are 20m apart from the next one in the graph. In other words the edges between the nodes have a length or weight that is roughly the same as the length of a boat. This is because a boat is considered to be on an edge as is travels down the edge. A boat will remain on an edge for as long as it takes to travel 20m as which point it will move to the next edge in the graph. This allows for a simple collision detection mechanism. If two or more boats try to occupy the same edge then they are considered to have crashed. More detail on crashing can be found in \ref{model:movement:crashing}.
         
-        \paragraph{Lane Changing}
-        The one edge in, one edge out rule is temporarily broken when a cox decides to change lane. In this case a new set of nodes and edges are temporarily added to the graph of the target node. These nodes and edges are marked so that other coxes will ignore them. These new nodes and edges start from the boat's current location and join up with a node further along in the target lane. These new nodes are located so that the cox will smoothly steer the boat into the new lane in the visualization. For collision detection purposes the boat is considered to occupy edges in both the starting lane and the target lane until the boat is fully in the the target lane and back to following the predefined graph of the target lane. In other words when a boat is travelling along on of the red temporary edges in Figure \ref{fig:model:lanes} then it is considered to occupy the two black permanent lanes sandwiching temporary edge above and below.
-        
+      \paragraph{Lane Changing}
+      The one edge in, one edge out rule is temporarily broken when a cox decides to change lane. In this case a new set of nodes and edges are temporarily added to the graph of the target node. These nodes and edges are marked so that other coxes will ignore them. These new nodes and edges start from the boat's current location and join up with a node further along in the target lane. These new nodes are located so that the cox will smoothly steer the boat into the new lane in the visualization. For collision detection purposes the boat is considered to occupy edges in both the starting lane and the target lane until the boat is fully in the the target lane and back to following the predefined graph of the target lane. In other words when a boat is travelling along on of the red temporary edges in Figure \ref{fig:model:lanes} then it is considered to occupy the two black permanent lanes sandwiching temporary edge above and below.
+
+    \section{Boat}
+      The river is used by rowing boats
+      of various sizes both coxed and coxless. The river is also used by a few barges and riverboats. Many of these
+      are lived in and never move from their moorings on the bank by the boathouses. A few do occasionally move
+      up and down the river. It should be noted that these boats are well
+      handled. The tourist traffic which behaves more erratically is
+      restricted to a different part of the river. 
+      However, during term time the majority of river users are college crews and the nature of
+      college racing means that the vast majority of rowing is done in eights, which are always coxed. 
+      
+      A commonly used boat is a Janousek eight which is roughly 17m long, 60cm wide and 40cm deep
+      \cite{Janousek}. The effective width of an eight however is much wider
+      since we must take into account of the oars. An oar on a rowing boat
+      is roughly 370cm long \cite{Concept2}, although about 60cm of that
+      will overlap with the boat itself. Therefore the effective width of an
+      eight is more like 7m. The rowers can draw in their oars most of the
+      way to reduce the width of the boat, but this should only be done on
+      one side and when the boat is stationary if the rowers do not wish to
+      capsize.
+
+      The rowers sit in the boat. The speed and acceleration of a boat
+      is limited by the strength and skill of the rowers which may be affected by factors such as fatigue. It should also be noted that
+      not all boats are equal. Male rowers can apply more power than female
+      rowers. Crews for a boats are selected by ability as well as gender so a 1st men's boat will
+      be able to move faster than a women's 4th boat.
+      
+      \subsection{Simplified Model}
+      For modelling purposes the boat is the object that is bound by physical constraints such as being on the river. It is also the object that has a location and moves according to its speed and orientation. Without action by the cox a boat will continue to follow the lane it is in at it current speed.
+      
+      To begin with shall assume all boats are rowing eights. For visualization purposes the boat fills a rigid 17m x 7m rectangle (though shall display something that looks a little more like an eight, see Figure \ref{fig:model:boat}). More importantly for the model, since boats are restricted to lanes and each edge at 20m long is roughly the length of a boat, a boat fills an edge completely while it travels along it. This means that sometimes the visualization occasionally shows boats overlapping but not crashed. This is acceptable since the reality of the situation is there is some flexibility with drawing in oars and boats not filling a rectangle that can allow boats to travel very close together. Similarly, boats may appear not to be overlapping but still to have crashed. This also represents reality where coxes and coaches may get nervous and stop boats which get very close. Although using edge occupancy as a means of collision detection is rather crude, a more accurate model would not be as simple as checking for overlapping boats, so for the scope of this project it is an acceptable simplification.
+      
+      \begin{figure}[h]
+      \begin{center}
+      	\includegraphics[scale=0.3]{images/boat.png}
+      	\caption{What a boat looks like in the visualization. Boat is travelling left to right (so bow to the left, stern to the right).}
+      	\label{fig:model:boat}
+      \end{center}
+      \end{figure}
+      
+      Speed of the boat is determined by which of 10 gears it is currently in and a speed multiplier. The gear represents the discrete ways a cox can alter the boat speed by altering the number of rowers active, the amount of pressure being applied by the rowers and the number strokes per minute taken by the rowers. The speed multiplier represents how "good" the crew is. The boat's speed is the product of the gear and multiplier. Boats speed up and slow down instantly. However, outside of crashing which will bring them to a stop, they will only be able to shift up or shift down a single gear at a time.
+      
+      No attempt has been made to model the rowers getting tired. The speed multiplier remains constant throughout an outing. Nor has any attempt been made to simulate the rowers misinterpreting the cox's instructions. Instead the boat will respond instantly and perfectly to the cox's instructions.
+      
     \section{Cox}
       \paragraph{Description of duties and abilities}
       \subsubsection{Simplification for modelling}
@@ -76,10 +119,7 @@
       \subsubsection{How to model how the cox observes other boats}
         \paragraph{Cox can record distance in terms of number of edges to next boat both in front and behind in the 3 lanes as a model of cox's vision}
         
-    \section{Boat}
-      \paragraph{Physical description}
-      \subsubsection{Simplification for modelling}
-        \paragraph{Speed in terms of gears and speed multiplier}
+
         
 
     
