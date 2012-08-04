@@ -93,7 +93,7 @@
       rowers. Crews for a boats are selected by ability as well as gender so a 1st men's boat will
       be able to move faster than a women's 4th boat.
       
-      \subsection{Simplified Model}
+      \subsection{Simplified Model}\label{model:boat:simplified}
       For modelling purposes the boat is the object that is bound by physical constraints such as being on the river. It is also the object that has a location and moves according to its speed and orientation. During each tick after the cox has executed its action, the boat will follow the lane it is in at whatever speed it has (both of which may have been changed by the cox). When the boat reaches a node in the lane it will automatically adjust its orientation to point towards the next node. Effectively the cox automatically steers around the river. This is not an unreasonable simplification for an experienced cox and allows the simulation to focus on the interactions between the coxes rather than the cox having to learn how to avoid the bank.
       
       To begin with shall assume all boats are rowing eights. For visualization purposes the boat fills a rigid 17m x 7m rectangle (though shall display something that looks a little more like an eight, see Figure \ref{fig:model:boat}). More importantly for the model, since boats are restricted to lanes and each edge at 20m long is roughly the length of a boat, a boat fills an edge completely while it travels along it. This means that sometimes the visualization occasionally shows boats overlapping but not crashed. This is acceptable since the reality of the situation is there is some flexibility with drawing in oars and boats not filling a rectangle that can allow boats to travel very close together. Similarly, boats may appear not to be overlapping but still to have crashed. This also represents reality where coxes and coaches may get nervous and stop boats which get very close. Although using edge occupancy as a means of collision detection is rather crude, a more accurate model would not be as simple as checking for overlapping boats, so for the scope of this project it is an acceptable simplification.
@@ -111,48 +111,91 @@
       No attempt has been made to model the rowers getting tired. The speed multiplier remains constant throughout an outing. Nor has any attempt been made to simulate the rowers misinterpreting the cox's instructions. Instead the boat will respond instantly and perfectly to the cox's instructions.
       
     \section{Cox}
+      \subsection{Description}
       \paragraph{Description of duties and abilities}
+      The best way to describe a cox is to consider his duties and abilities. In all rowing boats, coxed or not, someone must carry out these duties and is given these abilities. The difference in a coxed boat is that there is an individual whose sole purpose and to carry out these duties with all the abilities. But the following still applies in non-coxed boats where the cox is an abstract quantity with the duties and abilities distributed amongst the crew.
+      
+      The cox controls the rudder with which the direction of the boat can be altered. The cox is the authority in the boat and all the rowers are supposed to carry out his commands. In particular the cox dictates the power applied by each rower which in turn dictates the boat speed. Therefore the cox is responsible for navigating the boat safely along the river, avoiding static obstacles like the bank and moving obstacles like other rowing boats. While the rowers are supposed to focus on their rowing, the cox is free to look around him in order to avoid these obstacles. 
+      
+      The cox is also responsible for carrying out the outing plan supplied by a coach, which specifies how fast the boat should be moving during various parts of the outing and how much distance the boat should cover during the outing. After all, travelling a short distance at a slow speed may reduce the risk of crashes but it will not help the boat to race quickly.
+      
+      To avoid distractions rowers are not supposed to talk while rowing. One of the cox's most important tools is his voice. Therefore the cox is supposed to coach and motivate the crew.
+      
+      \subsection{Cox Model Overview}
+      As stated before the coxes are the autonomous agents in the model. Their actions (performed by the rowers or the rudder) affect the boat and determine in which direction and how fast the boat will move when it comes to calling the run() method on the boat object. For the most part this project will stick to having autonomous coxes deal the physical issues of guiding the boat. Although coaching and motivation are an important part of a real-world cox's duties, for the model the rowers shall be considered to respond perfectly to a cox's commands so that a cox's actions can be considered to have a direct effect on the boat.
+      
+      The layered agent-modelling technique laid out by Sterling and Taveter \cite{Sterling2009} is loosely followed to produce the cox model. First the goals the cox wishes to achieve and the constraints placed upon the cox are determined. Then the actions, observations and knowledge base available to the cox are described. Then these are used to describe how the cox goes about deciding which action is performed and when.
+
+      \subsection{Goals}
+      The overall goal for the cox is to make it back to the boathouse at the end of the outing. It is absolutely no good to leave a boat stranded in the middle of the river. Ideally the cox should be safe, so avoid hitting the river bank or colliding with other crews. If a collision is unavoidable, the relative speed of the collision should be as low as possible. The cox should also aim to maintain a speed as close as possible to outing speed and cover a distance as close as possible to the outing plan.
+      
+      \paragraph{Simplifications}
+      It has already been noted that steering along the river is taken care of automatically. Instead the cox must mainly worry about colliding with other boats. Outing plans have been simplified for this project to consist of a run to the lock at the river end and back to the boat house at a desired gear which remains constant. Certainly it would be interesting to study the types of outings that boats on the Cam do and try and simulate those but for the time constraints of this project it was not possible.
+      
+      Therefore the simplified goal of the cox is to make it back to the boathouse crashing as little as possible and deviating as little as possible from the desired gear.
+      
+      \subsection{Constraints} 
+      The cox is not completely free to achieve the goals in any possible way. There are the physically that have been mentioned before. A boat must sit fully on the river and it cannot overlap with another boat. There are also rules for river use laid down by a governing body called CUCBC \cite{CUCBC}. Unlike the previous two hard, physical constraints these rules of the river (like rowing on the right-hand side) can be ignored. It would be interesting to see which of these rules get learnt naturally and which must be included directly if there are to be followed.
+
+      Again keeping the boat on the river is handled automatically and modelling boats crashing has been covered in the boat's model (see \ref{model:boat:simplified}). For now the CUCBC rules are modelled only to the extent that all crews launch in the right hand lane. CUCBC state that boats should stay to the right of the river (apart from a small section of the river where they should cross over to the left which shall be ignored for this project as an unnecessary complication).
+
+      \subsection{Actions} 
+      Once a boat is launched a cox can perform the following actions:
+      \begin{itemize}
+        \item Nothing - the boat will continue at the same speed as before.
+        \item Ask rowers to speed up or slow down.
+        \item Ask rowers to stop rowing and slow the boat down.
+        \item Ask rowers to ask to make an emergency stop.
+        \item Ask rowers to ask to move the boat backwards if the boat is stationary.
+        \item Steer the boat left or right (this is possible both when moving and when stationary).
+        \item Ask the rowers to spin the boat 180\textdegree.
+      \end{itemize}
+        
+      For the model the actions available to the cox have been simplified:
+      \begin{itemize}
+        \item{Letting Boat Run} This is the do nothing action. The boat will continue in the same lane at the same speed (assuming it doesn't crash with a boat in front). Steering to follow the lane as it bends will occur automatically.
+        \item{Changing Speed} This is similar to letting the boat run except that the boat will shift up or down a single gear. Since speed changes occur automatically no attempt has been made to model the various different forms of slowing down and emergency stops.
+        \item{Changing Lane} This will plot a new set of temporary nodes and edges to join the lane to the left or the right as seen in the Figure \ref{fig:model:lanes}. Other than this small change in direction the boat will carry on forward at the same speed on this new path.
+        \item{Spinning} This is a durative action. It takes several ticks to complete and the cox cannot perform another action while it is in the process of spinning. This is the one action where the normal movement of the boat in the straight line following the pre-plotted nodes  is overridden. Instead the boat is gradually moved from where it starts to spin to the left hand lane (so the boat will be in the right hand lane when it is pointing the other way) and gradually its orientation is altered to point the other way. Therefore in the visualaztion the boat appears to gradually spin.
+      \end{itemize}
+      
+      There are also a couple of special actions: Launching and Landing. Launching is initiated by the boathouse depending on the schedule it is following. Launching will place the boat on the river by the boathouse in the right hand lane. Landing is the cox's ultimate goal and will remove the boat from the river. The cox may land when it is in the first edge of any lane.
+      
+      \subsection{Observations}
+        \paragraph{introduction to observations as the information available to a cox}
+        
+        \subsubsection{Observations available to a cox}
+
+        \subsubsection{Perceptions} A cox can make observations about objects in
+              his line of sight.
+              \begin{itemize}
+                \item Shall assume the cox has a full 360\textdegree\ field of
+                  view.
+                \item Shall assume the cox's vision is not blocked by his or other boats.
+                \item Shall assume his
+                vision is blocked by the river bank which sits sufficiently high
+                above the river to make it impossible to see around corners.
+                \item Shall assume the cox can guess reasonable well the speed and
+                direction of boats within his line of sight (including his own).
+              \end{itemize}
+
+      \subsection{Knowledge Base} 
+      Can assume the cox has a fairly good memory of the river's layout so can guess his location reasonably well from the nearby landmarks.
+    
       \subsubsection{Simplification for modelling}
         \paragraph{overall goal - get back to the boathouse}
       \subsubsection{How to model how the cox observes the river}
         \paragraph{River as a series of connected nodes to which a cox reacts as a model of cox's vision}
       \subsubsection{How to model how the cox observes other boats}
         \paragraph{Cox can record distance in terms of number of edges to next boat both in front and behind in the 3 lanes as a model of cox's vision}
-        
-
-        
-
     
-    \subsection{Outing Plans}
-      \paragraph{description - relate it to boat speed, distance travelled and time taken}
-      \paragraph{how they were modelled}
-    
-  \section{Decision making}
+  \subsection{Decision making}
     \paragraph{introduction to what observation-decision-execution cycle}
-
-    \subsection{Observations}
-      \paragraph{introduction to observations as the information available to a cox}
-      
-      \subsubsection{Observations available to a cox}
-      
-    \subsection{Control Policy/Action Scheduling}
+    \subsubsection{Control Policy/Action Scheduling}
       \paragraph{description as the decision making process based on observations}
       \subsubsection{TR Program}
     
-    \subsection{Actions}
-      \paragraph{introduction to actions as the manner in which a cox has an effect on the environment}
-      \subsubsection{Launching}
-        \paragraph{describe - where launched, what lane}
-      \subsubsection{Changing Speed}
-        \paragraph{Describe how a cox alters speed through changing "gears"}
-      \subsubsection{Letting Boat Run}
-        \paragraph{description as default action - causes no change to the boat}
-      \subsubsection{Changing Lane}
-        \paragraph{describe - when can do it, where end up, what part of river it fills}
-      \subsubsection{Spinning}
-        \paragraph{describe - where can do it, what part of river it fills}
-      \subsubsection{Landing}
-        \paragraph{describe - where can land}
+
     
   \section{Movement}
     \subsection{Forward}
