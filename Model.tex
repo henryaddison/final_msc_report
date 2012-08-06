@@ -124,20 +124,19 @@
       \subsection{Cox Model Overview}
       As stated before the coxes are the autonomous agents in the model. Their actions (performed by the rowers or the rudder) affect the boat and determine in which direction and how fast the boat will move when it comes to calling the run() method on the boat object. For the most part this project will stick to having autonomous coxes deal the physical issues of guiding the boat. Although coaching and motivation are an important part of a real-world cox's duties, for the model the rowers shall be considered to respond perfectly to a cox's commands so that a cox's actions can be considered to have a direct effect on the boat.
       
-      The layered agent-modelling technique laid out by Sterling and Taveter \cite{Sterling2009} is loosely followed to produce the cox model. First the goals the cox wishes to achieve and the constraints placed upon the cox are determined. Then the actions, observations and knowledge base available to the cox are described. Then these are used to describe how the cox goes about deciding which action is performed and when.
+      The layered agent-modelling technique laid out by Sterling and Taveter \cite{Sterling2009} is loosely followed to produce the cox model. First the goals the cox wishes to achieve and the constraints placed upon the cox are defined, then the actions available to the cox and the observations and knowledge base the cox can call on. Finally the observations and knowledge are used by the cox to decide which action is performed and when in order to achieve its goal bearing in mind the constraints placed upon it and the boat.
 
-      \subsection{Goals}
+      \subsection{Goals \& Constraints}
       The overall goal for the cox is to make it back to the boathouse at the end of the outing. It is absolutely no good to leave a boat stranded in the middle of the river. Ideally the cox should be safe, so avoid hitting the river bank or colliding with other crews. If a collision is unavoidable, the relative speed of the collision should be as low as possible. The cox should also aim to maintain a speed as close as possible to outing speed and cover a distance as close as possible to the outing plan.
+      
+      The cox is not completely free to achieve the goals in any possible way. There are the physically that have been mentioned before. A boat must sit fully on the river and it cannot overlap with another boat. There are also rules for river use laid down by a governing body called CUCBC \cite{CUCBC}. Unlike the previous two hard, physical constraints these rules of the river (like rowing on the right-hand side) can be ignored. It would be interesting to see which of these rules get learnt naturally and which must be included directly if there are to be followed.
       
       \paragraph{Simplifications}
       It has already been noted that steering along the river is taken care of automatically. Instead the cox must mainly worry about colliding with other boats. Outing plans have been simplified for this project to consist of a run to the lock at the river end and back to the boat house at a desired gear which remains constant. Certainly it would be interesting to study the types of outings that boats on the Cam do and try and simulate those but for the time constraints of this project it was not possible.
       
-      Therefore the simplified goal of the cox is to make it back to the boathouse crashing as little as possible and deviating as little as possible from the desired gear.
-      
-      \subsection{Constraints} 
-      The cox is not completely free to achieve the goals in any possible way. There are the physically that have been mentioned before. A boat must sit fully on the river and it cannot overlap with another boat. There are also rules for river use laid down by a governing body called CUCBC \cite{CUCBC}. Unlike the previous two hard, physical constraints these rules of the river (like rowing on the right-hand side) can be ignored. It would be interesting to see which of these rules get learnt naturally and which must be included directly if there are to be followed.
-
       Again keeping the boat on the river is handled automatically and modelling boats crashing has been covered in the boat's model (see \ref{model:boat:simplified}). For now the CUCBC rules are modelled only to the extent that all crews launch in the right hand lane. CUCBC state that boats should stay to the right of the river (apart from a small section of the river where they should cross over to the left which shall be ignored for this project as an unnecessary complication).
+      
+      Therefore the simplified, constrained goal of the cox is to make it back to the boathouse crashing as little as possible and deviating as little as possible from the desired gear.
 
       \subsection{Actions} \label{model:cox:actions}
       Once a boat is launched a cox can perform the following actions:
@@ -161,7 +160,7 @@
       
       There are also a couple of special actions: Launching and Landing. Launching is initiated by the boathouse depending on the schedule it is following. Launching will place the boat on the river by the boathouse in the right hand lane. Landing is the cox's ultimate goal and will remove the boat from the river. The cox may land when it is in the first edge of any lane.
       
-      \subsection{Observations} \label{model:cox:obs}
+      \subsection{Observations \& Knowledge Base} \label{model:cox:obs}
       \paragraph{introduction to observations as the information available to a cox}
       
       \subsubsection{Observations available to a cox}
@@ -181,7 +180,7 @@
         \paragraph{River as a series of connected nodes to which a cox reacts as a model of cox's vision}
       \subsubsection{How to model how the cox observes other boats}
         \paragraph{Cox can record distance in terms of number of edges to next boat both in front and behind in the 3 lanes as a model of cox's vision}
-      \subsection{Knowledge Base} 
+        
       Can assume the cox has a fairly good memory of the river's layout so can guess his location reasonably well from the nearby landmarks.
   
       \subsection{Decision making}
@@ -193,7 +192,9 @@
       The cox's control policy determines how the observations are mapped to an action to execute. The control policy will thus define the cox's and therefore the boat's behaviour and during this project different control policies have been explored to examine their affect on safety and traffic flow. Control policies need to be reactive as a coxes environment is constantly changing. The cox must be able to respond as its boat moves on the river and to respond to other boats on the river. Therefore the action decision comes after the cox has made its observations and uses these to decide what action to execute next.
       
       The control policies used are written as teleo-reactive (TR) programs as defined by Nilsson (\cite{Nilsson1994}). These may be thought of as an ordered list of condition, action pairs. Each pair is looked at in order. If the condition part is true, then the corresponding action is chosen. Otherwise the next pair is looked at. These were chosen because they are reactive. As the environment changes the truth values of the conditions will change so that different actions will be executed. For all control policies the top level, goal condition is the same - completing an outing by returning the boathouse. When this condition is met the cox lands the boat and is removed from the simulation. TR programs are also human readable. This is a big advantage as it allows the simulation to be used to produce rules that real coxes on the Cam can apply to help improve safety and traffic flow. This may be either by experimenting with different policies written by humans or by applying machine learning techniques to create new policies.
-      
+  
+  \section{Combining the cox, boat and river for the simulation}
+  
   \section{Movement}
     \subsection{Forward}
       \paragraph{forward movement and a boat's momentum - both physically and in sense that the rowers will continue until told to stop}
