@@ -139,7 +139,7 @@
 
       Again keeping the boat on the river is handled automatically and modelling boats crashing has been covered in the boat's model (see \ref{model:boat:simplified}). For now the CUCBC rules are modelled only to the extent that all crews launch in the right hand lane. CUCBC state that boats should stay to the right of the river (apart from a small section of the river where they should cross over to the left which shall be ignored for this project as an unnecessary complication).
 
-      \subsection{Actions} 
+      \subsection{Actions} \label{model:cox:actions}
       Once a boat is launched a cox can perform the following actions:
       \begin{itemize}
         \item Nothing - the boat will continue at the same speed as before.
@@ -161,42 +161,39 @@
       
       There are also a couple of special actions: Launching and Landing. Launching is initiated by the boathouse depending on the schedule it is following. Launching will place the boat on the river by the boathouse in the right hand lane. Landing is the cox's ultimate goal and will remove the boat from the river. The cox may land when it is in the first edge of any lane.
       
-      \subsection{Observations}
-        \paragraph{introduction to observations as the information available to a cox}
-        
-        \subsubsection{Observations available to a cox}
-
-        \subsubsection{Perceptions} A cox can make observations about objects in
-              his line of sight.
-              \begin{itemize}
-                \item Shall assume the cox has a full 360\textdegree\ field of
-                  view.
-                \item Shall assume the cox's vision is not blocked by his or other boats.
-                \item Shall assume his
-                vision is blocked by the river bank which sits sufficiently high
-                above the river to make it impossible to see around corners.
-                \item Shall assume the cox can guess reasonable well the speed and
-                direction of boats within his line of sight (including his own).
-              \end{itemize}
-
-      \subsection{Knowledge Base} 
-      Can assume the cox has a fairly good memory of the river's layout so can guess his location reasonably well from the nearby landmarks.
-    
-      \subsubsection{Simplification for modelling}
+      \subsection{Observations} \label{model:cox:obs}
+      \paragraph{introduction to observations as the information available to a cox}
+      
+      \subsubsection{Observations available to a cox}
+      A cox can make observations about objects in his line of sight.
+      \begin{itemize}
+        \item Shall assume the cox has a full 360\textdegree\ field of
+          view.
+        \item Shall assume the cox's vision is not blocked by his or other boats.
+        \item Shall assume his
+        vision is blocked by the river bank which sits sufficiently high
+        above the river to make it impossible to see around corners.
+        \item Shall assume the cox can guess reasonable well the speed and
+        direction of boats within his line of sight (including his own).
+      \end{itemize}
         \paragraph{overall goal - get back to the boathouse}
       \subsubsection{How to model how the cox observes the river}
         \paragraph{River as a series of connected nodes to which a cox reacts as a model of cox's vision}
       \subsubsection{How to model how the cox observes other boats}
         \paragraph{Cox can record distance in terms of number of edges to next boat both in front and behind in the 3 lanes as a model of cox's vision}
-    
-  \subsection{Decision making}
-    \paragraph{introduction to what observation-decision-execution cycle}
-    \subsubsection{Control Policy/Action Scheduling}
+      \subsection{Knowledge Base} 
+      Can assume the cox has a fairly good memory of the river's layout so can guess his location reasonably well from the nearby landmarks.
+  
+      \subsection{Decision making}
+      \paragraph{introduction to what observation-decision-execution cycle}
+      The cox will follow a observation-decision-execution cycle. Using the observations described above the cox must decide which action to execute in order to achieve the goals. At each time tick each cox object will run a method called step(). This method will check if cox is incapacitated. This simulates the cases where for some reason the boat is not fully under the control of the cox. The most common cause for this is after a crash when the rowers will have to detangle their oars and a coach on the bank may take over to help If not it will check if the cox is in the middle of a durative action like spinning and if so it will continue to execute this durative action. If it is not in the middle of an action then the cox will use its observations to decide what action to execute next based on its control policy.
+      
+      \subsubsection{Control Policy/Action Scheduling}
       \paragraph{description as the decision making process based on observations}
-      \subsubsection{TR Program}
-    
-
-    
+      The cox's control policy determines how the observations are mapped to an action to execute. The control policy will thus define the cox's and therefore the boat's behaviour and during this project different control policies have been explored to examine their affect on safety and traffic flow. Control policies need to be reactive as a coxes environment is constantly changing. The cox must be able to respond as its boat moves on the river and to respond to other boats on the river. Therefore the action decision comes after the cox has made its observations and uses these to decide what action to execute next.
+      
+      The control policies used are written as teleo-reactive (TR) programs as defined by Nilsson (\cite{Nilsson1994}). These may be thought of as an ordered list of condition, action pairs. Each pair is looked at in order. If the condition part is true, then the corresponding action is chosen. Otherwise the next pair is looked at. These were chosen because they are reactive. As the environment changes the truth values of the conditions will change so that different actions will be executed. For all control policies the top level, goal condition is the same - completing an outing by returning the boathouse. When this condition is met the cox lands the boat and is removed from the simulation. TR programs are also human readable. This is a big advantage as it allows the simulation to be used to produce rules that real coxes on the Cam can apply to help improve safety and traffic flow. This may be either by experimenting with different policies written by humans or by applying machine learning techniques to create new policies.
+      
   \section{Movement}
     \subsection{Forward}
       \paragraph{forward movement and a boat's momentum - both physically and in sense that the rowers will continue until told to stop}
