@@ -5,20 +5,23 @@
 \usepackage{textcomp}
 \usepackage{enumitem}
 \usepackage{hyperref}
+\usepackage[nottoc,numbib]{tocbibind}
+
 
 \begin{document}
+  \pagenumbering{roman}
   \input{title}
-  
-  \paragraph{Abstract}
-  
-  \subsubsection{Acknowledgements}
+  \section*{Abstract}
+  \clearpage
+  \section*{Acknowledgements}
   
   \setcounter{tocdepth}{5}
   \setcounter{secnumdepth}{3}  
   \tableofcontents
-  
+  \clearpage\pagenumbering{arabic}
   \input{outline}
   
+  \renewcommand{\bibname}{References}  
   \bibliographystyle{alphaurl}
   \bibliography{mendeley}
 \end{document}
