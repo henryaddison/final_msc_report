@@ -112,6 +112,26 @@
       
       No attempt has been made to model the rowers getting tired. The speed multiplier remains constant throughout an outing. Nor has any attempt been made to simulate the rowers misinterpreting the cox's instructions. Instead the boat will respond instantly and perfectly to the cox's instructions.
       
+      \subsection{Movement}
+      Unless directed to stop by the cox, a boat will continue to move forward. In part this is due to physics, even a eight a small women weighs over half a tonne. However, this is mainly due to the way rowers behave. Rowers are taught to carry on rowing unless the cox tells them to stop rather than being told to take each stroke individually. Therefore movement is a feature of the boat rather than the cox.
+        
+      For the purposes of this model, it is assumed that steering to avoid the bank happens automatically. The river is unchanging and there is no advantage to hitting the river bank. Although steering is in the cox's domain, for simplicity it has been absorbed into forward movement. An experienced cox will find that steering the river course becomes automatic anyway and it is only when avoiding moving obstacles like other boats that a cox will knowingly think about steering. More on this part of steering can be found in the Changing Lane action in \ref{model:cox:actions}.
+                
+      \subsection{Crashing}\label{model:movement:crashing}
+        To properly model movement, it is also necessary to model when movement is not possible. That is when a boat crashes. Since steering to avoid the bank happens automatically, the crashes of interest are between multiple boats (mostly two but it does not take much for others to get involved). For this project crashes are considered to cause delays when two or more boats get two close to each other. In theory a crash could be so bad that the boats are written off and the crew must get out and walk back. This is exceedingly rare. Therefore it is assumed that crashes are not catastrophic. Instead when boats get too close someone either in the boat or on the bank will shout at them all to stop. The crews will then take some time to put some space between each other. This may involve pushing each other away physically or one boat drawing its oars in so that another may pass, or a boat may chose to "back it down", where the rowers will row backwards causing the boat to move slowly backwards.
+        
+      \subsubsection{Defining in model context}
+      For the model boats are said to have crashed if they try and occupy the same permanent edge in one of the lanes that makes up the river. This is because a boat is considered to fill an edge entirely and therefore it does not make sense to have more than one boat travelling on the same edge.
+
+      \subsubsection{Effects}
+      When a boat tries to occupy an edge that already contains another boat then all the boats on the edge will be brought to a stop and the coxes will be rendered incapacitated for a fixed number of ticks. At the end of this set number of ticks (assuming another boat does try and occupy the edge, which will cause the counter to reset), one of the boats will be picked at random and be allowed to move. When this boat gets clear of the edge, another boat will be selected at random and be allowed to be. And so on until all the boats have cleared the edge.
+      
+      The period where the coxes are incapacitated represents the time when boats and coxes must untangle themselves and get clear so they can begin rowing again. By keeping the coxes stationary the delay caused by the crash is kept in the model without having to add the ability for backward movement to the boats. This means boats all move forward monotonically (with spinning changing the definition of what counts as forward) which will make reasoning with the model much simpler.
+      
+      A single boat is chosen because in most crashes there is a boat that can get clear first and the others will wait. A more accurate model might try and have a better guess than random at which boat this would be (for example if a boat rams the boat in front, it will be the boat in front that moves first) but a random selection is simpler to implement without much loss of accuracy.
+      
+      By allowing only one boat to move then it reduces the potential for boats to remain in a permanently crashed state as they boat crawl along impeded by each other. With only one boat chosen at random to move, eventually the faster boat will get clear.
+      
     \section{Cox}
       \subsection{Description}
       \paragraph{Description of duties and abilities}
@@ -163,9 +183,12 @@
       There are also a couple of special actions: Launching and Landing. Launching is initiated by the boathouse depending on the schedule it is following. Launching will place the boat on the river by the boathouse in the right hand lane. Landing is the cox's ultimate goal and will remove the boat from the river. The cox may land when it is in the first edge of any lane.
       
       \subsection{Observations \& Knowledge Base} \label{model:cox:obs}
+      !!TODO!!
       \paragraph{introduction to observations as the information available to a cox}
       
       \subsubsection{Observations available to a cox}
+      
+      
       A cox can make observations about objects in his line of sight.
       \begin{itemize}
         \item Shall assume the cox has a full 360\textdegree\ field of
@@ -193,25 +216,4 @@
       \paragraph{description as the decision making process based on observations}
       The cox's control policy determines how the observations are mapped to an action to execute. The control policy will thus define the cox's and therefore the boat's behaviour and during this project different control policies have been explored to examine their affect on safety and traffic flow. Control policies need to be reactive as a coxes environment is constantly changing. The cox must be able to respond as its boat moves on the river and to respond to other boats on the river. Therefore the action decision comes after the cox has made its observations and uses these to decide what action to execute next.
       
-      The control policies used are written as teleo-reactive (TR) programs as defined by Nilsson (\cite{Nilsson1994}). These may be thought of as an ordered list of condition, action pairs. Each pair is looked at in order. If the condition part is true, then the corresponding action is chosen. Otherwise the next pair is looked at. These were chosen because they are reactive. As the environment changes the truth values of the conditions will change so that different actions will be executed. For all control policies the top level, goal condition is the same - completing an outing by returning the boathouse. When this condition is met the cox lands the boat and is removed from the simulation. TR programs are also human readable. This is a big advantage as it allows the simulation to be used to produce rules that real coxes on the Cam can apply to help improve safety and traffic flow. This may be either by experimenting with different policies written by humans or by applying machine learning techniques to create new policies.
-  
-  \section{Combining the cox, boat and river for the simulation}
-  
-  \section{Movement}
-    \subsection{Forward}
-      \paragraph{forward movement and a boat's momentum - both physically and in sense that the rowers will continue until told to stop}
-    \subsection{Steering}
-      \paragraph{done automatically using information from nodes as a boat moves over them}
-    \subsection{Crashing}\label{model:movement:crashing}
-      \subsubsection{Defining in model context}
-        \paragraph{Edge occupation}
-        \paragraph{Relating lane edges to boat size}
-      \subsubsection{Effects}
-        \paragraph{description of real world}
-        \paragraph{description in simulation}
-        \paragraph{Why Moving slowly in a crash versus reversing - can ensure boats move monotonically forward}
-        \paragraph{justification}
-        \paragraph{why only let one boat move? - prevent boats staying in a permanently crashed state}
-        \paragraph{justification}
-  
-
+      The control policies used are written as teleo-reactive (TR) programs as defined by Nilsson (\cite{Nilsson1994}). These may be thought of as an ordered list of condition, action pairs. Each pair is looked at in order. If the condition part is true, then the corresponding action is chosen. Otherwise the next pair is looked at. For all control policies the top level, goal condition is the same - completing an outing by returning the boathouse. When this condition is met the cox lands the boat and is removed from the simulation. These were chosen because they are reactive. As the environment changes the truth values of the conditions will change so that different actions will be executed. TR programs are also human readable. This is a big advantage as it allows the simulation to be used to try out polices that real coxes on the Cam can then apply if they help improve safety and traffic flow. TR programs may also be created using machine learning techniques such as those demonstrated by Kochenderfer (\cite{Kochenderfer2003}). This makes it possible to experiment with policies created by humans or by policies created using machine learning techniques which may find rules that a human on their own would not spot.
