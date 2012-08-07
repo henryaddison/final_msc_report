@@ -14,7 +14,9 @@
     
     One final feature that is worth mentioning and sits slightly apart from the cox-boat-river layered view of the model is the Boat House. It might itself be considered an agent since it autonomously launches boats, but as neither launching nor landing can be considered intelligent processes from the Boat House's point of view for the purposes of describing the model it fits more naturally as part of a part of the river since it also marks one end of the river beyond which a boat cannot pass.
     
-    Figure \ref{fig:modeloverview} provides a summary the relations between the 4 main features of the model just described. The following sections will then describe in more detail the river, the boats and the coxes and their decision making processes.
+    For the simulation, time is turned into discrete ticks. Methods are scheduled to run at ticks. For a cox, the step() method is scheduled to run every tick and carries out a full observe-decide-execute cycle, observing the state of the river and other boats on it, deciding what action to do next and then executing that action. For a boat the run() method will move the boat according to it's properties after the cox has executed their action (the scheduled method on coxes are given higher priority so will run before the scheduled method on boats).
+    
+    Figure \ref{fig:modeloverview} provides a summary the relations between the 4 main features of the model just described. The following sections describe in more detail the river, the boats and the coxes and their decision making processes.
     
     \begin{figure}[H]
     \begin{center}
