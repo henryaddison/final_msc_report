@@ -1,18 +1,46 @@
 \chapter{Technical Issues}\label{chapter:technicalissues}
+This chapter covers some of the problems encountered when turning the model from Chapter \ref{chapter:model} into code. This will not be an exhaustive list of all the challenges but will focus on the more interesting problems and solutions.
+
   \section{ABM frameworks}
     \paragraph{What is an ABM framework?}
+    The first challenge was to create a software environment to run the simulation. 
     \paragraph{Why use an ABM framework? - Gilbert and Bankes paper}
-    
+    Gilbert and Bankes (\cite{Gilbert2002}) explain the advantages and
+    disadvantages of using pre-existing libraries and frameworks for Agent-Based Models rather
+    than ``rolling your own.'' Using pre-existing libraries frees a
+    programmer up from re-implementing common
+    algorithms. However, they also require a programmer to understand the
+    language they are written in and to work with the built-in
+    assumptions used by the original writers. Gilbert and Bankes state
+    that agent-based modeling tools that match their ideal specifications
+    do not yet exist but that there is a trend towards better
+    tools becoming available. Fortunately a few years later Allen (\cite{Allan2009}) and Berryman (\cite{Berryman2008}) survey many ABM frameworks and suggest that NetLogo, MASON and Repast are useful frameworks. Personal communication with EngD student Ed Manley (\cite{Manley2012}) at UCL working on traffic simulations led me to look at the Repast framework. Therefore it seemed in 2012 with only a few months to complete this project but a good understanding of Java, using a pre-built framework would require less work than starting from the bottom and building a framework dedicated to the project.
     \subsection{ABM frameworks considered}
       \paragraph{Review of ABM frameworks - Allen and Berryman papers, hands}
       \subsubsection{Repast}
         \paragraph{descriptions of features/pros and cons of Repast}
+        Open source
+        Mailing list
+        Documentation
+        Examples from Repast City
+        Java
+        Random number generation
+        Integrates nicely with Eclipse (so quick to get started)
+        - slower than mason
+        - less support for learning algorithms
       \subsubsection{NetLogo}
         \paragraph{descriptions of features/pros and cons of Netlogo}
-
+        NetLogo requires the use of a proprietary
+        language to program the agents aimed at beginner programmers, which I
+        found too restrictive.
+        Does not require much programming experience
+        
+      \subsubsection{MASON}
+        Similar to RePast (in fact grew out of RePast according to )
     \subsection{The ABM framework I used}
       \paragraph{Why I chose ABM}
-
+      Personal recommendation and one-to-one tutorial with a user. Berryman finds little to separate MASON and RePast so this is enough to swing it.
+      Don't need to be able to handle a large number of agents (1000 boats fill the river)
   \section{Building the river}
     \subsection{Rastorization vs vectorization}
       \paragraph{Storing river as a series of squares/pixels}
@@ -37,3 +65,5 @@
     \subsection{challenges}
       \paragraph{drawing the river}
       \paragraph{drawing the boat}
+      
+  \section{Experiment Framework}
