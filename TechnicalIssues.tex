@@ -42,7 +42,7 @@ This chapter covers some of the problems encountered when turning the model from
       Personal recommendation and one-to-one tutorial with a user. Berryman finds little to separate MASON and RePast so this is enough to swing it.
       Don't need to be able to handle a large number of agents (1000 boats fill the river)
       
-  \section{Building the river}
+  \section{Building the river}\label{techissues:river}
     The river presented two challenges. Even with the decision to represent it in the model as three graphs to represent the three lanes there was still the challenge of determining the value of the location attribute for each node. Then there was the problem of drawing this river in the visualization.
     
     \subsection{Rastorization vs vectorization}
@@ -58,7 +58,7 @@ This chapter covers some of the problems encountered when turning the model from
       
       Any any parts of the river that were nearly straight were treated as being fully straight. It was then just a case of using the ruler tool in Google Earth to work out how many 20m straight lines would make up each straight. At the start of the section of the Cam this project covers the river nearly heads roughly East (or alternatively the river has been rotated so that it appears to head directly right on the screen). For simplicity it was considered to be heading due East, so the angle of the first few vectors was 0 and the river was started at (0,10), (0,20), (0,30) for the nodes of the three lanes. See \ref{fig:thereach} for a screen shot of Google Earth of this first section of river.
       
-      \begin{figure}[H]
+      \begin{figure}[h]
       \begin{center}
       	\includegraphics[scale=0.3]{images/TheReach.png}
       	\caption{The Reach: roughly 1400m long and straight. By rotating the whole river 20\textdegree \ clockwise can treat it as 70 lots of 20m vectors heading having an angle of 0\textdegree \ from the horizontal (the line apporoximation in Google Earth has a heading of 70\textdegree but this is a bearing so measured clockwise from North unlike standard geometry which measures anti-clockwise from the $x$-axis.)}
@@ -68,7 +68,7 @@ This chapter covers some of the problems encountered when turning the model from
       
       Corners were then approximated using sectors a circle, with the river following the arc of the sector. Using Google Earth the radius of the circle of curvature was estimated very approximately. The angle of the sector was approximated by looking at the bearing of line heading into the corner and the bearing of a line heading out of the corner. The angle of the sector was then the difference of these two bearings.
       
-      \begin{figure}[H]
+      \begin{figure}[h]
       \begin{center}
       	\includegraphics[scale=0.3]{images/DittonCornerHeadingIn.png}
       	\includegraphics[scale=0.3]{images/DittonCornerHeadingOut.png}
@@ -77,7 +77,7 @@ This chapter covers some of the problems encountered when turning the model from
       \end{center}
       \end{figure}
       
-      \begin{figure}[H]
+      \begin{figure}[h]
       \begin{center}
       	\includegraphics[scale=0.3]{images/DittonCornerRadius.png}
       	\caption{Ditton Corner: This shows two approximate radii of the sector that makes up Ditton Corner. Their total length is 244m. Rounded this up and approximated the radius of Ditton Corner to be 125m.}
@@ -89,23 +89,64 @@ This chapter covers some of the problems encountered when turning the model from
       
       Finally for a corner, the arc needed to be approximated by 20m segments. This was done by working out the total length of the arc (radius $\times$ angle) and then dividing by 20. This gave a number of segments. The angle of the first segment was the heading in angle. Each segment's angle was then changed incremented (or decremented depending on whether the river was bending to the left of the right) by (angle of sector)/(number of segments).
       
-  \section{Action execution}
-    \subsection{Ensuring misuse of action does not break system}
-      \paragraph{Making sure actions default to something sensible when they cannot be sensibly executed}
-      \paragraph{What that default action is}
+      In this way the actual path of the river Cam, as can be seen marked out on Google Earth in Figure \ref{techissues:fig:actualcam} is turned into a simplified version as in Figure \ref{techissues:fig:simplecam}.
       
+      \begin{figure}[h]
+      \begin{center}
+      	\includegraphics[scale=0.3]{images/GoogleEarthCam.png}
+      	\caption{The part of the Cam covered by this project marked out on Google Earth. The 3 main corners and Baits Bite Lock have been marked out.}
+      	\label{techissues:fig:actualcam}
+      \end{center}
+      \end{figure}
+      
+      \begin{figure}[h]
+      \begin{center}
+      	\includegraphics[scale=0.3]{images/SimplifiedCam.png}
+      	\caption{The simplified version of the Cam as it appears in the visualization. Notice the three corners. The black box represents the boat house.}
+      	\label{techissues:fig:simplecam}
+      \end{center}
+      \end{figure}
+      
+  \section{Action execution}
+  The execution of actions by the cox provided two problems. Firstly it was necessary to ensure that if an action was misused (for instance executed in a situation where it did not make sense) then it would not break the system. Secondly boats needed to react to a cox's actions rather than allowing the cox too much direct control over the boat in order to help maintain the indirectness of a cox's control over a boat in the implementation.
+  
+    \subsection{Ensuring misuse of action does not break system}
+    Ideally a cox would not choose to execute an action in a situation where it did not make sense. Unfortunately this is not possible to ensure without artificially limiting a cox's choices. Instead if an action is executed in a non-conforming situation (for example, trying to change lanes when already in the process of changing lanes) the action will revert to a default action. The Let Boat Run action fits nicely with the model as this default action, since it results in the boat continuing forward unchanged. In a way this is equivalent to a cox deciding to carry out an action and then realising it isn't possible.
+    
     \subsection{Ordering of cox actions and boat "reaction"}
-      \paragraph{Ensuring that the cox cannot influence the boat too directly}
-      \paragraph{Ensuring the boat's movement comes after the cox has execute his action to ensure response}
-      \paragraph{Dealing with actions that take multiply timesteps}
+    \paragraph{Ensuring that the cox cannot influence the boat too directly}
+    Scheduled methods on cox and boat objects means that the cox's method can concentrate on the cox's actions. The boat's method will then ensure, whatever the cox decides, that the boat will continue to move forward. In turn, this means that the methods for moving a boat can be shielded from the cox so reduce the risk of a cox's actions influencing the movement of a boat too directly. The one exception to this was the Spin action. For visualization purposes it was necessary to have the boat rotate 180\textdegree while moving in a straight-line across the river, which was very different to the usual boat movement straight forward in the direction the boat was facing. Therefore it was easier for this one off case to have the Spin action call movement methods directly on the boat object. This actually fits nicely with reality where during spinning the cox does tend to control the boat more directly by calling each stroke individually.
+      
+    \paragraph{Ensuring the boat's movement comes after the cox has execute his action to ensure response}
+    Repast has a mechanism for setting the priority of scheduled methods. This means that cox's decision making method can be executed before the boat's movement method and so ensure that the boat's movement will be affected by the cox's decision.
+    
+    \paragraph{Dealing with actions that take multiple timesteps}
+    Some actions by the cox are considered to take multiple time ticks. Spinning is the example. By making each action a class and execution of an action occurring by instantiating an instance of the relevant class and calling the \texttt{execute()} method which returns a boolean to determine whether the action was completed, it was possible to keep a reference to any unfinished actions. These unfinished actions can then be continued at the time tick without the danger of the cox choosing another action which would not make sense. For example, until spinning is complete, it makes no sense to execute any other action.
       
   \section{Time discretization and scale}
-    
+    With time broken down into discrete ticks it is necessary to decide what period of time these ticks are supposed to cover. An obvious choice was to make each tick stand for one second. This meant it was possible to store distances as metres and speeds as metres per second in a natural way. Fortunately this choice of tick length also worked well with the visualization as Repast offered a way to put delays between the ticks so that a simulation can either be run very quickly through to it being possible to watch it in an equivalent to real time. This tick length also meant a boat would move a relatively short distance each tick so movement appears smooth and there is less danger of getting into unusual situations of boats jumping long distances.
     
   \section{creating a suitable visualization}
-    \paragraph{motivation for visualization}
-    \subsection{challenges}
-      \paragraph{drawing the river}
+    It was important for this project to have a visualization. Most importantly the visualization allows anyone to observe the effects of particular control policies. It is easy to spot where bottlenecks in traffic flow might be occurring and occasionally the cause (perhaps by not allowing boats to overtake, a single slow boat holds up everyone? perhaps by allowing boats to crash into each other, a large pile up occurs at the lock where boats take a long time to spin). A visualization was also a useful tool for debugging the simulation and ensuring that the boats where behaving as expected. Fortunately Repast provides a API to visualize the changes to objects each tick - in this case to show where the boats have moved to on the river each tick.
+    
+    \subsection{Challenges}
+      Drawing the river provided the largest challenge and is covered in it's own section (see Section \ref{techissues:river})
+      
       \paragraph{drawing the boat}
+      Originally the boats where all red rectangles. This made them very simple to draw. However these rectangles were not particularly intuitive to look at and they presented two problems:
+      \begin{enumerate}
+        \item \label{techissues:visualization:boat_shape} It was not possible to tell which way boat was pointing.
+        \item \label{techissues:visualization:boat_colour} The boats could be hard to tell apart from each other since they were the same colour. 
+      \end{enumerate}
+      
+      As with the river, problem \ref{techissues:visualization:boat_shape} was solved using Java's Path2D API to draw a more appropriate shape with 8 oars and a pointed bow to point forwards. Problem \ref{techissues:visualization:boat_colour} was solved by giving each boat a randomly selected colour. These can be seen in Figure \ref{techissues:fig:boats}.
+      
+      \begin{figure}[h]
+      \begin{center}
+      	\includegraphics[scale=0.3]{images/boats.png}
+      	\caption{Multi-coloured boats: notice the shape of the boat with 8 spines to represent the 8 oars. The front of the boat points forward, while the back is flat.}
+      	\label{techissues:fig:boats}
+      \end{center}
+      \end{figure}
       
   \section{Experiment Framework}
