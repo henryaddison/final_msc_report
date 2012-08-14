@@ -9,19 +9,11 @@
 
 
 \begin{document}
-  \pagenumbering{roman}
-  \input{title}
-  \section*{Abstract}
-  \clearpage
-  \section*{Acknowledgements}
+  \input{preamble}
   
-  \setcounter{tocdepth}{5}
-  \setcounter{secnumdepth}{3}  
-  \tableofcontents
-  \clearpage\pagenumbering{arabic}
   \input{outline}
   
-  \renewcommand{\bibname}{References}  
-  \bibliographystyle{alphaurl}
-  \bibliography{mendeley}
+  \input{bibliography}
+  
+  \input{appendix}
 \end{document}
