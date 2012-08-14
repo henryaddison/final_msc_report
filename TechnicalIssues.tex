@@ -60,9 +60,9 @@ This chapter covers some of the problems encountered when turning the model from
       
       \begin{figure}[h]
       \begin{center}
-      	\includegraphics[scale=0.3]{images/TheReach.png}
-      	\caption{The Reach: roughly 1400m long and straight. By rotating the whole river 20\textdegree \ clockwise can treat it as 70 lots of 20m vectors heading having an angle of 0\textdegree \ from the horizontal (the line apporoximation in Google Earth has a heading of 70\textdegree but this is a bearing so measured clockwise from North unlike standard geometry which measures anti-clockwise from the $x$-axis.)}
-      	\label{fig:thereach}
+        \includegraphics[scale=0.3]{images/TheReach.png}
+        \caption{The Reach: roughly 1400m long and straight. By rotating the whole river 20\textdegree \ clockwise can treat it as 70 lots of 20m vectors heading having an angle of 0\textdegree \ from the horizontal (the line apporoximation in Google Earth has a heading of 70\textdegree but this is a bearing so measured clockwise from North unlike standard geometry which measures anti-clockwise from the $x$-axis.)}
+        \label{fig:thereach}
       \end{center}
       \end{figure}
       
@@ -70,18 +70,18 @@ This chapter covers some of the problems encountered when turning the model from
       
       \begin{figure}[h]
       \begin{center}
-      	\includegraphics[scale=0.3]{images/DittonCornerHeadingIn.png}
-      	\includegraphics[scale=0.3]{images/DittonCornerHeadingOut.png}
-      	\caption{Ditton Corner: The heading in is roughly 70\textdegree and the heading out is roughly 170\textdegree so treated this corner as a 90\textdegree sector of a circle (by using a right-angle the calculations were a bit simpler).}
-      	\label{fig:dittoncorner:angle}
+        \includegraphics[scale=0.3]{images/DittonCornerHeadingIn.png}
+        \includegraphics[scale=0.3]{images/DittonCornerHeadingOut.png}
+        \caption{Ditton Corner: The heading in is roughly 70\textdegree and the heading out is roughly 170\textdegree so treated this corner as a 90\textdegree sector of a circle (by using a right-angle the calculations were a bit simpler).}
+        \label{fig:dittoncorner:angle}
       \end{center}
       \end{figure}
       
       \begin{figure}[h]
       \begin{center}
-      	\includegraphics[scale=0.3]{images/DittonCornerRadius.png}
-      	\caption{Ditton Corner: This shows two approximate radii of the sector that makes up Ditton Corner. Their total length is 244m. Rounded this up and approximated the radius of Ditton Corner to be 125m.}
-      	\label{fig:dittoncorner:radius}
+        \includegraphics[scale=0.3]{images/DittonCornerRadius.png}
+        \caption{Ditton Corner: This shows two approximate radii of the sector that makes up Ditton Corner. Their total length is 244m. Rounded this up and approximated the radius of Ditton Corner to be 125m.}
+        \label{fig:dittoncorner:radius}
       \end{center}
       \end{figure}
       
@@ -93,17 +93,17 @@ This chapter covers some of the problems encountered when turning the model from
       
       \begin{figure}[h]
       \begin{center}
-      	\includegraphics[scale=0.3]{images/GoogleEarthCam.png}
-      	\caption{The part of the Cam covered by this project marked out on Google Earth. The 3 main corners and Baits Bite Lock have been marked out.}
-      	\label{techissues:fig:actualcam}
+        \includegraphics[scale=0.3]{images/GoogleEarthCam.png}
+        \caption{The part of the Cam covered by this project marked out on Google Earth. The 3 main corners and Baits Bite Lock have been marked out.}
+        \label{techissues:fig:actualcam}
       \end{center}
       \end{figure}
       
       \begin{figure}[h]
       \begin{center}
-      	\includegraphics[scale=0.3]{images/SimplifiedCam.png}
-      	\caption{The simplified version of the Cam as it appears in the visualization. Notice the three corners. The black box represents the boat house.}
-      	\label{techissues:fig:simplecam}
+        \includegraphics[scale=0.3]{images/SimplifiedCam.png}
+        \caption{The simplified version of the Cam as it appears in the visualization. Notice the three corners. The black box represents the boat house.}
+        \label{techissues:fig:simplecam}
       \end{center}
       \end{figure}
       
@@ -126,27 +126,23 @@ This chapter covers some of the problems encountered when turning the model from
   \section{Time discretization and scale}
     With time broken down into discrete ticks it is necessary to decide what period of time these ticks are supposed to cover. An obvious choice was to make each tick stand for one second. This meant it was possible to store distances as metres and speeds as metres per second in a natural way. Fortunately this choice of tick length also worked well with the visualization as Repast offered a way to put delays between the ticks so that a simulation can either be run very quickly through to it being possible to watch it in an equivalent to real time. This tick length also meant a boat would move a relatively short distance each tick so movement appears smooth and there is less danger of getting into unusual situations of boats jumping long distances.
     
-  \section{creating a suitable visualization}
+  \section{Visualization}
     It was important for this project to have a visualization. Most importantly the visualization allows anyone to observe the effects of particular control policies. It is easy to spot where bottlenecks in traffic flow might be occurring and occasionally the cause (perhaps by not allowing boats to overtake, a single slow boat holds up everyone? perhaps by allowing boats to crash into each other, a large pile up occurs at the lock where boats take a long time to spin). A visualization was also a useful tool for debugging the simulation and ensuring that the boats where behaving as expected. Fortunately Repast provides a API to visualize the changes to objects each tick - in this case to show where the boats have moved to on the river each tick.
     
-    \subsection{Challenges}
-      Drawing the river provided the largest challenge and is covered in it's own section (see Section \ref{techissues:river})
-      
-      \paragraph{drawing the boat}
-      Originally the boats where all red rectangles. This made them very simple to draw. However these rectangles were not particularly intuitive to look at and they presented two problems:
-      \begin{enumerate}
-        \item \label{techissues:visualization:boat_shape} It was not possible to tell which way boat was pointing.
-        \item \label{techissues:visualization:boat_colour} The boats could be hard to tell apart from each other since they were the same colour. 
-      \end{enumerate}
-      
-      As with the river, problem \ref{techissues:visualization:boat_shape} was solved using Java's Path2D API to draw a more appropriate shape with 8 oars and a pointed bow to point forwards. Problem \ref{techissues:visualization:boat_colour} was solved by giving each boat a randomly selected colour. These can be seen in Figure \ref{techissues:fig:boats}.
-      
-      \begin{figure}[h]
-      \begin{center}
-      	\includegraphics[scale=0.3]{images/boats.png}
-      	\caption{Multi-coloured boats: notice the shape of the boat with 8 spines to represent the 8 oars. The front of the boat points forward, while the back is flat.}
-      	\label{techissues:fig:boats}
-      \end{center}
-      \end{figure}
+    The visualization has two main elements. The static river and the moving boats. Drawing the river provided a large challenge covered in its own section (see Section \ref{techissues:river}). Drawing the boats was not without problems despite how easy Repast makes it to show objects moving around a continuous 2D space Originally the boats where all red rectangles. This made them very simple to draw. However these rectangles were not particularly intuitive to look at and they presented two problems:
+    \begin{enumerate}
+      \item \label{techissues:visualization:boat_shape} It was not possible to tell which way boat was pointing.
+      \item \label{techissues:visualization:boat_colour} The boats could be hard to tell apart from each other since they were the same colour. 
+    \end{enumerate}
+    As with the river, problem \ref{techissues:visualization:boat_shape} was solved using Java's Path2D API to draw a more appropriate shape with 8 oars and a pointed bow to point forwards. Problem \ref{techissues:visualization:boat_colour} was solved by giving each boat a randomly selected colour. These can be seen in Figure \ref{techissues:fig:boats}.
+    
+    \begin{figure}[h]
+    \begin{center}
+      \includegraphics[scale=0.3]{images/boats.png}
+      \caption{Multi-coloured boats: notice the shape of the boat with 8 spines to represent the 8 oars. The front of the boat points forward, while the back is flat.}
+      \label{techissues:fig:boats}
+    \end{center}
+    \end{figure}
       
   \section{Experiment Framework}
+  In order to evaluate the 
