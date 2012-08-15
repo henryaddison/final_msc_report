@@ -1,12 +1,13 @@
 \chapter{Technical Issues}\label{chapter:technicalissues}
-This chapter covers some of the problems encountered when turning the model from Chapter \ref{chapter:model} into code. This will not be an exhaustive list of all the challenges but will focus on the more interesting problems and solutions. A look at the final software design is yet to come in Chapter \ref{chapter:softwaredesign} so this chapter will not make too many explicit references to the actual classes and methods used and instead try and focus more on the algorithms and frameworks used.
+This chapter covers some of the problems encountered when turning the model from Chapter \ref{chapter:model} into code. This is not an exhaustive list but focuses on the more interesting problems and solutions. A look at the final software design is yet to come in Chapter \ref{chapter:softwaredesign} so this chapter does not make too many explicit references to the actual classes and methods used and instead tries to focus more on the algorithms and frameworks used.
 
   \section{ABM frameworks}
-    \paragraph{What is an ABM framework?}
-    The first challenge was to create a software environment to run the simulation. 
-    \paragraph{Why use an ABM framework? - Gilbert and Bankes paper}
-    Gilbert and Bankes (\cite{Gilbert2002}) explain the advantages and
-    disadvantages of using pre-existing libraries and frameworks for Agent-Based Models rather
+    \subsection{What is an ABM framework?}
+    The first challenge was to create a software environment to run the simulation. Agent-based modelling (ABM) frameworks handle the creation of such an environment. In particular for this simulation, they break down time  into discrete ticks, during which methods scheduled on objects will run. There also provide a way to display the movement of objects about a 2D space.
+    
+    \subsection{Why use an ABM framework?}
+    Gilbert and Bankes (\cite{Gilbert2002}) discuss the advantages and
+    disadvantages of using pre-existing libraries and frameworks for ABM rather
     than ``rolling your own.'' Using pre-existing libraries frees a
     programmer up from re-implementing common
     algorithms. However, they also require a programmer to understand the
@@ -14,34 +15,46 @@ This chapter covers some of the problems encountered when turning the model from
     assumptions used by the original writers. Gilbert and Bankes state
     that agent-based modeling tools that match their ideal specifications
     do not yet exist but that there is a trend towards better
-    tools becoming available. Fortunately a few years later Allen (\cite{Allan2009}) and Berryman (\cite{Berryman2008}) survey many ABM frameworks and suggest that NetLogo, MASON and Repast are useful frameworks. Personal communication with EngD student Ed Manley (\cite{Manley2012}) at UCL working on traffic simulations led me to look at the Repast framework. Therefore it seemed in 2012 with only a few months to complete this project but a good understanding of Java, using a pre-built framework would require less work than starting from the bottom and building a framework dedicated to the project.
+    tools becoming available. Fortunately a few years later Allen (\cite{Allan2009}) and Berryman (\cite{Berryman2008}) survey ABM frameworks and suggest that Repast Simphony (the latest version of Repast), MASON and NetLogo are useful tools.
+    
     \subsection{ABM frameworks considered}
-      \paragraph{Review of ABM frameworks - Allen and Berryman papers, hands}
-      \subsubsection{Repast}
-        \paragraph{descriptions of features/pros and cons of Repast}
-        Open source
-        Mailing list
-        Documentation
-        Examples from Repast City
-        Java
-        Random number generation
-        Integrates nicely with Eclipse (so quick to get started)
-        - slower than mason
-        - less support for learning algorithms
-      \subsubsection{NetLogo}
-        \paragraph{descriptions of features/pros and cons of Netlogo}
-        NetLogo requires the use of a proprietary
-        language to program the agents aimed at beginner programmers, which I
-        found too restrictive.
-        Does not require much programming experience
+    \subsubsection{Repast Simphony}
+    \begin{itemize}
+      \item Open source so it is easy to inspect what the framework is doing behind the scenes.
+      \item Java-based so can use any Java library in the agents.
+      \item Well documented and has an active mailing list (\cite{Repast}).
+      \item There are useful examples to be found on the web such as Nick Malleson's RepastCity (\cite{Malleson}).
+      \item Integrates nicely with Eclipse so easy to install and quick to get started.
+    \end{itemize}    
         
-      \subsubsection{MASON}
-        Similar to RePast (in fact grew out of RePast according to )
-    \subsection{The ABM framework I used}
-      \paragraph{Why I chose ABM}
-      Personal recommendation and one-to-one tutorial with a user. Berryman finds little to separate MASON and RePast so this is enough to swing it.
-      Don't need to be able to handle a large number of agents (1000 boats fill the river)
+    \subsubsection{MASON}
+    MASON is similar to Repast Simphony (in fact it was designed as an alternative to Repast(\cite{Allan2009})). It is also Java-based and open source. It is designed to be faster than Repast and ``excels'' in its support for learning algorithms (\cite{Berryman2008}).
       
+    \subsubsection{NetLogo}
+    The main of advantage of NetLogo is its simplicity to use for people without programming experience and to this end NetLogo uses of a proprietary language to program the agents aimed at beginner programmers. However, this language is restrictive compared to a heavily-used language like Java.
+    
+    \subsection{ABM framework chosen}
+    With only a few months to complete this project but a good understanding of Java, using a pre-built framework would require less work than starting from the bottom and building a framework dedicated to the project. The simplicity of NetLogo ruled it out. In the end Repast was chosen. Berryman finds little to separate MASON and Repast Simphony. The integration with Eclipse made getting started with Repast Simphony easy. The improved random number support according to \cite{} would be useful for running experiments, where control over random number streams was essential to ensure reproducibility. Although Repast Simphony does have support for learning algorithms, the improved support in MASON might be missed but their use was a nice-to-have at the planning stage for this project rather than an essential. Also as the simulation would not have to handle a large number of agents (1000 boats would fill the river entirely), the optimizations in MASON would not be necessary. Finally the personal recommendation and one-to-tutorial with EngD student Ed Manley (\cite{Manley2012}) at UCL working on traffic simulations proved sufficient enough reason to confirm the choice of using Repast Simphony over MASON.
+  
+  \section{Action execution}
+    Each tick the cox chooses and executes an action and then the boat moves forward based on the state the cox's action have left the boat. The execution of actions by the cox provided two problems. Firstly it was necessary to ensure that if an action was misused (for instance executed in a situation where it did not make sense) then it would not break the system. Secondly boats needed to react to a cox's actions rather than allowing the cox too much direct control over the boat in order to help maintain the indirectness of a cox's control over a boat in the implementation.
+    
+    \subsection{Time discretization and scale}
+      With time broken down into discrete ticks it is necessary to decide what period of time these ticks are supposed to cover. An obvious choice was to make each tick stand for one second. This meant it was possible to store distances as metres and speeds as metres per second in a natural way. Fortunately this choice of tick length also worked well with the visualization as Repast offered a way to put delays between the ticks so that a simulation can either be run very quickly through to it being possible to watch it in an equivalent to real time. This tick length also meant a boat would move a relatively short distance each tick so movement appears smooth and there is less danger of getting into unusual situations of boats jumping long distances.
+    
+    \subsection{Ensuring misuse of action does not break system}
+      Ideally a cox would not choose to execute an action in a situation where it did not make sense. Unfortunately this is not possible to ensure without artificially limiting a cox's choices. Instead if an action is executed in a non-conforming situation (for example, trying to change lanes when already in the process of changing lanes) the action will revert to a default action. The Let Boat Run action fits nicely with the model as this default action, since it results in the boat continuing forward unchanged. In a way this is equivalent to a cox deciding to carry out an action and then realising it isn't possible.
+
+    \subsection{Ordering of cox actions and boat "reaction"}
+    \paragraph{Ensuring that the cox cannot influence the boat too directly}
+    Separate scheduled methods on cox and boat objects means that the cox's method can concentrate on the cox's actions. The boat's method will then ensure, whatever the cox decides, that the boat will continue to move forward. In turn, this means that the methods for moving a boat can be shielded from the cox so reduce the risk of a cox's actions influencing the movement of a boat too directly. The one exception to this was the Spin action. For visualization purposes it was necessary to have the boat rotate 180\textdegree while moving in a straight-line across the river, which was very different to the usual boat movement straight forward in the direction the boat was facing. Therefore it was easier for this one off case to have the Spin action call movement methods directly on the boat object. This actually fits nicely with reality where during spinning the cox does tend to control the boat more directly by calling each stroke individually.
+
+      \paragraph{Ensuring the boat's movement comes after the cox has execute his action to ensure response}
+      Repast has a mechanism for setting the priority of scheduled methods. This means that cox's decision making method can be executed before the boat's movement method and so ensure that the boat's movement will be affected by the cox's decision.
+
+      \paragraph{Dealing with actions that take multiple timesteps}
+      Some actions by the cox are considered to take multiple time ticks. Spinning is the example. By making each action a class and execution of an action occurring by instantiating an instance of the relevant class and calling the \texttt{execute()} method which returns a boolean to determine whether the action was completed, it was possible to keep a reference to any unfinished actions. These unfinished actions can then be continued at the time tick without the danger of the cox choosing another action which would not make sense. For example, until spinning is complete, it makes no sense to execute any other action.
+  
   \section{Building the river}\label{techissues:river}
     The river presented two challenges. Even with the decision to represent it in the model as three graphs to represent the three lanes there was still the challenge of determining the value of the location attribute for each node. Then there was the problem of drawing this river in the visualization.
     
@@ -107,25 +120,8 @@ This chapter covers some of the problems encountered when turning the model from
       \end{center}
       \end{figure}
       
-  \section{Action execution}
-  The execution of actions by the cox provided two problems. Firstly it was necessary to ensure that if an action was misused (for instance executed in a situation where it did not make sense) then it would not break the system. Secondly boats needed to react to a cox's actions rather than allowing the cox too much direct control over the boat in order to help maintain the indirectness of a cox's control over a boat in the implementation.
+
   
-    \subsection{Ensuring misuse of action does not break system}
-    Ideally a cox would not choose to execute an action in a situation where it did not make sense. Unfortunately this is not possible to ensure without artificially limiting a cox's choices. Instead if an action is executed in a non-conforming situation (for example, trying to change lanes when already in the process of changing lanes) the action will revert to a default action. The Let Boat Run action fits nicely with the model as this default action, since it results in the boat continuing forward unchanged. In a way this is equivalent to a cox deciding to carry out an action and then realising it isn't possible.
-    
-    \subsection{Ordering of cox actions and boat "reaction"}
-    \paragraph{Ensuring that the cox cannot influence the boat too directly}
-    Scheduled methods on cox and boat objects means that the cox's method can concentrate on the cox's actions. The boat's method will then ensure, whatever the cox decides, that the boat will continue to move forward. In turn, this means that the methods for moving a boat can be shielded from the cox so reduce the risk of a cox's actions influencing the movement of a boat too directly. The one exception to this was the Spin action. For visualization purposes it was necessary to have the boat rotate 180\textdegree while moving in a straight-line across the river, which was very different to the usual boat movement straight forward in the direction the boat was facing. Therefore it was easier for this one off case to have the Spin action call movement methods directly on the boat object. This actually fits nicely with reality where during spinning the cox does tend to control the boat more directly by calling each stroke individually.
-      
-    \paragraph{Ensuring the boat's movement comes after the cox has execute his action to ensure response}
-    Repast has a mechanism for setting the priority of scheduled methods. This means that cox's decision making method can be executed before the boat's movement method and so ensure that the boat's movement will be affected by the cox's decision.
-    
-    \paragraph{Dealing with actions that take multiple timesteps}
-    Some actions by the cox are considered to take multiple time ticks. Spinning is the example. By making each action a class and execution of an action occurring by instantiating an instance of the relevant class and calling the \texttt{execute()} method which returns a boolean to determine whether the action was completed, it was possible to keep a reference to any unfinished actions. These unfinished actions can then be continued at the time tick without the danger of the cox choosing another action which would not make sense. For example, until spinning is complete, it makes no sense to execute any other action.
-      
-  \section{Time discretization and scale}
-    With time broken down into discrete ticks it is necessary to decide what period of time these ticks are supposed to cover. An obvious choice was to make each tick stand for one second. This meant it was possible to store distances as metres and speeds as metres per second in a natural way. Fortunately this choice of tick length also worked well with the visualization as Repast offered a way to put delays between the ticks so that a simulation can either be run very quickly through to it being possible to watch it in an equivalent to real time. This tick length also meant a boat would move a relatively short distance each tick so movement appears smooth and there is less danger of getting into unusual situations of boats jumping long distances.
-    
   \section{Visualization}
     It was important for this project to have a visualization. Most importantly the visualization allows anyone to observe the effects of particular control policies. It is easy to spot where bottlenecks in traffic flow might be occurring and occasionally the cause (perhaps by not allowing boats to overtake, a single slow boat holds up everyone? perhaps by allowing boats to crash into each other, a large pile up occurs at the lock where boats take a long time to spin). A visualization was also a useful tool for debugging the simulation and ensuring that the boats where behaving as expected. Fortunately Repast provides a API to visualize the changes to objects each tick - in this case to show where the boats have moved to on the river each tick.
     
