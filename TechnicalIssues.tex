@@ -65,7 +65,7 @@ This chapter covers some of the problems encountered when turning the model from
       \end{enumerate}
       As with the river, problem \ref{techissues:visualization:boat_shape} was solved using Java's Path2D API to draw a more appropriate shape with 8 oars and a pointed bow to point forwards. Problem \ref{techissues:visualization:boat_colour} was solved by giving each boat a randomly selected colour. These can be seen in Figure \ref{techissues:fig:boats}.
 
-      \begin{figure}[h]
+      \begin{figure}
       \begin{center}
         \includegraphics[scale=0.3]{images/boats.png}
         \caption{Multi-coloured boats: notice the shape of the boat with 8 spines to represent the 8 oars. The front of the boat points forward, while the back is flat.}
@@ -89,7 +89,7 @@ This chapter covers some of the problems encountered when turning the model from
       
       Any any parts of the river that were nearly straight were treated as being fully straight. It was then just a case of using the ruler tool in Google Earth to work out how many 20m straight lines would make up each straight. At the start of the section of the Cam this project covers the river nearly heads roughly East (or alternatively the river has been rotated so that it appears to head directly right on the screen). For simplicity it was considered to be heading due East, so the angle of the first few vectors was 0 and the river was started at (0,10), (0,20), (0,30) for the nodes of the three lanes. See \ref{fig:thereach} for a screen shot of Google Earth of this first section of river.
       
-      \begin{figure}[h]
+      \begin{figure}
       \begin{center}
         \includegraphics[scale=0.3]{images/TheReach.png}
         \caption{The Reach: roughly 1400m long and straight. By rotating the whole river 20\textdegree \ clockwise can treat it as 70 lots of 20m vectors heading having an angle of 0\textdegree \ from the horizontal (the line apporoximation in Google Earth has a heading of 70\textdegree but this is a bearing so measured clockwise from North unlike standard geometry which measures anti-clockwise from the $x$-axis.)}
@@ -99,7 +99,7 @@ This chapter covers some of the problems encountered when turning the model from
       
       Corners were then approximated using sectors a circle, with the river following the arc of the sector. Using Google Earth the radius of the circle of curvature was estimated very approximately. The angle of the sector was approximated by looking at the bearing of line heading into the corner and the bearing of a line heading out of the corner. The angle of the sector was then the difference of these two bearings.
       
-      \begin{figure}[h]
+      \begin{figure}
       \begin{center}
         \includegraphics[scale=0.3]{images/DittonCornerHeadingIn.png}
         \includegraphics[scale=0.3]{images/DittonCornerHeadingOut.png}
@@ -108,7 +108,7 @@ This chapter covers some of the problems encountered when turning the model from
       \end{center}
       \end{figure}
       
-      \begin{figure}[h]
+      \begin{figure}
       \begin{center}
         \includegraphics[scale=0.3]{images/DittonCornerRadius.png}
         \caption{Ditton Corner: This shows two approximate radii of the sector that makes up Ditton Corner. Their total length is 244m. Rounded this up and approximated the radius of Ditton Corner to be 125m.}
@@ -122,7 +122,7 @@ This chapter covers some of the problems encountered when turning the model from
       
       In this way the actual path of the river Cam, as can be seen marked out on Google Earth in Figure \ref{techissues:fig:actualcam} is turned into a simplified version as in Figure \ref{techissues:fig:simplecam}.
       
-      \begin{figure}[h]
+      \begin{figure}
       \begin{center}
         \includegraphics[scale=0.3]{images/GoogleEarthCam.png}
         \caption{The part of the Cam covered by this project marked out on Google Earth. The 3 main corners and Baits Bite Lock have been marked out.}
@@ -130,7 +130,7 @@ This chapter covers some of the problems encountered when turning the model from
       \end{center}
       \end{figure}
       
-      \begin{figure}[h]
+      \begin{figure}
       \begin{center}
         \includegraphics[scale=0.3]{images/SimplifiedCam.png}
         \caption{The simplified version of the Cam as it appears in the visualization. Notice the three corners. The black box represents the boat house.}

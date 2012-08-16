@@ -20,7 +20,7 @@
     
     Figure \ref{fig:modeloverview} provides a summary the relations between the 4 main features of the model just described. The following sections describe in more detail the river, the boats and the coxes and their decision making processes.
     
-    \begin{figure}[H]
+    \begin{figure}
     \begin{center}
     	\includegraphics[scale=0.3]{images/ModelOverview.png}
     	\caption{Model Overview}
@@ -52,7 +52,7 @@
       \subsubsection{Lanes}\label{model:river:lanes}
       Each lane can be thought of as a simple directed graph with each node connected by one edge in and one edge out. By making the graph directed there is a unique node that is the next node depending on whether the boat is travelling downstream (away from the boathouse) or upstream (towards the boathouse) which map to travelling with the direction of the edges or against the direction of the edges. See Figure \ref{fig:model:lanes} for a diagram representing the 3 main lanes.
       
-      \begin{figure}[h]
+      \begin{figure}
       \begin{center}
       	\includegraphics[scale=0.3]{images/lanes.png}
       	\caption{Representation of river as 3 lanes with a temporary path for lane changing}
@@ -83,7 +83,7 @@
       \subsection{Space filling}
       As the most boats on the river are rowing eights it is reasonable to assume for our model all boats are rowing eights and for visualization purposes a boat fills a rigid 17m x 7m rectangle (though something that looks a little more like an eight is displayed, see Figure \ref{fig:model:boat}). More importantly for the model, since boats are restricted to lanes and each edge at 20m long is roughly the length of a boat, a boat fills an edge completely while it travels along it. This means that sometimes the visualization occasionally shows boats overlapping but not crashed. This is acceptable since the reality of the situation is there is some flexibility with drawing in oars and boats not filling a rectangle that can allow boats to travel very close together. Similarly, boats may appear not to be overlapping but still to have crashed. This also represents reality where coxes and coaches may get nervous and stop boats which get very close. Although using edge occupancy as a means of collision detection is rather crude for the scope of this project it is an acceptable simplification. A more accurate model would need to be a lot more complicated and would probably not provide much more accuracy to the simulation.
       
-      \begin{figure}[h]
+      \begin{figure}
       \begin{center}
       	\includegraphics[scale=0.3]{images/boat.png}
       	\caption{What a boat looks like in the visualization. Boat is travelling left to right (so stern to the left, bow to the right).}
