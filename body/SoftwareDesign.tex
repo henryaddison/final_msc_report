@@ -56,17 +56,66 @@ tests make use of the EasyMock mocking library
   their implementation nor discuss Repast Simphony's full set of
   features. The interested reader is free to
   examine the documentation written by Repast's authors.
+  
+  There are a few parts of Repast that a reader should be aware of in
+  order to make the rest of the Chapter easier to follow. There are contexts, projections and the
+  ScheduledMethod annotation. 
 
   \subsubsection{Contexts and ContextBuilder interface}
+  In Repast every model has a context. The context may then have
+  subcontexts. One of the uses of contexts is to keep track of the
+  agents in the simulation. The Repast definition of agent is very
+  broad so boats, coxes, the river and the boat house all count as
+  agents that need to be added to the context. A subcontext is used
+  for each lane to store the network of nodes and edges.
 
-  \subsubsection{ContinuousSpace}
+  When a Repast application is initialized it will try to build the
+  main context. A XML configuration file in the siver.rs directory
+  specifies a class that implements the ContextBuilder interface. The
+  interface specifies a method called \texttt{build} to which one of the
+  arguments is the main context. This \texttt{build} method provides a
+  place to set up the context to start with. For this application this
+  includes creating a river and boathouse  and setting up an
+  experiment along with a launch schedule.
 
-  \subsubsection{ScheduledMethod annotation}
+  \subsubsection{Method scheduling and ScheduledMethod annotation}
+  Repast has methods for setting up schedules of methods to be run on
+  objects at defined ticks. This can be done in code, specifying the
+  parameters for the schedule, the method name to be scheduled and the
+  object on which the method should be scheduled. The ScheduledMethod annotation is a
+  shorthand way of creating a schedule for an object that should run
+  the annotated method every tick for every object in the
+  context. This makes it simple to have a method run on all Cox
+  objects and all Boat objects every tick.
 
-  \subsubsection{Network interface}
 
-  \subsubsection{siver.rs folder and XML config}
+  \subsubsection{Continuous Space Projection}  
+  Repast uses projections as a way of visualising the agents in a
+  context. This project's visualization uses a single, 2D continuous
+  space projection. The Repast GUI then makes it easy to choose which
+  objects to display in a given projection. Handily the GUI will also
+  save any display options to XML configuration files in the siver.rs
+  directory which will automatically be loaded each time the
+  application is run. A Continuous Space
+  projection provides methods to move agents around the space and keep
+  track of an agent's location so they are displayed in the correct
+  place in the visualization. There are also helper methods such as
+  calculating angles between objects in the projection. 
 
+
+  \subsubsection{Network projection}\label{software:dependencies:repast:network}
+  Another projection used in the simulation is a Network
+  projection. However, the application does not make full use of the
+  methods available to a Network object and it is not used to display information
+  in the visualization as is normally the case with projections. Instead it is used to create the graph (or
+  network) of nodes and edges that make up each lane. A Repast Network
+  provides methods for getting edges in to and out of each node and
+  the nodes at the ends of an edge. It is perhaps overkill to use a
+  full Network projection but it was simple to get started with and
+  has all the functionality required. A
+  future improvement might be to move the lane graphs into simpler
+  network objects like those in the JUNG library (which is what a
+  Repast Network projection uses behind the scenes).
 
 
   \subsection{MySQL}
@@ -123,7 +172,11 @@ compared to the larger objects in the model.
 The pseudo-UML Figure \ref{software:fig:modeloverview} used before in Chapter \ref{chapter:model} is also a
 good starting point for seeing how the main packages relate to each
 other. There are some extra entities in the software version. There
-is the Experiment package.
+is the Experiment package. There is package for defining style
+classes which tell Repast how to draw the river and boat
+objects. There is a package for setting up UI controls for when
+simulation is running in manual mode (so not following the
+pre-defined schedule of an experiment).
 
 \begin{figure}
 \begin{center}
@@ -137,22 +190,129 @@ is the Experiment package.
 
 \section{River package}
 \paragraph{Opening paragraph and UML diagram}
+
 \subsection{River class}
+The River is a container object. It holds the three lanes and the
+boathouse. It is used to determine the relative positions of the lanes
+(the lanes are stored in order in an array with the right-most lane when
+heading downstream stored at the 0th index). The river overall
+boundary for visualization purposes is defined by the boundaries of
+the lanes. The river's top boundary is the bottom boundary of
+the bottom lane and the it's top boundary is the top boundary
+of the top lane. These boundaries are joined at each end to
+complete the river.
 
 \subsection{Lane class}
 
-\subsection{LaneNode class}
+The lanes holds a network of nodes and edges using a Network
+projection provided by Repast (see
+\ref{software:dependencies:repast:network}). The Lane class uses the
+Network methods provided by Repast to create helper methods for
+navigating and searching a lane's graph. There are for getting the
+next node or edge from a given node depending on the direction of
+travel (upstream or not). There are also methods for finding the
+nearest node or edge based on a provided location . These are useful
+for spinning and changing lanes when the boat briefly deviates from
+following the pre-defined lanes.
 
+A Lane also stores a list of points either side of the nodes. This
+provides a boundary for the lane which the River class uses to define
+its own boundary.
+
+The Lane class also has methods for building up a lane. There is a
+\texttt{start} method used to place the first node of a lane's
+graph. There is an \texttt{extend} method to place the next node in
+the lane and join them with a graph. The extend method takes the angle
+the joining line between the last placed node and the next node to be
+place should be make with the horizontal as an argument. The distance
+between each node is defined by the \texttt{static} variable
+\texttt{edge\_length}. This will also place points in the top and
+bottom boundaries. These points are placed on the lane perpendicular
+to the extension. They are defined to be a fixed distance away from
+the node. This distance is defined by the \texttt{static} variable
+\texttt{width}.
+
+\subsection{LaneNode class}
+A LaneNode is a very simple object. It has a position attribute and
+distance method. It also has a reference back to the Lane object in
+which it is contained.
 \subsection{LaneEdge class}
+The LaneEdge class extends the Repast class RepastEdge<T>. This is so
+the Repast Network interface can be used. The weight of an LaneEdge is
+set to be the distance between the source and destination
+nodes. LaneEdges are always directed edges. When travelling downstream
+a boat travels with the direction of the edges, when travelling
+upstream a boat travels against the direction of the edges. Therefore
+for a given direction every node has a single edge leading out of it.
+
+\subsubsection{Crashing}
+
+LaneEdge class also keeps track of the coxes currently occupying it
+in an array with methods add or a remove a cox from this array. (For
+legacy reasons coxes rather than boats are tracked. It would fit the
+model better to track the boats but since there is a one-to-one
+mapping between boats and coxes this has not caused problems and so
+has not been updated.) When a
+cox is added, if there is already a cox occupying the edge then a
+Crash object is created and associated with edge (unless there is
+already one there) and the Crash object is reset.
+
+When \texttt{reset()} is called on a Crash object, all the
+\texttt{incapcitate()} method is called on all the coxes
+occupying the edge associated with the Crash. This will prevent the
+coxes from choosing and executing any actions. It will also bring the
+cox's boat to an instant stop.
+
+A count down then begins on the Crash object using a
+ScheduledMethod. When the count down reaches zero, a cox is chosen at
+random from the edge and this cox is allowed to carry out actions
+again (by calling the \texttt{recapcitate()} method on it).
+
+Each time a cox moves off the edge, another cox is chosen at
+random and \texttt{recapcitate()} is called on it. This continues
+until all coxes have moved off the edge or if a new boat moves onto
+the edge, then the Crash is \texttt{reset} and the process starts
+again from the beginning.
 
 \subsection{LaneChangeEdge and TemporaryNode classes}
 
+The LaneChangeEdge class is an subclass of LaneEdge class. The
+TemporaryNode class ian a subclass of LaneNode class. They are used
+for the temporary graph branches that are created when a cox decides
+to change lane.
+
+TemporaryNode class is much the same LaneNode class except that
+instances of TemporaryNode will respond \texttt{true} to the
+\texttt{isTemporary()} method unlike
+LaneNode. The same goes for LaneChangeEdge and LaneEdge classes. This
+means it is possible to identify these temporary nodes and edges which
+should be ignored by other boats.
+
+LaneChangeEdge also holds the edge sandwiching LaneEdge objects from
+the start and destination Lanes of the lane-change. When a cox is
+added to or removed from a LaneChangeEdge, it is added to or removed
+from these sandwiching LaneEdges. This means a boat effectively fills
+two lanes when changing lanes.
+
+LaneChangeEdge also has a \texttt{static} method used to creating this
+set of TemporaryNode and LaneChangeEdge objects from the starting
+point to the destination lane. It does this by finding the nearest
+edge to the starting point in the starting and destination lane. The
+first temporary node is placed at the starting point. The next node is
+placed part way between the end nodes of the edges found. The process
+is repeated using the next edges in the sandwiching lanes and placing
+the temporary node slightly closer to the destination edge end
+node. The process stops after a fixed number of loops when rather than
+placing a temporary node, the actual node from the destination lane is
+used.
+
 \subsection{Boathouse class}
+\paragraph{The ``agent'' which contains the methods for launching a boat}
 
 \subsection{RiverFactory class}
-
-\subsection{Crash class}
-
+\paragraph{Helper class for creating pre-defined Rivers, adding them
+  to context and positioning them appropriately in the Continuous
+  Space projection, e.g. the simplified Cam. c.f. Factory pattern}
 
 \section{Boat package}
 \paragraph{Opening paragraph and UML diagram}
