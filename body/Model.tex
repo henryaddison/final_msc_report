@@ -149,20 +149,25 @@
       Once a boat is launched a cox can perform the following actions:
       \begin{itemize}
         \item Nothing - the boat will continue at the same speed as before.
-        \item Ask rowers to speed up or slow down.
-        \item Ask rowers to stop rowing and slow the boat down.
+        \item Ask rowers to change pressure applied or number of
+          strokes to take each minute.
+        \item Ask rowers to stop rowing.
+        \item Ask rowers to brake gently with their oars.
         \item Ask rowers to ask to make an emergency stop.
-        \item Ask rowers to ask to move the boat backwards if the boat is stationary.
+        \item Ask rowers to ask to move the boat backwards if the boat
+          is stationary - ``back it down''.
         \item Steer the boat left or right (this is possible both when moving and when stationary).
-        \item Ask the rowers to spin the boat 180\textdegree.
+        \item Ask the rowers to spin the boat 180\textdegree\ by
+          one-side taking strokes and the other backing it down.
       \end{itemize}
-        
+      
+      \subsubsection{Simplications}
       For the model the actions available to the cox have been simplified:
       \begin{itemize}
-        \item{Letting Boat Run} This is the do nothing action. The boat will continue in the same lane at the same speed (assuming it doesn't crash with a boat in front). Steering to follow the lane as it bends will occur automatically.
-        \item{Changing Speed} This is similar to letting the boat run except that the boat will shift up or down a single gear. Since speed changes occur automatically no attempt has been made to model the various different forms of slowing down and emergency stops.
-        \item{Changing Lane} This will plot a new set of temporary nodes and edges to join the lane to the left or the right as seen in the Figure \ref{fig:model:lanes}. Other than this small change in direction the boat will carry on forward at the same speed on this new path.
-        \item{Spinning} This is a durative action. It takes several ticks to complete and the cox cannot perform another action while it is in the process of spinning. This is the one action where the normal movement of the boat in the straight line following the pre-plotted nodes  is overridden. Instead the boat is gradually moved from where it starts to spin to the left hand lane (so the boat will be in the right hand lane when it is pointing the other way) and gradually its orientation is altered to point the other way. Therefore in the visualaztion the boat appears to gradually spin. During spinning the boat is also considered to occupy the nearest edges in all three lanes to where it started spinning.
+        \item{\textb{Letting Boat Run:}} This is the do nothing action. The boat will continue in the same lane at the same speed (assuming it doesn't crash with a boat in front). Steering to follow the lane as it bends will occur automatically.
+        \item{\textb{Changing Speed:}} This is similar to letting the boat run except that the boat will shift up or down a single gear. Since speed changes occur automatically no attempt has been made to model the various different forms of slowing down and emergency stops.
+        \item{\textb{Changing Lane:}} This will plot a new set of temporary nodes and edges to join the lane to the left or the right as seen in the Figure \ref{fig:model:lanes}. Other than this small change in direction the boat will carry on forward at the same speed on this new path.
+        \item{\textb{Spinning:}} This is a durative action. It takes several ticks to complete and the cox cannot perform another action while it is in the process of spinning. This is the one action where the normal movement of the boat in the straight line following the pre-plotted nodes  is overridden. Instead the boat is gradually moved from where it starts to spin to the left hand lane (so the boat will be in the right hand lane when it is pointing the other way) and gradually its orientation is altered to point the other way. Therefore in the visualaztion the boat appears to gradually spin. During spinning the boat is also considered to occupy the nearest edges in all three lanes to where it started spinning.
       \end{itemize}
       
       There are also a couple of special actions: Launching and Landing. Launching is initiated by the Boathouse depending on the schedule it is following. Launching will place the boat on the river by the boathouse in the right hand lane. Landing is the cox's ultimate goal and will remove the boat from the river. The cox may land when it is in the first edge of any lane.
