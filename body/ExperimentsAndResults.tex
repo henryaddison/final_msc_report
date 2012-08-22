@@ -1,12 +1,19 @@
 \chapter{Experiments \& Results}
 \paragraph{Opening paragraph}
+This chapter covers what experiments were run to test the performance of the different types of cox control policies. Schedules were created for these experiments with different numbers of boats and different delays between boat launch. Data were collect for simulation runs of each of theses schedules using different control policies. These data were then analysed from different perspectives to determine the relative strengths and weaknesses of each type of control policy.
 
 \section{Overview of experiments run}
   
-  \paragraph{Parameters changed each run}
+  \subsection{Experimental Parameters}
+  For the experiments, the simulation was setup according to the parameters associated with a single row in the simulation\_parameters table. These parameters are the control policy, the random seed and the launch schedule to use. The launch schedule is made of up lists of parameters for each boat to be launched. These are the launch tick, desired gear, the speed multiplier and the minimum distance to cover for each boat in the schedule.
+  
+  The launch schedules were created by specifying a number of boats and a fixed delay between each boat launch. Each boat was assigned a desired gear between 1 and 10 uniformly at random. The speed multiplier was fixed at 0.5 (corresponding to a top speed of 5m/s, which matched the fastest time set by crew racing the course on April 28th 2012). The distance to cover was fixed at 5000m which is roughly equivalent to a outing going to the lock and back (5400m in the simulation's version of the Cam). There are 16 broadly different types of schedules. There is a one-off schedule where just one boat is launched. There are schedules where the number of boats was either 10, 20 or 30 and the delay between boat launches was 1, 2, 3, 5 or 10 minutes (60, 120, 180, 300, 600 ticks respectively).  For each of these 15 schedule types with more than one boat, 5 different versions were created with a different random assignment of desired gear. This was to ensure experimental results were not determined by any specific selection desired speed (e.g. imagine launching the boats in descending order of desired gear, any reasonable set of policies would likely give the same outcome of boats processing forwards and never coming into contact).
+  
+  From these schedules sets of simulation parameters were created using a fixed random seed with each of the 5 different control policies and each of the 76 schedules. 5 random seeds were used to create 5 otherwise identical sets of 380 simulation parameters. This was to make sure a specific random seed (which affects the boat chosen at random to escape first from a crash) did not affect the results excessively.
   
   \subsection{Details looked at in each experiment}
     \paragraph{Single boat}
+    The simplest experiment examined the control policy in the case that only one boat was launched.
   
     \paragraph{Getting boats back to boat house}
     
