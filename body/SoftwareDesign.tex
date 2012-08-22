@@ -395,27 +395,113 @@ tables in the database, storing data related to each boat launched and
 each crash. More interesting than a code is the data and the best
 way to examine that is to look at the database schema.
 
-\subsection{Database schema}
+\subsection{Database schema}\label{software:experiment:db}
 
-
+The database schema is visualized in the Figure
+\ref{software:fig:eer}. The \texttt{schedules}, \texttt{scheduled\_launches} and
+\texttt{simulation\_parameters} tables are used for setting up simulation runs for an
+experiment. The \texttt{simulation\_runs}, \texttt{boat\_records} and
+\texttt{crash\_records} tables are used to hold data generated each
+time the simulation is run.
 
 \paragraph{ER diagram}
 
-The database schema is visualized in the Figure \ref{software:fig:db_eer}.
-
 \begin{figure}
 \begin{center}
-  \includegraphics[scale=0.3]{images/db_eer.png}
+  \includegraphics[scale=0.3]{images/eer.png}
   \caption{EER model of database}
-  \label{software:fig:db_eer}
+  \label{software:fig:eer}
 \end{center}
 \end{figure}
 
+\subsection{\texttt{simulation\_parameters}}
+\texttt{simulation\_parameters} table holds information used to setup
+an automated simulation run. These are the random seed, the control
+policy and the schedule to use.
+
+\subsection{\texttt{schedules} and \texttt{scheduled\_launches}
+  tables}
+The \texttt{schedules} and \texttt{scheduled\_launches} tables contain
+information about pre-defined parameters for launching boats such as
+during which tick the boat should be launched and what it's desired
+gear should be.
+
+
+\subsection{\texttt{simulation\_runs}}
+The \texttt{simulation\_runs} table contains information about each
+time the simulation is run. In the case it is an automated run,
+simulation\_parameters\_id will contain the id of corresponding row in
+texttt{simulation\_parameters table. it contains historic record of parameters
+  used in the simulation are to ensure that experiments can be
+  duplicated. These are the random seed and control policy used. It
+  also stores how many ticks the simulation run lasted. There is also
+  some useful metadata. This is the time the run started and whether
+  all the data was successfully flushed to the database at the end (in
+  case a of a crash). Further data about the simulation run is stored
+  in the \texttt{boat\_records} and \texttt{crash\_records} tables.
+
+\subsection{\texttt{boat\_records} and \texttt{crash\_records} tables}
+The \texttt{boat\_records} table contains both historic records of the
+boat's launch parameters and data about what happened to the boat
+during the simulation.
+
+\subsubsection{Launch parameters record}
+
+\begin{itemize}
+  \item{desired\_gear:} The gear the cox would ideally have the boat
+    in.
+  \item{brain\_type:} The name of the control policy used by the
+    cox. This is the name of a Java class.
+  \item{launch\_tick:} The tick during which the boat was launched.
+  \item{speed\_multiplier:} The speed multiplier of the boat the cox
+    is in.
+  \item{scheduled\_launch\_id:} A link to the row in the
+    \texttt{scheduled\_launches} table when the launch is part of an
+    automated schedule.
+  \item{simulation\_run\_id:} A link to the simulation run during
+    which this boat was launched.
+\end{itemize}
+
+\subsubsection{What happened}
+\begin{itemize}
+  \item{land\_tick:} The tick when the boat landed. If the boat dails
+    to land, this will be NULL.
+  \item{distance\_covered:} The distance covered by the boat in the
+    course of the simulation.
+  \item{aggregate\_gear\_difference:} At each tick, the absolute
+    difference between the boat's current gear and the cox's desired
+    gear is calculated. This column contains the sum of these values.
+  \item{aggregate\_tenth\_tick\_gear\_difference:} As above but the
+    gear difference is only recorded every tenth tick. Recording every
+    tick may turn out to be too excessive. This column is useful to
+    hide short-lived, infrequent variations in gear.
+\end{itemize}
+
+The \texttt{crash\_records} table contains data about each crash that
+occurs during a simulation run. This data consists of whether the
+crash occured in the middle lane, the number of boats involved and the
+relative velocity of the crash (calculated by summing the relative
+velocities of the latest boat to join the crash with all the other
+boats on the edge where the crash is taking place).
+
 
 \section{Style and UI packages}
-\paragraph{Opening paragraph - boat, river and boathouse as displayed
-  objects in visualization, UI class for demoing/testing purposes}
+The style and ui packages are both small. They are used to customise the Repast
+GUI. 
 
+The style package contain classes
+that define how to draw the River, Boathouse and Boat objects on the
+screen. Repast provides some default stylings for objects. These style
+classes are used to customise the appearance of objects more finely,
+such as the boat shape or displaying the river.
+Repast's StyleOGL2D interface. Settings in the XML config are used to
+connect agent types to style classes. The style classes are then
+interogated by Repast when drawing object each tick.
 
+The ui package contains a single class, UserPanel. A simple JPanel which
+can be added to Repast's interface and be used in to provide manual
+controls. UserPanel contains buttons to launch coxes with control
+policies designed to demonstrate the actions available to it. This is
+very helpful for debugging actions and boat movement.
 
 \paragraph{Chapter Closing paragraph}
