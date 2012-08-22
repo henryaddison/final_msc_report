@@ -232,6 +232,9 @@ to the extension. They are defined to be a fixed distance away from
 the node. This distance is defined by the \texttt{static} variable
 \texttt{width}.
 
+\paragraph{code listing for extend()}
+
+\lstinputlisting[language=Java,caption={Lane\#extend method for building a lane},label={listing:software:lane:extend}]{code/Lane.java.report}
 \subsection{LaneNode class}
 A LaneNode is a very simple object. It has a position attribute and
 distance method. It also has a reference back to the Lane object in
@@ -306,21 +309,66 @@ node. The process stops after a fixed number of loops when rather than
 placing a temporary node, the actual node from the destination lane is
 used.
 
+\paragraph{LaneChageEdge build method code listing}
+
 \subsection{Boathouse class}
 \paragraph{The ``agent'' which contains the methods for launching a boat}
+The BoatHouse class is a simple class. It has methods for launching
+boats onto a River. The main launch method will create new Boat and
+Cox objects, add them to the main context and then launch the objects
+by placing them on the River by the boat house. It takes arguments to
+allow the setting of desired gear, speed multiplier, distance to
+cover and control policy to use as well as an id of a row in the
+scheduled\_launches table to record data.
 
 \subsection{RiverFactory class}
 \paragraph{Helper class for creating pre-defined Rivers, adding them
   to context and positioning them appropriately in the Continuous
   Space projection, e.g. the simplified Cam. c.f. Factory pattern}
+The RiverFactory class is a helper class with methods for easily creating
+predefined River objects such as the simplified Cam. The factory will
+define the appropriate angles to extend the River by as well as adding
+the River and Boathouse to the context and placing them in the
+Continuous Space projection in a suitable place.
 
 \section{Boat package}
 \paragraph{Opening paragraph and UML diagram}
-\subsection{Boat class}
+The Boat package contains classes related to the model of a boat. It
+consists of the main Boat class and a BoatNavigation class. Each Boat
+has access to a BoatNavigation instance.
 
+\subsection{Boat class}
+The Boat class contains the properties about the boat such as current
+orientation and gear, the speed multiplier. There are methods for
+getting and, where appropriate, setting these properties. Boat objects are also the
+objects that move around the Continuous Space projection and so the
+Boat class contains methods for moving the boat in this
+projection. The Boat object also holds a reference to a BoatRecord
+object for collecting experimental data.
+
+The scheduled method for Boat will call continueForward() on the
+BoatNavigation instance and then update the BoatRecord's statistics.
 \subsection{BoatNavigation class}
-      \paragraph{Keeping track of things like current edge and directions of travel (upstream or downstream)}
-      \paragraph{Keeping in sync location of cox and boat in 2D space and on the 1D lane graph}
+\paragraph{Keeping track of things like current edge and
+directions of travel (upstream or downstream)}
+BoatNavigation is a delegate class for Boat. It keeps track of the
+boat's position on a Lane's network of nodes with references to the
+current edge the boat is travelling on, the direction of travel
+(stored as a boolean for upstream or not) and the amount of the edge
+remaining before the next node. There are getter methods for
+retrieving these properties as well as methods for getting related
+information such as a the destination node that the Boat is currently
+aiming at.
+
+\paragraph{Keeping in sync location of cox and boat in 2D space and on the 1D lane graph}
+The main continueForward() function takes care of keeping the
+boat's movement within the 2D ContinuousSpace in sync with
+movement on the 1D lane graph. As part of this it also takes care of
+aiming the boat in a new direction each time it moves onto the next
+edge.
+
+\lstinputlisting[language=Java,caption={BoatNavigation\#continueForward
+    method for moving a boat each tick},label={listing:software:boatnavigation:continueForward}]{code/BoatNavigation.report.java}
 
 \section{Cox package}
 \paragraph{Opening paragraph}
@@ -338,15 +386,36 @@ used.
     \paragraph{inheritance of different actions}
 
 \section{Experiment package}\label{software:experiment}
-\paragraph{Opening paragraph}
+The experiment package contains classes for gathering data each time a
+simulation is run and storing the data in the database. The
+InprogressSimulation class deals with setting and and finishing off
+each simulation run, ensuring that all data is flushed to the
+database. The BoatRecord and CrashRecord classes relate to particular
+tables in the database, storing data related to each boat launched and
+each crash. More interesting than a code is the data and the best
+way to examine that is to look at the database schema.
 
 \subsection{Database schema}
+
+
+
 \paragraph{ER diagram}
+
+The database schema is visualized in the Figure \ref{software:fig:db_eer}.
+
+\begin{figure}
+\begin{center}
+  \includegraphics[scale=0.3]{images/db_eer.png}
+  \caption{EER model of database}
+  \label{software:fig:db_eer}
+\end{center}
+\end{figure}
 
 
 \section{Style and UI packages}
 \paragraph{Opening paragraph - boat, river and boathouse as displayed
   objects in visualization, UI class for demoing/testing purposes}
+
 
 
 \paragraph{Chapter Closing paragraph}

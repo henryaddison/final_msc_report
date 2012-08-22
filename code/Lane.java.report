@@ -1,0 +1,31 @@
+public class Lane extends OutlinedArea {
+    public void extend(double heading) throws UnstartedLaneException, CompletedLaneException {
+	//define the transformation for working out the location of the new points
+	//this transformation is a rotation about the origin by the angle passed and then a translation to join it to the previously added node 
+	AffineTransform at = new AffineTransform();
+	at.translate(lastAddedNode.getLocation().getX(), lastAddedNode.getLocation().getY());
+	at.rotate(heading);
+		
+	//variables to hold the location of the next points in the top and bottom boundaries of the lane and the
+	location of the next node point (the mid point)
+	    Point2D.Double next_top = new Point2D.Double();
+	Point2D.Double next_mid = new Point2D.Double();
+	Point2D.Double next_bottom = new Point2D.Double();
+		
+	//apply the transformation
+	at.transform(new Point2D.Double(edge_length, width), next_top);
+	at.transform(new Point2D.Double(edge_length, 0), next_mid);
+	at.transform(new Point2D.Double(edge_length, -width), next_bottom);
+		
+	//add the boundary points to the appropriate boundary
+	top.add(next_top);
+	bottom.add(next_bottom);
+		
+	//create a node with the mid point and add it to the net of nodes
+	LaneNode next = new LaneNode(next_mid, this);
+	context.add(next);
+	net.addEdge(lastAddedNode, next);
+	lastAddedNode = next;
+    }
+
+}
