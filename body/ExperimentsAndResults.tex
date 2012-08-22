@@ -5,21 +5,63 @@ This chapter covers what experiments were run to test the performance of the dif
 \section{Overview of experiments run}
   
   \subsection{Experimental Parameters}
-  For the experiments, the simulation was setup according to the parameters associated with a single row in the simulation\_parameters table. These parameters are the control policy, the random seed and the launch schedule to use. The launch schedule is made of up lists of parameters for each boat to be launched. These are the launch tick, desired gear, the speed multiplier and the minimum distance to cover for each boat in the schedule.
+  For the experiments, the simulation was setup according to the
+  parameters associated with a single row in the
+  simulation\_parameters table. These parameters are the control
+  policy, the random seed and the launch schedule to use. The launch
+  schedule is made of up lists of parameters for each boat to be
+  launched. These are the launch tick, desired gear, the speed
+  multiplier and the minimum distance to cover for each boat in the
+  schedule. These parameters are described in more detail in Section \ref{software:experiment:db}.
   
-  The launch schedules were created by specifying a number of boats and a fixed delay between each boat launch. Each boat was assigned a desired gear between 1 and 10 uniformly at random. The speed multiplier was fixed at 0.5 (corresponding to a top speed of 5m/s, which matched the fastest time set by crew racing the course on April 28th 2012). The distance to cover was fixed at 5000m which is roughly equivalent to a outing going to the lock and back (5400m in the simulation's version of the Cam). There are 16 broadly different types of schedules. There is a one-off schedule where just one boat is launched. There are schedules where the number of boats was either 10, 20 or 30 and the delay between boat launches was 1, 2, 3, 5 or 10 minutes (60, 120, 180, 300, 600 ticks respectively).  For each of these 15 schedule types with more than one boat, 5 different versions were created with a different random assignment of desired gear. This was to ensure experimental results were not determined by any specific selection desired speed (e.g. imagine launching the boats in descending order of desired gear, any reasonable set of policies would likely give the same outcome of boats processing forwards and never coming into contact).
+  The launch schedules were created by specifying a number of boats
+  and a fixed delay between each boat launch. Each boat was assigned a
+  desired gear between 1 and 10 uniformly at random. The speed
+  multiplier was fixed at 0.5 (corresponding to a top speed of 5m/s,
+  which matched the fastest time set by crew racing the course on
+  April 28th 2012). The distance to cover was fixed at 5000m which is
+  roughly equivalent to a outing going to the lock and back (5400m in
+  the simulation's version of the Cam). It is important to set this
+  quite high so that control policies are not rewarded for spinning on
+  launch and immediately landing with going anywhere. There are 16 broadly different types of schedules. There is a one-off schedule where just one boat is launched. There are schedules where the number of boats was either 10, 20 or 30 and the delay between boat launches was 1, 2, 3, 5 or 10 minutes (60, 120, 180, 300, 600 ticks respectively).  For each of these 15 schedule types with more than one boat, 5 different versions were created with a different random assignment of desired gear. This was to ensure experimental results were not determined by any specific selection desired speed (e.g. imagine launching the boats in descending order of desired gear, any reasonable set of policies would likely give the same outcome of boats processing forwards and never coming into contact).
   
-  From these schedules sets of simulation parameters were created using a fixed random seed with each of the 5 different control policies and each of the 76 schedules. 5 random seeds were used to create 5 otherwise identical sets of 380 simulation parameters. This was to make sure a specific random seed (which affects the boat chosen at random to escape first from a crash) did not affect the results excessively.
+  From these schedules sets of simulation parameters were created
+  using a fixed random seed with each of the 5 different control
+  policies and each of the 76 schedules. 5 random seeds were used to
+  create 5 otherwise identical sets of 380 simulation parameters. This
+  was to make sure a specific random seed (which affects the boat
+  chosen at random to escape first from a crash) did not affect the
+  results excessively.
+
+  All simulation runs were restricted to 14400 ticks. This corresponds
+  to a 4 hour session. This was to ensure no run took too long. Any
+  boats that had not landed when 14400 ticks is reached would be left
+  stranded. This may be unfair on boats launched towards the end but
+  it should not matter when comparing policies as it is the same for all.
   
   \subsection{Details looked at in each experiment}
-    \paragraph{Single boat}
-    The simplest experiment examined the control policy in the case that only one boat was launched.
+  Experiments were run to look at how each control policy performed in
+  different areas.
+  \begin{itemize}
+    \item{Single boat}
+    The simplest experiment examined the control policy in the case
+    that only one boat was launched. This is almost a debugging
+    exercise to check that none of the control policies does anything
+    odd. However, it is still useful to rule out completely hopeless policies.
   
-    \paragraph{Getting boats back to boat house}
+    \item{Outing completion}
+    The different control policies are examined to determine which
+    one's are best at enabling coxes to cover their required distance
+    and return to the boat house.
     
-    \paragraph{Crashes}
-    
-    \paragraph{Deviation from desired gear}
+    \item{Safety}
+    The different control policies are examined to determine which is
+    safest by looking at the crashes that occur for each policy.
+
+    \item{Following outing plan}
+    The different control policies are examined to determine which is
+    best at helping a boat stick to the cox's desired gear.
+  \end{itemize}
 
 \section{Single boat}
   \paragraph{which ones made it back}
