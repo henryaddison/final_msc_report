@@ -277,7 +277,7 @@ until all coxes have moved off the edge or if a new boat moves onto
 the edge, then the Crash is \texttt{reset} and the process starts
 again from the beginning.
 
-\subsection{LaneChangeEdge and TemporaryNode classes}
+\subsection{LaneChangeEdge and TemporaryNode classes}\label{software:lane:lanechange}
 
 The LaneChangeEdge class is an subclass of LaneEdge class. The
 TemporaryNode class ian a subclass of LaneNode class. They are used
@@ -297,7 +297,7 @@ added to or removed from a LaneChangeEdge, it is added to or removed
 from these sandwiching LaneEdges. This means a boat effectively fills
 two lanes when changing lanes.
 
-LaneChangeEdge also has a \texttt{static} method used to creating this
+LaneChangeEdge also has a \texttt{static} method called \texttt{createLaneChangeBranch}. It is used to creating this
 set of TemporaryNode and LaneChangeEdge objects from the starting
 point to the destination lane. It does this by finding the nearest
 edge to the starting point in the starting and destination lane. The
@@ -372,18 +372,50 @@ edge.
 
 \section{Cox package}
 \paragraph{Opening paragraph}
+The main aim of the Cox package is to decide actions to execute in order to have the boat behave in a suitable manner. It therefore contains functionality for making observations, choosing an action based on those observations and executing the chosen action. Figure \ref{software:fig:coxUML} gives a UML sketch of the objects and their relationships in the package.
+
+\begin{figure}
+\begin{center}
+  \includegraphics[scale=0.3]{images/coxpackageUML.png}
+  \caption{Outline of the classes in the cox package}
+  \label{software:fig:coxUML}
+\end{center}
+\end{figure}
 
 \subsection{Cox class}
 \paragraph{scheduling decision making}
+The Cox class is the main class in the package. It is responsible for carrying out the 
+
 \subsection{CoxObservations class}
 \paragraph{how observations are made available to cox brain}
-\subsection{CoxBrains}
+The CoxObservations class provides access to the many Observations a cox is allowed to make. It is designed to be consumed by a Control Policy. By wrapping the observations in a single class it provides a simple interface for a Control Policy to use when deciding what to do next. It also provides a way to restrict the Control Policy to only accessing information it is allowed based on the model rather than giving it access to raw Boat, River and Cox objects in the simulation.
 
+The Observations that can return information in one of three types: simple booleans, integer values and Blockage objects, which are the result of looking down a lane. The information in the Blockage objects is inferred based on an instance of the CoxVision class. The CoxVision class provides methods for looking ahead and behind in each lane. An observation which makes use of this will return a Blockage object which will say for the fixed lane and direction, the number of edges until the blockage, whether the blockage is an edge occupied by boats or not, and the max and min relative speed of any boats on that blocked edge.
+
+The observations are:
+  \begin{itemize}
+    \item{OutingOver} Returns true if the boat is back near the boathouse and has travelled the Cox's distance\_to\_cover value.
+    \item{AtRiverEnd} Returns true if the boat is near the end of the river (either at the lock or the boathouse). Used so the cox knows to spin.
+    \item{AboveDesiredSpeed and BelowDesiredSpeed} Return true if the boat's current gear is above or below the Cox's desired\_gear value. 
+    \item{BoatGear} Returns the value of the boat's current gear (an integer).
+    \item{AheadCurrentLane, BehindCurrentLane, AheadLeftLane, BehindLeftLane, AheadRightLane, BehindRightLane} : Returns the Blockage object based on looking in the appropriate direction and lane.
+  \end{itemize}
+  
+\subsection{Control Policies}
+  Each cox contains an instance of a ControlPolicy subclass. Each subclass will implement a different policy. A ControlPolicy class is updated each tick with the latest CoxObservations object. It uses these observations to decide what to do next.  Each control policy has a method called chooseAction(). This is defined in the superclass ControlPolicy so that all Control Policies have the same top-level goal condition which will check the OutingOver observation. If OutingOver determines the outing to be over then the Land action will be executed by the cox and the cox and boat will be removed from the simulation. Otherwise, a method called typeSpecificActionChoice() is executed. Each different control policy defines this differently. It is written in a teleo-reactive (TR) style for all Control Policies. This is done in Java by having a list of if statements. Each if statement will check a condition and if the condition is true, it will return the associated action. Otherwise it will move on to trying the next condition-action pair. The final if statement takes the constant true condition. This ensures one action will always be returned. The more complicated control policies contain nested TR-programs to make them easier to code and to read but they remain TR in style.
+  
 \subsection{Actions}
+  Each action the cox can carry out has its own class. Every action provides a \texttt{typeSpecificExecute()} method. This method defines what happens when the cox executes the corresponding action. Since actions like spinning can carry on for more than one turn, this action returns true only when the action is complete. The abstract superclass \texttt{Action} defines the main \texttt{execute()} method. This checks the return value of \texttt{typeSpecificExecute()} and nullifies the Cox object's reference to current action, so that next turn the cox is free to choose again.
 
-    \paragraph{executution}
-    \paragraph{handling }
-    \paragraph{inheritance of different actions}
+  There are 6 actions: LetBoatRun, Spin, SlowDown, SpeedUp, MoveToLaneOnLeft and MoveToLaneOnRight.
+  
+  LetBoatRun does nothing. The boat will continue to move forward in the same gear.
+  
+  Spin will turn the boat around and move it to the right hand lane over the course of 60 ticks. Because the movement of the boat during spinning is so different to the normal forward movement, the Spin instance itself calls methods on the Boat and BoatNavigation instances. When first executed the Spin action will work out the nearest node in the right hand lane (right relative to the cox when it starts). Each tick of execution the boat will rotate a small amount and move a little closer to the so that node so the boat appears to spin naturally in the visualization. During spinning the boat will occupy edges in all three lanes of the river. When spinning is complete, the boat is set to occupying the edge leading out of the node to which it spun (based on its new direction now it has spun).
+  
+  SpeedUp and SlowDown simply shift the boat's gear up or down one. If the boat is in the top gear or bottom gear, respectively, the action will have no affect so it will behave just like LetBoatRun.
+  
+  MoveToLaneOnLeft and MoveToLaneOnRight behave very similarly. The work out which lane the cox is trying to move to (so the lane on the cox's left or right respectively). It then creates a path of temporary edges and nodes using the LaneChageEdge class as described in \ref{software:lane:lanechange}. If the cox is already changing lanes, or there is no lane on the given side (e.g. try to move left when in the left-most lane) or there is not enough of the river left to fit in the lane change, then the action will silently fail and the action will behave just like LetBoatRun.
 
 \section{Experiment package}\label{software:experiment}
 The experiment package contains classes for gathering data each time a
