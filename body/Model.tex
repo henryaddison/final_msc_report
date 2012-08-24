@@ -170,34 +170,38 @@
         \item{\textbf{Spinning:}} This is a durative action. It takes several ticks to complete and the cox cannot perform another action while it is in the process of spinning. This is the one action where the normal movement of the boat in the straight line following the pre-plotted nodes  is overridden. Instead the boat is gradually moved from where it starts to spin to the left hand lane (so the boat will be in the right hand lane when it is pointing the other way) and gradually its orientation is altered to point the other way. Therefore in the visualaztion the boat appears to gradually spin. During spinning the boat is also considered to occupy the nearest edges in all three lanes to where it started spinning.
       \end{itemize}
       
-      There are also a couple of special actions: Launching and Landing. Launching is initiated by the Boathouse depending on the schedule it is following. Launching will place the boat on the river by the boathouse in the right hand lane. Landing is the cox's ultimate goal and will remove the boat from the river. The cox may land when it is in the first edge of any lane.
+      There are also a couple of special actions: Launching and Landing. Launching is initiated by the Boathouse depending on the schedule it is following. Launching will place the boat on the river by the boathouse in the right hand lane heading downstream. Landing is the cox's ultimate goal and will remove the boat from the river. The cox may land when it is in the first edge of any lane.
       
-      \subsection{Observations \& Knowledge Base} \label{model:cox:obs}
-      !!TODO!!
+      \subsection{Observations} \label{model:cox:obs}
       \paragraph{introduction to observations as the information available to a cox}
+      The cox needs to be able to make observations about his environment in order to choose which action to do next. Observations are a mixture of real-time perceptions and memorized knowledge. Some of these observations are internal, relating to the boat in which the cox sits. Others are external relating to other boats on the river. 
       
-      \subsubsection{Observations available to a cox}
+      In reality the cox the cox can only guess at his boat's speed and that of others. And the further away the other boats are the harder it is to guess. Similarly, a cox probably won't know how far he has travelled in metres. However, there are lots of landmarks along the river in the form of corners, buildings and trees and so the coach can supply distances in more human-friendly formats, such as ``to the lock and back'' or ``to the next corner.'' Therefore a cox will know fairly accurately whether he has covered enough distance and whether he is nearly at the end of the river or back at the boathouse.
       
+      A cox's vision is restricted to line of sight. The high bank means it is not possible to see round corners. It is also not possible for the cox to see through boats, including his own with the rowers in front of him restricting his field of view. However, as boats are much wider than rowers the cox can still easily see boats straight ahead provided they are sufficiently close. The cox is free to look around a full 360\textdegrees.
       
-      A cox can make observations about objects in his line of sight.
+      \subsubsection{Simplified internal observations}
+      These observations are about the state of the boat which the cox is controlling.
       \begin{itemize}
-        \item Shall assume the cox has a full 360\textdegree\ field of
-          view.
-        \item Shall assume the cox's vision is not blocked by his or other boats.
-        \item Shall assume his
-        vision is blocked by the river bank which sits sufficiently high
-        above the river to make it impossible to see around corners.
-        \item Shall assume the cox can guess reasonable well the speed and
-        direction of boats within his line of sight (including his own).
+        \item Shall assume the cox knows the gear the boat is in. This is reasonable as the cox will have made the commands to adjust the rowers' pressure.
+        \item From this shall assume the cox knows if ideally the boat should be in a higher or lower gear.
+        \item Shall assume the cox knows whether he has covered sufficient distance.
       \end{itemize}
-        \paragraph{overall goal - get back to the boathouse}
-      \subsubsection{How to model how the cox observes the river}
-        \paragraph{River as a series of connected nodes to which a cox reacts as a model of cox's vision}
-      \subsubsection{How to model how the cox observes other boats}
-        \paragraph{Cox can record distance in terms of number of edges to next boat both in front and behind in the 3 lanes as a model of cox's vision}
-        
-      Can assume the cox has a fairly good memory of the river's layout so can guess his location reasonably well from the nearby landmarks.
-  
+      \subsubsection{Simplified external observations}
+      These observations are what the cox can see and then infer from this.
+      \begin{itemize}
+        \item The cox observes the river as the series of nodes and edges.
+        \item It is assumed the cox has enough knowledge of the river layout to know which node is the next to come so he can aim the boat at it, even if perhaps he cannot ``see" it directly. Similarly shall assume the cox knows if the next node is the boathouse or the lock.
+        \item Shall assume the cox can look forward and backwards in all lanes on the river.
+        \item Cox's vision is limited by the opacity of the nodes on the river. For straight sections this opacity will be fairly small and for corners it will be much higher. In this way cox's vision around corners is restricted. This would let us model other phenomenon like fog on the river.
+        \item Cox's vision is blocked by occupied edges. However, shall assume the cox can observe the relative speed of any boats on the blocked edge.
+        \item The cox knows the distance in terms of number of edges to the limit's of his vision.
+        \item Shall assume the cox can determine if the limit is his vision if the result of a blockage caused by boats or just because he cannot see further because the river runs out or his vision is limited by opacity.
+      \end{itemize}
+      
+      \subsubsection{future improvements}
+      It would be nice to have a level of uncertainty in the cox's observations to more accurately model reality. After all humans are not perfect at determining the speed and distance of objects by sight alone. One way to model this would be to introduce some random noise. The mean and variance of this noise could grow for objects further away.
+      
       \subsection{Decision making}
       \paragraph{introduction to what observation-decision-execution cycle}
       The cox will follow a observation-decision-execution cycle. Using the observations described above the cox must decide which action to execute in order to achieve the goals. At each time tick each cox object will run a method called step(). This method will check if cox is incapacitated. This simulates the cases where for some reason the boat is not fully under the control of the cox. The most common cause for this is after a crash when the rowers will have to detangle their oars and a coach on the bank may take over to help If not it will check if the cox is in the middle of a durative action like spinning and if so it will continue to execute this durative action. If it is not in the middle of an action then the cox will use its observations to decide what action to execute next based on its control policy.
@@ -213,3 +217,4 @@
       The first condition-action pair in a TR program is special. The condition is the ultimate goal condition for the agent. For all control policies in this project, the goal condition is the same. As stated in \ref{model:cox:goals:simplifications} the ultimate aim of each cox is cover a minimum distance and then to the boathouse. When this condition is met the cox lands the boat and is removed from the simulation.
 
 \paragraph{Conclude model chapter}
+This concludes the description of the conceptual model. The next stage was to turn this theoretical model into computer code in order to run simulations.
