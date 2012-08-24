@@ -1,0 +1,28 @@
+\chapter{Control Policies}
+
+This chapter takes a quick dive into the logic behind the control policies used in this project. The next chapter will examine the data collected when running simulations using different control policies. This chapter describes the aims of each control policy.
+
+Five different control policies were studied for this project: RandomChoice, RandomMovement, GearFocussed, SafetyFocussed and Overtaking. A couple of other policies were implemented, DemoChangeSpeed and DemoChangeLane, but as their names suggest these were only created for demonstrating the actions.
+
+\section{RandomChoice}
+This policy was created to act as a control in experiments. No effort is made to choose a sensible action. Instead actions are chosen completely at random.
+
+\section{RandomMovement}
+
+More details will follow in the next chapter, but the Random Choice policy turned out to be too random. The cox's using Random Choice failed to make any progress because a sixth of the time the cox chose to spin. Spinning takes 60 ticks to complete, fills the river as it does so and does not count towards distance covered and so no boat got very far. The Random Movement policy was a response to this. This policy will chose to spin if the river is about to run out. Otherwise it will pick at random from the 5 other actions.
+
+\section{GearFocussed}
+
+The Gear Focussed policy's main aim is to stick as close to the cox's desired gear and otherwise ignores the environment. This policy will spin if the river is about to run out to ensure it does not get stranded at the lock. Otherwise if the boat's current gear is below the cox's desired gear it will attempt to speed up. Otherwise it will let the boat run forward.
+
+\section{SafetyFocussed}
+
+The Safety Focussed policy's main aim is to avoid crashing. This policy will spin if the river is about to run out to ensure it does not get stranded at the lock. If the cox gets too close to a boat in front, this policy will cause the cox to slow down. If there is no boat close in front then the policy will aim to speed up to the desired gear if it is travelling too slowly. Otherwise it will let the boat run. This policy does not directly attempt to match the speed of any boat in front. But the interplay of the rules for slowing down if there's an obstruction ahead or speeding up if it's moving to slowly will cause the cox the match the speed on average although in bursts of repeated slowing down when it gets to close and then speeding up again when the boat ahead has had to some time to move on a bit.
+
+\section{Overtaking}
+
+Neither of the Gear Focussed or Safety Focussed policies make any use of the middle lane. The Overtaking policy attempts to correct this. As with the other policies spinning is chosen if the river is about to run out to ensure it does not get stranded at the lock. Next it checks whether the policy is in overtaking mode.
+
+In overtaking mode, the cox will attempt to move back to the right as soon as it has completely moved into the middle lane and there are enough edges clear both ahead of it and behind it in the right hand lane. Moving back to the right will terminate overtaking mode. Otherwise the cox will attempt to match Gear Focussed approach of speeding up until the boat is in the cox's desired gear.
+
+If the policy is not in overtaking mode, then if the cox is close to a boat ahead that is relatively moving sufficiently slower, then this policy will move to the lane on the left (the middle lane) and enter overtaking mode. Otherwise the cox will attempt to match Gear Focussed approach of speeding up until the boat is in the cox's desired gear.
