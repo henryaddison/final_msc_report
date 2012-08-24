@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>370</x>
+      <y>10</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Crash
+--
+-countdown: int
+_DELAY: int_
+--
+reset(): void
+coxEscaped(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>10</x>
+      <y>320</y>
+      <w>210</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Cox
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>LaneEdge
+--
+
+--
+addCox(Cox): void
+removeCox(Cox): void
+getCoxes(): ArrayList&lt;Cox&gt;
+pickRandomCox(): Cox</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>190</x>
+      <y>60</y>
+      <w>200</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..1
+&lt;occurs on</panel_attributes>
+    <additional_attributes>30;50;180;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>20</x>
+      <y>170</y>
+      <w>126</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=1
+contains&gt;</panel_attributes>
+    <additional_attributes>70;150;70;30</additional_attributes>
+  </element>
+</diagram>

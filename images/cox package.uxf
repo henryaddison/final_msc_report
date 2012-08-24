@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>70</x>
+      <y>10</y>
+      <w>210</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Cox
+--
+desired_gear: int
+distance_to_cover: double
+--
+step(): void
+makeObservations(): void
+chooseAction(): void
+executeAction(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>450</x>
+      <y>40</y>
+      <w>210</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Action
+--
+
+--
+execute(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>240</x>
+      <y>270</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>CoxObservations
+--
+
+--
+outingComplete(): Boolean
+currentGear(): Integer
+aheadCurrentLaneLook(): Blockage
+... and so on
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>240</x>
+      <y>480</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Observation
+--
+value: Object
+--
+getValue(): Object
+calculateValue(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>540</x>
+      <y>240</y>
+      <w>210</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>CoxVision
+--
+
+--
+look(Lane lane_to_look_in, 
+	boolean look_ahead): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>250</x>
+      <y>30</y>
+      <w>220</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+current action &gt;</panel_attributes>
+    <additional_attributes>30;50;200;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>420</x>
+      <y>300</y>
+      <w>140</w>
+      <h>320</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=1
+uses&gt;</panel_attributes>
+    <additional_attributes>30;300;120;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>420</x>
+      <y>280</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+looks with&gt;</panel_attributes>
+    <additional_attributes>30;50;120;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>250</x>
+      <y>130</y>
+      <w>120</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+makes&gt;</panel_attributes>
+    <additional_attributes>30;30;100;140</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>450</x>
+      <y>140</y>
+      <w>210</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>ControlPolicy
+--
+
+--
+ChooseAction(): Action
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>380</x>
+      <y>160</y>
+      <w>130</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+&lt;uses latest</panel_attributes>
+    <additional_attributes>70;130;70;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>250</x>
+      <y>90</y>
+      <w>240</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+chooses actions using&gt;</panel_attributes>
+    <additional_attributes>30;50;220;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>310</x>
+      <y>360</y>
+      <w>50</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+m2=0..n</panel_attributes>
+    <additional_attributes>30;30;30;120</additional_attributes>
+  </element>
+</diagram>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>370</x>
+      <y>160</y>
+      <w>220</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Lane
+--
+--
+getNextNode(Node, boolean direction): LaneNode
+getNextEdge(Node, boolean direction): LaneEdge
+getNearestNode(NdPoint position): LaneNode
+getNearestEdge(NdPoint position): LaneEdge
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>30</x>
+      <y>160</y>
+      <w>210</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>River
+--
+
+--
+downstream_lane(): Lane
+middle_lane(): Lane
+upstream_lane: Lane</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>660</x>
+      <y>90</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>LaneNode
+--
+opacity: double
+location: Point2D.Double
+--
+getOpacity(): double
+getLane(): Lane
+distance(LaneNode other): double 
+--
+Responsibilities
+-- Resp1
+*-- Resp2*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>640</x>
+      <y>390</y>
+      <w>210</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>LaneEdge
+--
+weight: double
+--
+getWeight(): double
+getNextNode(boolean direction): Node</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>210</x>
+      <y>60</y>
+      <w>170</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+has&gt;
+m2=1</panel_attributes>
+    <additional_attributes>30;160;150;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>210</x>
+      <y>230</y>
+      <w>180</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+has&gt;
+m2=3</panel_attributes>
+    <additional_attributes>30;30;160;70</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>360</x>
+      <y>30</y>
+      <w>210</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>BoatHouse
+--
+
+--
+launch methods: void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>560</x>
+      <y>160</y>
+      <w>120</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;100;100;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>560</x>
+      <y>290</y>
+      <w>100</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;80;190</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>700</x>
+      <y>250</y>
+      <w>128</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..1
+m2=2
+connects&gt;</panel_attributes>
+    <additional_attributes>70;140;70;30</additional_attributes>
+  </element>
+</diagram>
