@@ -28,3 +28,9 @@ In overtaking mode, the cox will attempt to move back to the right as soon as it
 If the policy is not in overtaking mode, then if the cox is close to a boat ahead that is relatively moving sufficiently slower and the lane to the left is clear for a few edges ahead and behind, then this policy will move to the lane on the left (the middle lane) and enter overtaking mode. Otherwise the cox will attempt to match Gear Focussed approach of speeding up until the boat is in the cox's desired gear.
 
 The boat waits for the lane to be clear both in front and behind before moving back to the left or over to the right. This is a very simple way of avoiding a slow moving boat ahead (which may include a boat moving in the other direction) or a fast boat coming up behind. The policy is a bit more aggressive about getting boats back to the right than initially pulling out. This is in the belief that it is best to leave this middle lane free for overtaking as much as possible. This is also why the policy requires a boat ahead to be moving sufficiently slowly compared to the cox's boat to attempt to reduce the total time of the entire overtaking manoeuvre.
+
+\section{Future Work}
+
+\paragraph{a better overtaking cox}
+
+\paragraph{applying machine learning techniques}
