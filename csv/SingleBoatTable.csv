@@ -1,0 +1,6 @@
+control_policy,avg_land_tick,desired_gear,avg_distance_covered,avg_aggregate_gear_difference
+GearFocussed,5463,2,5401,122
+Overtaking,5463,2,5401,122
+RandomChoice,NULL,2,450.6,28150
+RandomMovement,2544,2,5465.9,7908
+SafetyFocussed,5463,2,5401,122
