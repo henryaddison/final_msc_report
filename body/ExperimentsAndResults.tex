@@ -96,7 +96,7 @@ This chapter covers what experiments were run to test the performance of the dif
 In this experiment we test how well the control policies perform in allowing cox's to successfully complete outings. This is similar to the Single Boat experiment but now we examine the number of successful outing completions using launch schedules with multiple boats.
 
   \paragraph{Table of \% of each time of brain that got back to boat house}
-  
+  Table \ref{experiments:tab:returning_boats_by_policy} shows the per-control-policy proportion of boats launched that managed to return to the boathouse before time ran out (after 14400 ticks). All 4 policies perform pretty well though SafetyFocussed is noticeably worse. This is to be expected as it is the most conservative of the 4 policies when it comes to accelerating.
   \begin{table}[h]
   \centering
   \csvreader[tabular=|l|c|,
@@ -108,8 +108,7 @@ In this experiment we test how well the control policies perform in allowing cox
   \label{experiments:tab:returning_boats_by_policy}
   \end{table}
   
-  \paragraph{Rough equivalence of remaining brains}
-  
+  Table \ref{experiments:tab:returning_boats_by_schedule} shows the per-schedule proportion of boats launched that manage to complete their outings. This suggests that for boats that fail to complete their outings, it is the schedule that is to blame much more than the policy. There are a couple of clear trends: the more boats launched, the less likely a boat is to complete its outing; and the larger the delay between launches the less likely a boat is to complete its outing.
   \paragraph{Table for how percentages changed with schedule}
   \begin{table}[h]
   \centering
@@ -123,6 +122,9 @@ In this experiment we test how well the control policies perform in allowing cox
   \end{table}
   
   \paragraph{See that the 10 minute delay is to blame - not all boats launched, no chance for later boats to get back to boat house no matter how good their control policy}
+  This makes sense as the more boats launched and the larger the delay, the less time the later boats launched have to complete their outings. Consider the extreme case, launching 30 boats with a 10 minute delay. In fact on the 14400 tick, the 25th boat gets launched. The simulation then ends immediately so there is no chance for this 25th boat to finish it's outing at all (and the 26th to 30th boats never get launched on this schedule). 
+  
+  Table \ref{experiments:tab:returning_boats_by_policy_small_delay} is similar to Table \ref{experiments:tab:returning_boats_by_policy} except schedules with longer delays (over 10 minutes) are ruled out. The completion rates for all policies are much healthier. This suggests that even in the more congested environments used in this experiment compared to the single boat, all the policies allow a cox to eventually complete an outing. 
   
   \paragraph{Table of overall percentages excluding 10 minute dealy}
   \begin{table}[h]
@@ -136,7 +138,7 @@ In this experiment we test how well the control policies perform in allowing cox
   \label{experiments:tab:returning_boats_by_policy_small_delay}
   \end{table}
   
-  \paragraph{Interestingly RandomMovement is best, though BasicBrain and Overtaking brain hardly significant variation. Unsurprisingly Conservative is worst}
+  Another interesting outcome of this experiment is the most successful policy for coxes completing their outings. This is the RandomMovement policy. I suspect this is because it ignores the cox's desired gear and so a cox with a low desired gear launched late in a simulation are likely to travel much faster than those controlled by a policy that will keep to the desired gear. At the other end, the SafetyFocussed policy is the least successful policy is by a large margin. This suggests the SafetyFocussed is not a wise one to follow when under strict time constraints. This suggests that none of the policies are using the space available on the river to its fullest.
   
 \section{Crashes}
   \paragraph{graphs of crash no versus delay between boats for varying brains and numbers of boats}
