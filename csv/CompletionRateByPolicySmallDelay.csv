@@ -1,0 +1,5 @@
+control_policy,percent_boats_returned
+GearFocussed,99
+Overtaking,99
+RandomMovement,100
+SafetyFocussed,96

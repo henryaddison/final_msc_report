@@ -1,0 +1,17 @@
+name,percent_boats_returned
+"One boat",100
+"10 boats 1 minute delay",100
+"10 boats 2 minute delay",100
+"10 boats 3 minute delay",100
+"10 boats 5 minute delay",100
+"10 boats 10 minute delay",98
+"20 boats 1 minute delay",100
+"20 boats 2 minute delay",100
+"20 boats 3 minute delay",100
+"20 boats 5 minute delay",99
+"20 boats 10 minute delay",89
+"30 boats 1 minute delay",100
+"30 boats 2 minute delay",100
+"30 boats 3 minute delay",94
+"30 boats 5 minute delay",92
+"30 boats 10 minute delay",73
