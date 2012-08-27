@@ -77,8 +77,6 @@ This chapter covers some of the problems encountered when turning the model from
     The river presented two challenges. Even with the decision to represent it in the model as three graphs to represent the three lanes there was still the challenge of determining the value of the location attribute for each node. Then there was the problem of drawing this river in the visualization.
     
     \subsection{Rastorization vs vectorization}
-    
-      \paragraph{Storing river as a series of squares/pixels}
       Early models of the river had it as an open space in which a
       boat was free to move. Therefore it seemed easier to store the
       river for visualization as a series of squares (effectively
@@ -91,13 +89,51 @@ This chapter covers some of the problems encountered when turning the model from
       would recalculate the value of the square at each tick. Also it
       was difficult to draw smooth corners in this manner.
       
-      \paragraph{Storing river as a series of vectors (or nodes separated by vectors)}
-      \paragraph{Breaking down river into 1D lanes adds benefits to vectorization}
-      The solution came with the idea to treat the river as 3 lanes. Each lane is then drawn using series of vectors between each node. Since the length of each vector is fixed at 20m, it was just a case of storing the angle from one node to the next. To get the form a 2D outline of each lane as well as storing the location of the node in the graph, the location of a point 5m to each side of the node was stored. These three locations were determined by taking the three points (20, 5), (20, 0) and (20, -5) and rotating them by the angle associated with the next vector and then translating them by the location of the last placed node. The outline of the river was then formed by using the top boundary of the top lane and the bottom boundary of the bottom lane. It was then easy in Java using the Path2D.Double class to form this arbitrary shape which RePast was then able to display.
+      The solution came with the idea to treat the river as 3 lanes that was described in Chapter \ref{chapter:model}. Each lane is then drawn using series of vectors between each node. Since the nodes should be a fixed 20m apart within a lane, it is only necessary to calculate the angle of the vector from one node to the next. The location of a point 5m to each side of the node was stored in order to get a 2D outline of each lane as well as storing the location of the node in the graph in the middle of the lane. These three locations were determined by taking the three points (20, 5), (20, 0) and (20, -5) and rotating them by the angle associated with the next vector and then translating them by the location of the last placed node. 
       
-      The next challenge was to work out the angle of each vector. This was done using Google Earth to create a simplified version of the river Cam. Though the technique would work for any shape of river that was three lanes wide.
+      The outline of the river as a whole was then calculated by using the top boundary of the top lane and the bottom boundary of the bottom lane. The Path2D.Double class in Java made it easy to form and draw this arbitrary shape which Repast was then able to display. 
       
-      Any parts of the river that were nearly straight were treated as being fully straight. It was then just a case of using the ruler tool in Google Earth to work out how many 20m straight lines would make up each straight. At the start of the section of the Cam this project covers the river nearly heads roughly East (or alternatively the river has been rotated so that it appears to head directly right on the screen). For simplicity it was considered to be heading due East, so the angle of the first few vectors was 0 and the river was started at (0,10), (0,20), (0,30) for the nodes of the three lanes. See \ref{fig:thereach} for a screen shot of Google Earth of this first section of river.
+      The next challenge was to work out the number of vectors to use and the heading of each one . The algorithm used to calculate these follows. 
+      
+      \subsubsection{General algorithm for calculating the heading of each vector}
+      First split the river up into straight sections and corners connecting them. 
+      
+      The vectors that make up all three lanes of a straight section all have the same angle. The number of vectors is the length of the straight section is the length of the straight divided by the length of each vector (so 20m in this case). Google Earth made it easy to determine the length and heading of each straight with it's ruler tool.
+      
+      Corners are treated as arcs of circles. The following steps give a way to estimate the number and heading of  vectors that makes up a corner.
+      
+      \begin{enumerate}
+        \item Calculate the angle of the sector of a circle whose arc the corner matches. This is the difference of the headings of the straights on either side of the corner
+        
+        \item Calculate the radius of this sector. This radius will differ between lanes. The radius to the outer lane will the 10m larger than to the middle lane and the radius of the inner lane will be 10m smaller than the radius to the middle lane. 
+        
+        \item Calculate the length of each of the 3 arcs (one for each lane) with the angle of the sector and the radii of each of the lanes. If the angle is in radians this is angle $\times$ radius.
+        
+        \item Calculate the number of vectors required to make up each arc. This is length of arc divided by the length of a vector. 
+        
+        \item The angle of the first vector is the angle straight entering the corner
+        
+        \item For each of the next vectors increment the angle by (total angle of sector)/(number of segments) each time. Therefore the last segment will have an angle roughly that of the next straight.
+      \end{enumerate}
+      
+       It is worth drawing the output for each corner as the lanes can get slightly out of sync due to rounding errors and so may need an edge added by hand.
+      
+      \subsubsection{Worked example for the simplified version of Cam used in simulation}
+      Google Earth provided the tools for getting the inputs for the algorithm just described.
+      
+      Figure \ref{techissues:fig:actualcam} highlights an aerial photo of the part of the Cam in which we are interested. The three main corners are labelled. In our simplification of the Cam the segments between the corners are considered as straight.
+      
+      \begin{figure}
+      \begin{center}
+        \includegraphics[scale=0.3]{images/GoogleEarthCam.png}
+        \caption{The part of the Cam covered by this project marked out on Google Earth. The 3 main corners and Baits Bite Lock have been marked out.}
+        \label{techissues:fig:actualcam}
+      \end{center}
+      \end{figure}
+      
+      For this worked example, we will follow the algorithm the straight heading into Ditton Corner and that corner itself.
+      
+      We assumed the three lanes start at (10,10), (10,20), (10,30) in the co-ordinate system for the simulation. Figure \ref{fig:thereach} shows a  screen shot of Google Earth of this first section of river. The ruler tool in Google Earth shows this straight is roughly 1400m long. This corresponds to 70 vectors each 20m long. Although the bearing of this straight is roughly 70\textdegree, for simplicity we treat this first straight as heading due East (so a heading of 0\textdegree from the origin). Everything else in the simulated version of the Cam will be rotated to match.
       
       \begin{figure}
       \begin{center}
@@ -107,7 +143,7 @@ This chapter covers some of the problems encountered when turning the model from
       \end{center}
       \end{figure}
       
-      Corners were then approximated using sectors a circle, with the river following the arc of the sector. Using Google Earth the radius of the circle of curvature was estimated very approximately. The angle of the sector was approximated by looking at the bearing of line heading into the corner and the bearing of a line heading out of the corner. The angle of the sector was then the difference of these two bearings.
+      Next we look at Grassy Corner. Figure \ref{fig:dittoncorner:angle} shows that the bearing on one side is roughly 250\textdegree\  and on the other roughly 350\textdegree. To simplify the calculations we will treat this corner as 90\textdegree\ (or $\frac{\pi}{2}$ radians).
       
       \begin{figure}
       \begin{center}
@@ -121,24 +157,16 @@ This chapter covers some of the problems encountered when turning the model from
       \begin{figure}
       \begin{center}
         \includegraphics[scale=0.3]{images/DittonCornerRadius.png}
-        \caption{Ditton Corner: This shows two approximate radii of the sector that makes up Ditton Corner. Their total length is 244m. Rounded this up and approximated the radius of Ditton Corner to be 125m.}
+        \caption{Ditton Corner: This shows two approximate radii of the sector that makes up Ditton Corner. Their total length is 202m. Rounded this down, the approximated the radius of Ditton Corner is 100m.}
         \label{fig:dittoncorner:radius}
       \end{center}
       \end{figure}
       
-      Figure \ref{fig:dittoncorner:angle} and Figure \ref{fig:dittoncorner:radius} show the values extracted from Google Earth of the heading into and out of a corner (in this case known as Ditton Corner) and an attempt to estimate the radius of the corner. From Figure \ref{fig:dittoncorner:angle}, the heading into the corner is about 70\textdegree and the heading out is about 170\textdegree. Therefore a 90\textdegree sector of a circle would roughly cover this corner. Figure \ref{fig:dittoncorner:radius} shows a rough outline of the radii that make up the sector. The two radii are approximately 250m long, so a single radii would be 125m long. This is for the middle of the river. The radius of the upper lane should be 10m less than this in the 3 lane approximation. And the radius of the lower lane should be 10m more.
+      Figure \ref{fig:dittoncorner:radius} shows a rough outline of two radii that make up the sector. The two radii are approximately 200m long, so a single radius is 100m long. This is for the middle of the river. The radius of the upper lane should be 10m less than this in the 3 lane approximation. And the radius of the lower lane should be 10m more.
       
-      Finally for a corner, the arc needed to be approximated by 20m segments. This was done by working out the total length of the arc (radius $\times$ angle) and then dividing by 20. This gave a number of segments. The angle of the first segment was the heading in angle. Each segment's angle was then changed incremented (or decremented depending on whether the river was bending to the left of the right) by (angle of sector)/(number of segments).
+      Therefore the length of the arcs are roughly $\frac{90\pi}{2}$m, $\frac{100\pi}{2}$m, $\frac{110\pi}{2}$m for the inside, middle and outside lanes respectively. So we need roughly seven, eight and nine 20m-vectors to make up the inside, middle and outside lanes of this corner. Therefore the angle of each vector increments in steps of 0.22, 0.20 and 0.17 radians respectively.
       
-      In this way the actual path of the river Cam, as can be seen marked out on Google Earth in Figure \ref{techissues:fig:actualcam} is turned into a simplified version as in Figure \ref{techissues:fig:simplecam}.
-      
-      \begin{figure}
-      \begin{center}
-        \includegraphics[scale=0.3]{images/GoogleEarthCam.png}
-        \caption{The part of the Cam covered by this project marked out on Google Earth. The 3 main corners and Baits Bite Lock have been marked out.}
-        \label{techissues:fig:actualcam}
-      \end{center}
-      \end{figure}
+      Repeating this procedure for the rest of the area marked out on Google Earth in Figure \ref{techissues:fig:actualcam} and the river is turned into the simplified version displayed in Figure \ref{techissues:fig:simplecam}.
       
       \begin{figure}
       \begin{center}
@@ -147,10 +175,6 @@ This chapter covers some of the problems encountered when turning the model from
         \label{techissues:fig:simplecam}
       \end{center}
       \end{figure}
-      
-
-  
-  
       
   \section{Experiment Framework}
   In order to evaluate the control policies it was necessary to run
