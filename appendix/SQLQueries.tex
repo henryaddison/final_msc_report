@@ -1,5 +1,13 @@
 \chapter{SQL Queries}
 This is a listing of the SQL queries used in Chapter \ref{chapter:experiments} to analyse the data produced running experiments.
 
-\lstinputlisting[language=SQL,caption={Gathers stats for simulation runs where only one boat is launched, grouped by the control policy used},label={listing:sql:singleBoat}]{code/sql/single_boats.sql}
+\lstinputlisting[language=SQL,caption={Single boat launch},label={listing:sql:singleBoat}]{code/sql/single_boats.sql}
+
+\lstinputlisting[language=SQL,caption={Return rates by policy for all schedules},label={listing:sql:completionAllSchedules}]{code/sql/completion_rate_by_policy_all_schedules.sql}
+
+\lstinputlisting[language=SQL,caption={Return rates by policy for schedules with short delays between launches},label={listing:sql:completionSmallDelays}]{code/sql/completion_rate_by_policy_small_delays.sql}
+
+\lstinputlisting[language=SQL,caption={Return rates schedule},label={listing:sql:completionBySchedule}]{code/sql/completion_rate_according_to_schedule.sql}
+
+\lstinputlisting[language=SQL,caption={Crash stats},label={listing:sql:crashStats}]{code/sql/crash_stats_overall_averages.sql}
 
