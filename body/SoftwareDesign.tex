@@ -510,13 +510,7 @@ during the simulation.
     hide short-lived, infrequent variations in gear.
 \end{itemize}
 
-The \texttt{crash\_records} table contains data about each crash that
-occurs during a simulation run. This data consists of whether the
-crash occured in the middle lane, the number of boats involved and the
-relative velocity of the crash (calculated by summing the relative
-velocities of the latest boat to join the crash with all the other
-boats on the edge where the crash is taking place).
-
+The \texttt{crash\_records} table contains data for each pair of boats that crash during a simulation run. When a boat occupies an edge with boats already on, then it is considered to have crashed with all those boats and creates a new row in \texttt{crash\_records} for each. Each row of data consists of the relative velocity of the crash, the number of boats on the edge where the crash occurred, and whether this edge is in the middle lane of the river.
 
 \section{Style and UI packages}
 The style and ui packages are both small. They are used to customise the Repast
