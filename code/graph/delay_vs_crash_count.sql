@@ -1,8 +1,5 @@
 SELECT
-  schedules.name,
   simulation_runs.control_policy,
-  boats_launched,
-  AVG(boats_landed),
   AVG(aggregate_crash_records.crash_count) as ycol,
   delay as xcol
 FROM simulation_runs
