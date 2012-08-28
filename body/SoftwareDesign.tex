@@ -169,10 +169,10 @@ then broken down into smaller software classes within these packages. This
 makes the software easier to manage as each class has a smaller focus
 compared to the larger objects in the model.
 
-The pseudo-UML Figure \ref{software:fig:modeloverview} used before in Chapter \ref{chapter:model} is also a
+The pseudo-UML used in Chapter \ref{chapter:model} to show how the model object relate to each other is also a
 good starting point for seeing how the main packages relate to each
-other. There are some extra entities in the software version. There
-is the Experiment package. There is package for defining style
+other. An updated version is shown in Figure \ref{software:fig:modeloverview}, which some extra entities present in the software which did not fit into the model. There
+is the \texttt{experiment} package. There is package for defining style
 classes which tell Repast how to draw the river and boat
 objects. There is a package for setting up UI controls for when
 simulation is running in manual mode (so not following the
@@ -180,7 +180,7 @@ pre-defined schedule of an experiment).
 
 \begin{figure}
 \begin{center}
-  \includegraphics[scale=0.3]{images/ModelOverview.png}
+  \includegraphics[scale=0.3]{images/packages.png}
   \caption{Model Overview}
   \label{software:fig:modeloverview}
 \end{center}
@@ -188,8 +188,16 @@ pre-defined schedule of an experiment).
 
 
 
-\section{River package}
-\paragraph{Opening paragraph and UML diagram}
+\section{\texttt{river} package}
+The \texttt{river} package contains the classes that represent the river from our model. Figure \ref{software:fig:riverUML} gives an overview of the most important methods in the classes and the relationships between the classes.
+
+\begin{figure}
+\begin{center}
+  \includegraphics[scale=0.3]{images/riverpackage.png}
+  \caption{Outline of the classes in the \texttt{river} package}
+  \label{software:fig:riverUML}
+\end{center}
+\end{figure}
 
 \subsection{River class}
 The River is a container object. It holds the three lanes and the
@@ -259,6 +267,17 @@ has not been updated.) When a
 cox is added, if there is already a cox occupying the edge then a
 Crash object is created and associated with edge (unless there is
 already one there) and the Crash object is reset.
+
+Figure \ref{software:fig:crashingUML} shows the classes and main methods involved in the software implementation of a crash.
+
+\begin{figure}
+\begin{center}
+  \includegraphics[scale=0.3]{images/crashing.png}
+  \caption{Outline of the classes involved in a crash}
+  \label{software:fig:crashingUML}
+\end{center}
+\end{figure}
+
 
 When \texttt{reset()} is called on a Crash object, all the
 \texttt{incapcitate()} method is called on all the coxes
@@ -539,6 +558,13 @@ The changing lane implementation currently prevents a cox from changing lanes ag
 
 \subsection{Interactive Mode}
 There is an interactive mode in the application that allows the user to launch boats by hand. Currently this is just for launching test boats that demonstrate the actions available to the cox. This could be improved by also allowing the user to choose the actions for a boat. The visualization could be changed to give a cox's eye view so that the simulation could also be used for training new coxes.
+
+\subsection{Code tidy up so that it matches the model more closely}
+There are a couple of places in the code which do not so obviously match up to the model. Neither are not essential fixes and do not cause the code to violate the model. However, it would be nice to change these so the code is a little more readable. 
+
+The Boat Navigation object is referenced from the Cox class, when in fact this class is tied to keeping boat movement on the lanes and in the 2D space in sync. It would be nice to move this reference to the Boat class.
+
+Secondly, a LaneEdge object keeps track of the Cox objects that currently occupy it. The code would match the model much more directly if instead it kept track of Boat objects.
 
 \subsection{Optimized observation code so policies can have a memory}
 Finally, there the observation code could be optimized. At one point I tried to have the cox's observations frozen each tick so that each CoxObservation object would return the same value during later ticks. This would then allow a cox to build up a sort of memory by storing these observations, which might allow some interesting new control policies.

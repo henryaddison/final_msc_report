@@ -4,10 +4,10 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>370</x>
+      <x>350</x>
       <y>160</y>
-      <w>220</w>
-      <h>190</h>
+      <w>370</w>
+      <h>110</h>
     </coordinates>
     <panel_attributes>Lane
 --
@@ -22,10 +22,10 @@ getNearestEdge(NdPoint position): LaneEdge
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>30</x>
-      <y>160</y>
+      <x>10</x>
+      <y>70</y>
       <w>210</w>
-      <h>110</h>
+      <h>200</h>
     </coordinates>
     <panel_attributes>River
 --
@@ -39,10 +39,10 @@ upstream_lane: Lane</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>660</x>
-      <y>90</y>
-      <w>210</w>
-      <h>190</h>
+      <x>560</x>
+      <y>350</y>
+      <w>260</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>LaneNode
 --
@@ -51,20 +51,16 @@ location: Point2D.Double
 --
 getOpacity(): double
 getLane(): Lane
-distance(LaneNode other): double 
---
-Responsibilities
--- Resp1
-*-- Resp2*</panel_attributes>
+distance(LaneNode other): double </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>640</x>
-      <y>390</y>
-      <w>210</w>
-      <h>100</h>
+      <x>110</x>
+      <y>350</y>
+      <w>280</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>LaneEdge
 --
@@ -77,35 +73,35 @@ getNextNode(boolean direction): Node</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>210</x>
+      <x>190</x>
       <y>60</y>
-      <w>170</w>
-      <h>180</h>
+      <w>180</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 has&gt;
 m2=1</panel_attributes>
-    <additional_attributes>30;160;150;30</additional_attributes>
+    <additional_attributes>30;50;160;50</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>210</x>
-      <y>230</y>
+      <x>190</x>
+      <y>210</y>
       <w>180</w>
-      <h>90</h>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 has&gt;
 m2=3</panel_attributes>
-    <additional_attributes>30;30;160;70</additional_attributes>
+    <additional_attributes>30;50;160;50</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>360</x>
-      <y>30</y>
-      <w>210</w>
+      <x>350</x>
+      <y>80</y>
+      <w>160</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>BoatHouse
@@ -118,37 +114,37 @@ launch methods: void</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>560</x>
-      <y>160</y>
-      <w>120</w>
-      <h>120</h>
+      <x>630</x>
+      <y>240</y>
+      <w>50</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;100;100;30</additional_attributes>
+    <additional_attributes>30;30;30;110</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>560</x>
-      <y>290</y>
-      <w>100</w>
-      <h>210</h>
+      <x>350</x>
+      <y>240</y>
+      <w>50</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;30;80;190</additional_attributes>
+    <additional_attributes>30;30;30;110</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>700</x>
-      <y>250</y>
-      <w>128</w>
-      <h>160</h>
+      <x>360</x>
+      <y>350</y>
+      <w>220</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=0..1
 m2=2
 connects&gt;</panel_attributes>
-    <additional_attributes>70;140;70;30</additional_attributes>
+    <additional_attributes>30;50;200;50</additional_attributes>
   </element>
 </diagram>

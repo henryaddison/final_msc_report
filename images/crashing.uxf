@@ -4,15 +4,15 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>370</x>
+      <x>380</x>
       <y>10</y>
       <w>210</w>
       <h>190</h>
     </coordinates>
     <panel_attributes>Crash
 --
--countdown: int
-_DELAY: int_
+countdown: int
+_HOLD_UP: int_
 --
 reset(): void
 coxEscaped(): void</panel_attributes>
@@ -27,7 +27,12 @@ coxEscaped(): void</panel_attributes>
       <h>60</h>
     </coordinates>
     <panel_attributes>Cox
---</panel_attributes>
+--
+incapcitated: boolean
+--
+incapcitate(): void
+recapcitate(): void
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -53,14 +58,14 @@ pickRandomCox(): Cox</panel_attributes>
     <coordinates>
       <x>190</x>
       <y>60</y>
-      <w>200</w>
+      <w>210</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=0..1
 &lt;occurs on</panel_attributes>
-    <additional_attributes>30;50;180;50</additional_attributes>
+    <additional_attributes>30;50;190;50</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
