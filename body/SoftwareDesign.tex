@@ -544,10 +544,10 @@ There is still room for improvements in the software. These are outlined in this
 The changing lane implementation currently prevents a cox from changing lanes again while midway between lanes. It is acceptable that when moving to the lane on the left, say, the cox should not be able to move to the lane two to the left. However, the code and the model would be improved by allowing a cox to move back to the starting lane midway through a change - effectively the cox realises he should not try and change lanes
 
 \subsection{Interactive Mode}
-  There is an interactive mode in the application that allows the user to launch boats by hand. Currently this is just for launching test boats that demonstrate the actions available to the cox. This could be improved by also allowing the user to choose the actions for a boat. The visualization could be changed to give a cox's eye view so that the simulation could also be used for training new coxes.
+There is an interactive mode in the application that allows the user to launch boats by hand. Currently this is just for launching test boats that demonstrate the actions available to the cox. This could be improved by also allowing the user to choose the actions for a boat. The visualization could be changed to give a cox's eye view so that the simulation could also be used for training new coxes.
 
 \subsection{Optimized observation code so policies can have a memory}
 Finally, there the observation code could be optimized. At one point I tried to have the cox's observations frozen each tick so that each CoxObservation object would return the same value during later ticks. This would then allow a cox to build up a sort of memory by storing these observations, which might allow some interesting new control policies.
 
 
-This ends the description of the software behind the simulation and some possible future improvements. More detail is available in the source code but hopefully this chapter gives an interested reader an idea of where to start looking. The next chapter describes the logic used to create the control policies.
+This ends the description of the software behind the simulation and some possible future improvements. Appendix \ref{appendix:user_guide} also gives some more detail, especially on how to get the application running. Hopefully this chapter gives enough of an introduction to the software that any further questions can be answered by looking in the source code.
