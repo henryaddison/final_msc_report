@@ -4,6 +4,8 @@ This chapter takes a quick dive into the logic behind the control policies used 
 
 Five different control policies were studied for this project: RandomChoice, RandomMovement, GearFocussed, SafetyFocussed and Overtaking. A couple of other policies were implemented, DemoChangeSpeed and DemoChangeLane, but as their names suggest these were only created for demonstrating the actions.
 
+All policies first check the goal condition (being back at the boathouse after travelling at least the desired distance). After this the policies follow different rules for choosing an action.
+
 \section{RandomChoice}
 This policy was created to act as a control in experiments. No effort is made to choose a sensible action. Instead actions are chosen completely at random.
 
@@ -13,15 +15,19 @@ More details will follow in the next chapter, but the Random Choice policy turne
 
 \section{GearFocussed}
 
-The Gear Focussed policy's main aim is to stick as close to the cox's desired gear and otherwise ignores the environment. This policy will spin if the river is about to run out to ensure it does not get stranded at the lock. Otherwise if the boat's current gear is below the cox's desired gear it will attempt to speed up. Otherwise it will let the boat run forward. Therefore ideally the cox will try and speed up to match the cox's desired gear and then stay in it and not exceed it (since this is as bad as travelling too slowly).
+The Gear Focussed policy's main aim is to stick as close to the cox's desired gear and otherwise ignores the environment. The implementation in Java is shown in Listing \ref{listing:control:gear}. This policy will spin if the river is about to run out to ensure it does not get stranded at the lock. Otherwise if the boat's current gear is below the cox's desired gear it will attempt to speed up. Otherwise it will let the boat run forward. Therefore ideally the cox will try and speed up to match the cox's desired gear and then stay in it and not exceed it (since this is as bad as travelling too slowly).
+
+\lstinputlisting[language=Java,caption={The implementation of the GearFocussed policy },label={listing:control:gear}]{code/GearFocussed.report.java}
 
 \section{SafetyFocussed}
 
-The Safety Focussed policy's main aim is to avoid crashing. It builds on the approach taken by the Gear Focussed policy. However, ahead of the condition of travelling too slowly, this policy will check if the boat is close to a boat in front. If so this policy will cause the cox to slow down. This policy does not directly attempt to match the speed of any boat in front. But the interplay of the rules for slowing down if there's an obstruction ahead or speeding up if it's moving to slowly will cause the cox the match the speed on average although in bursts of repeated slowing down when it gets to close and then speeding up again in an attempt to match the cox's desired gear when the boat ahead has had to some time to move on a bit.
+The Safety Focussed policy's main aim is to avoid crashing. The implementation in Java is shown in Listing \ref{listing:control:safety}. It builds on the approach taken by the Gear Focussed policy. However, ahead of the condition of travelling too slowly, this policy will check if the boat is close to a boat in front. If so this policy will cause the cox to slow down. This policy does not directly attempt to match the speed of any boat in front. But the interplay of the rules for slowing down if there's an obstruction ahead or speeding up if it's moving to slowly will cause the cox the match the speed on average although in bursts of repeated slowing down when it gets to close and then speeding up again in an attempt to match the cox's desired gear when the boat ahead has had to some time to move on a bit.
+
+\lstinputlisting[language=Java,caption={The implementation of the SafetyFocussed policy },label={listing:control:safety}]{code/SafetyFocussed.report.java}
 
 \section{Overtaking}
 
-Neither of the Gear Focussed or Safety Focussed policies make any use of the middle lane. The Overtaking policy  attempts to correct this. As with the other policies spinning is chosen if the river is about to run out to ensure it does not get stranded at the lock. Next it checks whether the policy is in overtaking mode and if so executes a subprogram to choose the action.
+Neither of the Gear Focussed or Safety Focussed policies make any use of the middle lane. The Overtaking policy  attempts to correct this. The implementation in Java is shown in Listing \ref{listing:control:overtaking}. As with the other policies spinning is chosen if the river is about to run out to ensure it does not get stranded at the lock. Next it checks whether the policy is in overtaking mode and if so executes a subprogram to choose the action.
 
 In overtaking mode, the cox will attempt to move back to the right as soon as it has completely moved into the middle lane and there are enough edges clear both ahead of it and behind it in the right hand lane. Moving back to the right will terminate overtaking mode. Otherwise the cox will attempt to match Gear Focussed approach of speeding up until the boat is in the cox's desired gear.
 
@@ -29,8 +35,20 @@ If the policy is not in overtaking mode, then if the cox is close to a boat ahea
 
 The boat waits for the lane to be clear both in front and behind before moving back to the left or over to the right. This is a very simple way of avoiding a slow moving boat ahead (which may include a boat moving in the other direction) or a fast boat coming up behind. The policy is a bit more aggressive about getting boats back to the right than initially pulling out. This is in the belief that it is best to leave this middle lane free for overtaking as much as possible. This is also why the policy requires a boat ahead to be moving sufficiently slowly compared to the cox's boat to attempt to reduce the total time of the entire overtaking manoeuvre.
 
+
+
+\lstinputlisting[language=Java,caption={The implementation of the Overtaking policy },label={listing:control:overtaking}]{code/Overtaking.report.java}
+
 \section{Future Work}
+There are also a couple areas in which the control policies could be studied further.
 
-\paragraph{a better overtaking cox}
+\subsection{Further policies}
+Firstly it would be interest to try a more intelligent Overtaking policy. At the moment the Overtaking policy does not check the speed of any boat in the lane it is moving to. It also looks symmetrically forwards and backwards. It might well make sense to look ahead further than behind since the boat is moving away from any obstructions behind.
 
-\paragraph{applying machine learning techniques}
+\subsection{Machine learnt policies}
+It would be very interesting to apply machine learning techniques to create a policy. This is a much larger undertaking but one possible way would be to follow Kochenderfer (\cite{Kochenderfer2003}). 
+
+Kochenderfer shows how to use genetic programming to learn TR programs. The overall program and the conditions themselves are treated as trees. The conditions could be put together from the boolean observations and inequalities involving the numeric observations since these are all bounded (distances are bounded by the cox's vision and speeds are bounded by the top speed of a boat). The observation-based ``atoms" could then be combined with conjunction and negation operators. 
+
+The implementation would have be updated to turn a chromosomal representation of a policy into a working program in the application. The fitness function should promote policies that successful complete outings sticking close to their desired gear. The fitness function should also promote safety by promoting policies that cut down on the number and relative speed of any crash. The actually fitness function used would control how the safety of a policy is weighed against the policies attempt to stick to the outing plan.
+
