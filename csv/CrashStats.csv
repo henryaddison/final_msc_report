@@ -1,0 +1,5 @@
+control_policy,crashes_per_run,speed_per_crash,max_crash_speed,boats_per_crash,percent_middle_lane,avg_crash_tick,simulation_length_estimate,launch_crash_percent_est
+GearFocussed,187,2.3,10.6,2.1,0.6,3799,12066,2
+Overtaking,103,2.0,8.3,2.1,10.6,3844,11929,2
+RandomMovement,590,2.4,13.9,2.2,62.4,4737,9422,2
+SafetyFocussed,15,3.2,5.4,2.4,0.0,6182,11885,32

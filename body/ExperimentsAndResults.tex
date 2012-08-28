@@ -144,11 +144,52 @@ In this experiment we test how well the control policies perform in allowing cox
   Another interesting outcome of this experiment is the most successful policy for coxes completing their outings. This is the RandomMovement policy. I suspect this is because it ignores the cox's desired gear and so a cox with a low desired gear launched late in a simulation are likely to travel much faster than those controlled by a policy that will keep to the desired gear. At the other end, the SafetyFocussed policy is the least successful policy is by a large margin. This suggests the SafetyFocussed is not a wise one to follow when under strict time constraints. This suggests that none of the policies are using the space available on the river to its fullest.
   
 \section{Crashes}
+This experiment examined how safe the control policies were. The data from the \texttt{crash\_records} table was used as a proxy for safety. First stage we examine the total number of crashes that occurred for each control policy based on the different launch schedules. Then we take a closer look at how bad each crash was.
+
   \paragraph{graphs of crash no versus delay between boats for varying brains and numbers of boats}
+  Figures \ref{experiments:fig:crash_counts_10_launches}, \ref{experiments:fig:crash_counts_20_launches} and \ref{experiments:fig:crash_counts_30_launches} show the number of crashes that occurred on average in simulation runs based on the schedule type. The different lines represent the different control policies.
+  
+  \begin{figure}
+  \begin{center}
+    \includegraphics[scale=1]{"images/graphs/Average\space number\space of\space crashes\space per\space control\space policy\space for\space simulation\space runs\space with\space 10\space boats\space launched"}
+    \caption{Graphs plotting crash counts against launch delay for the 4 control policies for schedules with 10 boats launched}
+    \label{experiments:fig:crash_counts_10_launches}
+  \end{center}
+  \end{figure}
+  
+  \begin{figure}
+  \begin{center}
+    \includegraphics[scale=1]{"images/graphs/Average number of crashes per control policy for simulation runs with 20 boats launched"}
+    \caption{Graphs plotting crash counts against launch delay for the 4 control policies for schedules with 20 boats launched}
+    \label{experiments:fig:crash_counts_20_launches}
+  \end{center}
+  \end{figure}
+  
+  \begin{figure}
+  \begin{center}
+    \includegraphics[scale=1]{"images/graphs/Average number of crashes per control policy for simulation runs with 30 boats launched"}
+    \caption{Graphs plotting crash counts against launch delay for the 4 control policies for schedules with 30 boats launched}
+    \label{experiments:fig:crash_counts_30_launches}
+  \end{center}
+  \end{figure}
   
   \paragraph{Conservative brain is best, unsurprisingly. Reassuring the overtaking brain is better than basic brain - there is an advantage in looking ahead for obstacles. Random movement unsurprisingly bad - with basic brains, faster boats should gradually filter to the front}
+  Two trends appear immediately in these graphs. The more boats that are launched, the greater the number of crashes. And the larger the delay between launches, the fewer crashes. These are both intuitive results. With a greater number of boats there are more possibilities for crashes and the simulation runs for longer with boats on the river. A larger delay between launches gives each boat more space between it and the next so there is less scope for crashing.
+  
+  There is also a clear distinction between the control policies. The SafetyFocussed policy is, reassuringly, the policy with the fewest crashes. This makes sense as it is the control policy which makes the most effort not to crash into a boat. Pleasingly, the Overtaking policy leads to half the number of crashes compared to the GearFocussed policy. This suggests the rules for overtaking do allow the cox to make better use of the space available. Unlike the completion rates experiment, RandomMovement is by far the worst policy. This is perhaps because the RandomMovement policy makes no effort to avoid crashes like SafetyFocussed but also unlike Overtaking and GearFocussed policies it does not guarantee that faster boats will eventually get ahead of slower boats and stop crashing into them. Instead boats will randomly speed up and slow down so that same two boats could crash into each other many times over.
 
   \paragraph{Speed of crashes, location of crashes}
+  Let us take a look next at the nature of crashes that occur for each different control policy. Table \ref{experiments:tab:crash_speeds} compares the average relative speed of each crash.
+  \begin{table}[h]
+  \centering
+  \csvreader[tabular=|l|c|c|,
+      table head=\hline Control Policy & Average Number Of Crashes Per Run & Average Relative Speed Per Crash Per Run \\\hline,
+      late after last line=\\\hline]
+  {csv/CrashStats.csv}{control_policy=\cp, crashes_per_run=\count, speed_per_crash=\speed}
+  {\cp & \count & \speed}
+  \caption{This table shows the average number of crashes and the relative speed of crashes.}
+  \label{experiments:tab:crash_speeds}
+  \end{table}
   
 \section{Deviation from desired gear}
 
