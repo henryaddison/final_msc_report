@@ -1,5 +1,7 @@
-\chapter{SQL Queries}
-This is a listing of the SQL queries used in Chapter \ref{chapter:experiments} to analyse the data produced running experiments.
+\chapter{Queries for analysis}\label{chapter:sql}
+This is a listing of the SQL queries used in Chapter \ref{chapter:experiments} to analyse the data produced running experiments. They can be found in the main siver repository in the db/analysis directory. The sql directory contains neat SQL queries for producing tables of results. The R directory contains R scripts for plotting graphs from queries.
+
+\section{Table queries}
 
 \lstinputlisting[language=SQL,caption={Single boat launch},label={listing:sql:singleBoat}]{code/sql/single_boats.sql}
 
@@ -11,3 +13,11 @@ This is a listing of the SQL queries used in Chapter \ref{chapter:experiments} t
 
 \lstinputlisting[language=SQL,caption={Crash stats},label={listing:sql:crashStats}]{code/sql/crash_stats_overall_averages.sql}
 
+\section{Graph queries}
+In these queries the columns aliased xcol and ycol in the SELECT portion are the values used for determining the x-coordinate and y-coordinate of points on a graph. As these queries are used in R scripts they often have space for values to the interpolated later. These are denoted using a standard C printf format (e.g. \%s for a string, \%d for an integer).
+
+\lstinputlisting[language=SQL,caption={Crash counts per control policy and launch count plotted against delay between launches},label={listing:R:DelayVsCrashCount}]{code/graph/delay_vs_crash_count.sql}
+
+\lstinputlisting[language=SQL,caption={Crash speeds per control policy and launch count plotted against delay between launches},label={listing:R:DelayVsCrashSpeedCount}]{code/graph/delay_vs_crash_speed.sql}
+
+\lstinputlisting[language=SQL,caption={Aggregate gear difference per control policy and launch count plotted against delay between launches},label={listing:R:DelayVsGearDifference}]{code/graph/delay_vs_gear_difference.sql}
