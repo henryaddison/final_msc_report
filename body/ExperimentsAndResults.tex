@@ -179,43 +179,43 @@ This experiment examined how safe the control policies were. The data from the \
   There is also a clear distinction between the control policies. The SafetyFocussed policy is, reassuringly, the policy with the fewest crashes. This makes sense as it is the control policy which makes the most effort not to crash into a boat. Pleasingly, the Overtaking policy leads to half the number of crashes compared to the GearFocussed policy. This suggests the rules for overtaking do allow the cox to make better use of the space available. Unlike the completion rates experiment, RandomMovement is by far the worst policy. This is perhaps because the RandomMovement policy makes no effort to avoid crashes like SafetyFocussed but also unlike Overtaking and GearFocussed policies it does not guarantee that faster boats will eventually get ahead of slower boats and stop crashing into them. Instead boats will randomly speed up and slow down so that same two boats could crash into each other many times over.
 
   \paragraph{Speed of crashes, location of crashes}
-  Let us take a look next at the nature of crashes that occur for each different control policy. Table \ref{experiments:tab:crash_speeds} compares the average relative speed of each crash. The results are quite counter-intuitive. I would have expected SafetyFocussed to have the lowest relative speed since the policy makes the most effort to keep the speed low. I would also have expected the Overtaking policy to lead to higher relative speeds compared to the GearFocussed policy, because boats now share the middle lane going both directions which could lead to head on crashes with much higher relative speeds.
+  Let us take a look next at the nature of crashes that occur for each different control policy. Table \ref{experiments:tab:crashspeeds} compares the average relative speed of each crash. The results are quite counter-intuitive. I would have expected SafetyFocussed to have the lowest relative speed since the policy makes the most effort to keep the speed low. I would also have expected the Overtaking policy to lead to higher relative speeds compared to the GearFocussed policy, because boats now share the middle lane going both directions which could lead to head on crashes with much higher relative speeds.
   
   \begin{table}[h]
   \centering
   \csvreader[tabular=|l|c|c|,
       table head=\hline Control Policy & Crashes Per Run & Relative Speed Per Crash Per Run \\\hline,
       late after last line=\\\hline]
-  {csv/CrashStats.csv}{control_policy=\cp, crashes_per_run=\count, speed_per_crash=\speed}
-  {\cp & \count & \speed}
+  {csv/CrashStats.csv}{control_policy=\cp, speed_per_crash=\speed, crashes_per_run=\crashes}
+  {\cp & \crashes & \speed}
   \caption{This table shows the average number of crashes and the relative speed of crashes.}
-  \label{experiments:tab:crash_speeds}
+  \label{experiments:tab:crashspeeds}
   \end{table}
   
-  The SafetyFocussed result can be explained by looking at when the crashes occur. Table \ref{experiments:tab:crash_timings} shows a rough estimate for the proportion of crashes that occur as soon as a boat launches. This is estimated by counting the number of crashes that occur at ticks that are divisible by 60, since launches always occur on ticks divisible by 60. Although this is a fairly rough estimate, the stark difference in the estimate for the SafetyFocussed policy compared to the others is a very strong indicator that many more crashes for SafetyPolicy occur as soon as a boat launches (so the boat is launched onto an edge that is already occupied). This is due to how the SafetyPolicy leads boats to queue up as they get stuck behind a slow boat. If this queue backs up to the boathouse then a freshly launched boat will immediately crash so has had no chance to accelerate to the speed of that boat even though that speed is quite slow.
-  
+  The SafetyFocussed result can be explained by looking at when the crashes occur. Table \ref{experiments:tab:crashtimings} shows a rough estimate for the proportion of crashes that occur as soon as a boat launches. This is estimated by counting the number of crashes that occur at ticks that are divisible by 60, since launches always occur on ticks divisible by 60. Although this is a fairly rough estimate, the stark difference in the estimate for the SafetyFocussed policy compared to the others is a very strong indicator that many more crashes for SafetyFocussed occur as soon as a boat launches (so the boat is launched onto an edge that is already occupied). This is due to how the SafetyPolicy leads boats to queue up as they get stuck behind a slow boat. If this queue backs up to the boathouse then a freshly launched boat will immediately crash so has had no chance to accelerate to the speed of that boat even though that speed is quite slow.
+
   \begin{table}[h]
   \centering
-  \csvreader[tabular=|l|c|c|,
+  \csvreader[tabular=|l|c|,
       table head=\hline Control Policy & \% Crashes At Launch Estimate  \\\hline,
       late after last line=\\\hline]
-  {csv/CrashStats.csv}{control_policy=\cp, launch_crash_percent_est=\launch_crashes}
-  {\cp & \launch_crashes }
+  {csv/CrashStats.csv}{control_policy=\cp, launch_crash_percent_est=\crashes}
+  {\cp & \crashes }
   \caption{This table shows an estimate of the proportion of crashes that occur when a boat launches.}
-  \label{experiments:tab:crash_timings}
+  \label{experiments:tab:crashtimings}
   \end{table}
   
-  The unexpected difference in Overtaking and GearFocussed can be explained by looking at the proportion of crashes that occur in the middle lane. Table \ref{experiments:tab:crash_lane} shows this. Overtaking policy leads obviously to a higher proportion in the middle lane as crashes can only occur in the middle lane with the GearFocussed policy when it involves a spinning boat. Even so with the Overtaking policy only about 10\% of crashes occur in the middle lane. This suggests that rather slower crashes in the right hand lane being replaced with faster head on crashes in the middle lane, the Overtaking policy allows a cox to make use of the middle lane to avoiding ramming a much slower boat from behind.
+  The unexpected difference in Overtaking and GearFocussed can be explained by looking at the proportion of crashes that occur in the middle lane. Table \ref{experiments:tab:crashlane} shows this. Overtaking policy leads obviously to a higher proportion in the middle lane as crashes can only occur in the middle lane with the GearFocussed policy when it involves a spinning boat. Even so with the Overtaking policy only about 10\% of crashes occur in the middle lane. This suggests that rather slower crashes in the right hand lane being replaced with faster head on crashes in the middle lane, the Overtaking policy allows a cox to make use of the middle lane to avoiding ramming a much slower boat from behind.
   
   \begin{table}[h]
   \centering
-  \csvreader[tabular=|l|c|c|,
+  \csvreader[tabular=|l|c|,
       table head=\hline Control Policy & \% Crashes In Middle Lane  \\\hline,
       late after last line=\\\hline]
-  {csv/CrashStats.csv}{control_policy=\cp, crashes_per_run=\count, percent_middle_lane=\middle_lane_crashes}
-  {\cp & \count & \middle_lane_crashes }
+  {csv/CrashStats.csv}{control_policy=\cp,, percent_middle_lane=\middle}
+  {\cp & \middle }
   \caption{This table shows an estimate of the proportion of crashes that occur when a boat launches.}
-  \label{experiments:tab:crash_lane}
+  \label{experiments:tab:crashlane}
   \end{table}
   
  Clearly the average speed of crashes masks a lot of the detail and there is a lot more available to study in the distributions of the crash statistics.
