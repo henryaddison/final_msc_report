@@ -1,42 +1,51 @@
 \chapter{Background Research/Related Work}\label{chapter:background}
   \paragraph{Introductory paragraph explaining what similar works I looked at}
-  
+  In this chapter, we look at the solution to similar problems
 
-  \subsection{Scheduling problems solutions}
-    \paragraph{How scheduling like for railways won't work - looking for a reactive solution not rigid scheduling problem solution}
+  \section{Scheduling problem}
+    One way to solve the problem is to treat it as a scheduling problem and come up with a time table for launching boats. Launching the boats in descending speed order with sufficient gap between them would remove much of the need for boats to interact at all with each other. However, this clearly cuts down on the total number of boats that could be launched each day. This could be solved by finding a more optimal schedule. A similar area of research where this is done is in train scheduling, such as the work done by Ghoseiri et al. (\cite{Ghoseiri2004}), which applies optimization techniques to choose good schedules even in multi-objective settings. However, this is not a good fit for this project's problem. 
+    
+    The rowing crews who use the river usual arrange outings at the last minute as they must fit rowing in around other activities (perhaps even studying!) so it would be hard to come up with a timetable quickly enough. Also the crews compete with each other but there is no mechanism for enforcing a pre-set timetable such as signals on a rail track, so crews would probably ignore the timetable in order to gain an advantage. Another approach is necessary.
 
   \section{Work done modeling and simulating river traffic}
-    \paragraph{View boats as recreation river users - recreational as unlikely to cost the economy much money or elicit much sympathy from the world at large}
-
-    \subsection{Lowry11 paper on using traffic simulation software}
-      \paragraph{Description of paper contents}
-      \paragraph{Similarities and differences to my own project}
-      
+  River traffic modelling is not an active area of research, particularly for recreational river users like rowing crews. Problems with congestion are unlikely to cost the economy much money or elicit much sympathy from the world at large in the same way that road traffic congestion does. However, Lowry et al. (\cite{Lowry2011})  studied the traffic flow of recreational river boats. This study looked at the amount of traffic passing through various parts of a river at given times and used the traffic simulation software VISSIM to predict the effects on traffic of possible upgrades to the river. 
+  
+  The paper is useful in its discussion of the difficulties of calibrating
+  the authors' simulation given limited resources and how to make guesses
+  about useful information based on the limited data that could be
+  collected. It also provides some ideas about how to get hold of data
+  in order to model the topology of a river (unfortunately it would
+  appear that extracting it by hand from Google Earth is the best available
+  technique). 
+  
+  There are limitations in their approach. They 
+  separated the river into two lanes of unidirectional traffic and the
+  vast majority of traffic was floating downstream. This cannot be taken for granted on the Cam. The overtaking model was too simplistic, requiring only that the river was wide enough at the point of overtaking.
+  However, the idea of using of treating the project more like a road traffic simulation is worth investigating further.
+  
   \section{Road traffic simulation}
-      \paragraph{Introduction relating my problem to that of traffic simulation more commonly associated with road traffic. Restrict ourselves to microscopic models (and not interested in )}
-      \subsection{Brief review of traffic simulation techniques}
+    Boats on a river and cars on a road have similarities. They are both trying to move forwards in a narrow, bounded space. Since this project is focussed on the traffic on part of the Cam, we shall restrict ourselves to considering microscopic traffic simulations.
+    
+    The majority of microscopic road traffic simulations use a car-following model such as the Gipps' model (\cite{Gipps1981}). These models attempt to predict the speed and acceleration of a car based on the behaviour of the car ahead. In this way traffic patterns can be predicted without the reliance on a pre-determined schedule of behaviour. However, there are many criticisms of the car-following approach. Brackstone and Mcdonald (\cite{Brackstone2000}) review car-following models and find ``evolution of car-following models therefore has clearly been slow, and although many would argue that they are sufficiently valid for the purposes for which we require them, there is a growing belief that this is not the case." The software based on these models also has limitations. For example, a user of VISSIM found ``vehicles may pass through each other at road crossings ... the simulation software does not grant the autonomy to individuals that allow them to recognise and avoid this collision'' (\cite{Manley}). Therefore neither a car-following model nor the current software using such a model is suitable for this project.
+      
+    \subsubsection{Agent Based Models}
+    \paragraph{Benefits of ABM - Bonabeau paper}
+      A more promising approach is offered by Agent-Based Modelling (ABM). Bonabeau (\cite{Bonabeau2002}) gives excellent arguments with examples for the benefits ABM and recently research in traffic simulation has produced models using ABM.
+      
+      \paragraph{Description of ABM traffic simulations}
+
+          
+    \paragraph{Conclusion about promising nature of multi-agent systems, especially on the  microscopic level as interested in effect of control policies on flow and safety safety}
+    Multi-agent system therefore offer a way to create a simulation of the river Cam which can focus on the effect of control policies both on safety, the flow of traffic and meeting the desires of individual coxes. However, there are enough differences between drivers and coxes that mean creating a model and software specifically for this project is appropriate.
+    
+      \begin{itemize}
+        \item A cox wishes to travel a certain distance at a certain speed before returning to their starting point. It is usual to assume drivers wish to get from a starting point to a destination elsewhere. 
+        \item Unlike a road network, the river has no junctions. A cox has no choice about route only to cover enough distance.
         
-        \subsubsection{traditional (aggregate) simulation methods transport modeling}
-          \paragraph{Gipps' car following model}
-          
-          
-        \subsubsection{Agent Based Models}
-          \paragraph{Benefits of ABM - Bonabeau paper}
-          \paragraph{Description of ABM traffic simulations}
+        \item The physics of a boat and car are very different. A boat's speed and acceleration are much lower compared to their length. Olympic eights travel at around 6m/s over the 2km course. It thus takes about 3 seconds to cover the 17m length of a boat. A car travelling at a leisurely 20mph would take around 0.5 seconds to cover its 4m length.
+      \end{itemize}
 
-          
-        \paragraph{Conclusion about promising nature of multi-agent systems, especially on the  microscopic level as interested in effect of control policies on flow and safety safety}
-
-        Ed Manley's reference to Nagel \& Flötteröd 2009
         
-        From Ed Manley: Other authors note that vehicle units lack the ability to adapt or evolve in response to changes in an authentic manner (Andriotti \& Klugl 2006, Kotusevski \& Hawick 2009). This lack of flexibility means inclusion of other behavioural factors is more difficult, one important example being the impact of in-car travel information systems (or ATIS) on driver behaviour (Ben-Elia et al. 2007).
-        It has also been noted through personal evaluation of the VISSIM software package (PTV AG 2010) that, in certain circumstances, vehicles may pass through each other at road crossings. This appears to represent a limitation of the car following model, which only accounts for those vehicles ahead of the individual. Where circumstances allow vehicles to cross in front of one another, the simulation software does not grant the autonomy to individuals that allow them to recognise and avoid this collision. This appears to demonstrate the significant limitations in regard to spatial perception on the part of the individual.
-
-      \subsection{Why not using traffic simulators already around}
-        \paragraph{based on road networks not small bit of river with no junctions}
-        \paragraph{based on driver behaviour, not cox behaviour - no desire to get to destination quickly, may prefer sub-maximum speeds}
-        \paragraph{Car are shorter than boats relative to speed}
-        \paragraph{Boats accelerate slower and have longer response times}
   \section{Agent Based Modeling}
     \paragraph{View coxes as autonomous agents influencing the position of a boat on the river}
     \paragraph{Desire for any solution to be human readable - goal is to come up with suggestions for coxes NOT to replace them}
