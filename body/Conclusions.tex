@@ -1,15 +1,26 @@
 \chapter{Conclusions}\label{chapter:conclusions}
+  This chapter takes a look at what was achieved during the past few months working on this project. It also gives some suggestions for how the project could be extended in the future and some other uses for the model and software.
+  
   \section{What I achieved}
-    \subsection{What I didn't achieve}
-    
+  I created an agent-based model of cox and boat behaviour on a narrow river that was described in Chapter \ref{chapter:model}. Chapters \ref{chapter:technicalissues}, \ref{chapter:softwaredesign} and \ref{chapter:control_policy} describe how the model was implemented in software to produce a computer simulation of coxes and boat on an approximation of the Cam. The software also contained a framework for running and collecting data from the simulation. Chapter \ref{chapter:experiments} show how this was used to test the suitability of different control policies under different starting conditions.
+  
+  The results in Chapter \ref{chapter:experiments} did not give a clear winner in all three fields of outing completion, safety and sticking to the outing plan. However, the Overtaking policy is the only policy that performs well in all three measures. It successfully gets boats back to the boathouse whilst sticking most closely to the cox's desired gear. Although following this policy results in more crashes than the SafetyFocussed policy, it is not vastly more crashes and the SafetyFocussed policy performs much worse when comparing how well the policy allows a cox to stick to his desired gear.
+  
+  The deeper dive into the crash results suggested the control policies written so far are not making optimal use of the space available on the river. This highlights another use of the software. It is straight-forward to drop in another control policy class and by sticking to the teleo-reactive format the application could form the basis of a logic teaching tool. It is fun writing new policies and the experiment framework makes it easy to measure their performance under different launch schedules. 
+  
   \section{Further work}
-    \subsection{Extensions}
-      \subsubsection{Allowing user interaction}
-        \paragraph{Letting users control a boat in real time}
-        \paragraph{Changing graphics for a cox-eyed view}
-    \subsection{Flexibility of software}
-      \subsubsection{Other applications of the software}
-      \subsubsection{Changing river how-to}
-        \paragraph{Changing shape how-to}
-        \paragraph{Changing number of lanes how-to}
-        \paragraph{Merging lanes how-to}
+  With such a short time to complete this project, it is inevitable that further improvements to the model, the software and its evaluation are possible. Chapters \ref{chapter:model}, \ref{chapter:softwaredesign}, \ref{chapter:control_policy} and \ref{chapter:experiments} all have sections at the end listing future work that could be done. I will now pick out the items from those sections that I would most like to see done next.
+  
+  I believe that improvements to the lane model to allow lanes to branch and merge would be useful work. This would remove the assumption that the river has constant width and would allow the simulation of many more types of river - in particular, it would make it possible to have a much closer approximation of the Cam.
+  
+  The control policies written for this project all have very distinct  very distinct My next preference would be to apply machine learning techniques to create new control policies. It would be fascinating to see what rules it comes up with and whether any of those rules could be applied on to the actual Cam to improve traffic flow and safety.
+  
+  After that I would like to model launch schedules which match more closely the traffic conditions of the Cam. However, I fear that this work may require a lot of time and the reward be only personal satisfaction (I cannot see large EPSRC grants being awarded to fund such an endeavour).
+  
+  \section{Other applications of the software}
+  This project took rowing on the river Cam as its inspiration. However, there are other uses for the model and software. It would be very easy to alter the software to simulation traffic on another river.
+  
+  More radical departures from the original source are also possible. The model and software could be applied to other areas with lanes. It could even be adapted so that the lanes are not even physically adjacent. Simulating cars on motorways, ships in shipping lanes or aircraft on flight paths spring to mind.
+
+
+  \paragraph{Closing}
