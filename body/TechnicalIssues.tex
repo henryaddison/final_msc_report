@@ -190,11 +190,22 @@ This chapter covers some of the problems encountered when turning the model from
   \subsection{Simulation Run Setup}
   Each run of the simulation in an experiment uses a set of parameters which corresponds to a row in the database with fields for storing the random seed, the control policy the coxes should follow and the schedule to follow. A schedule consists of a set of boat launches to schedule along with the parameters to use. These parameters are the minimum distance the boat should cover in the outing (which for this project was constant at 5000m, roughly equivalent to a run to the lock and back), the speed multiplier (again for this project a constant at 0.5, which meant a boat in gear 10 would travel at 5m/s which roughly matches the 6.3m/s of the world record over 2km), the gear the boat would ideally travel in and the tick the boat should be launched at.
   
-  Experiments and launch schedules based on parameters such as number of boats to launch and delay between each launch can be created using simple scripts. The creation of schedules is completely independent to running the simulation. All that matters is the data ends up in the database. This meant it was easy to write the scripts using Ruby. The ease-of-use of the Ruby language and the object relational mapper (ORM) Active Record made it very quick to write these scripts which can quickly create new schedules. This was much simpler than using a Java ORM like Hibernate which requires lots of configuration.
+  Experiments and launch schedules based on parameters such as number of boats to launch and delay between each launch can be created using simple scripts. The creation of schedules is completely independent to running the simulation. All that matters is the data ends up in the database. This meant it was easy to write the scripts using Ruby. The ease-of-use of the Ruby language and the object relational mapper (ORM) Active Record made it very quick to write these scripts which can quickly create new schedules. This was much simpler than using a Java ORM like Hibernate which requires endless configuration.
   
   When each simulation begins it checks a parameter called Simulation Parameters Id and looks up the row in the database corresponding to this simulation parameters id. It then looks up the scheduled launches associated with this set of simulation parameters and schedules the \texttt{launch()} method to run on the boathouse object with the launch parameters set in the database at the appropriate ticks.
   
-    An example of such parameters is the 
+    An example set of simulation parameters might be the use the SafetyFocussed control policy, with a random seed of 1132785369 and a schedule that launches 10 boats with a 10 minute interval between each launch. Table \ref{technicalissues:simulation_parameters:schedule} holds an example of the parameters used with each launch.
+    
+    \begin{table}[h]
+    \centering
+    \csvreader[tabular=|c|c|c|c|,
+        table head=\hline Launch second & Desired Gear For Boat & Distance To Cover & Speed Multiplier\\\hline,
+        late after last line=\\\hline]
+{csv/ExampleLaunchSchedule.csv}{launch_tick=\tick,desired_gear=\gear,speed_multiplier=\multiplier,distance_to_cover=\distance}
+    {\tick & \gear & \distance & \multiplier}
+    \caption{An example set of launch parameter for 10 boats launched with a 10 minute interval.}
+    \label{technicalissues:simulation_parameters:schedule}
+    \end{table}
   
   \subsection{Data Collection}
   While an experiment runs, data collected is stored in the database. A record of the parameters used at each stage (like the random seed and launch tick of each boat) is stored. Therefore if an experiment or schedule is edited there is still an accurate record of what happened. Plus new data is generated such as how far the boat actually moved and the number of crashes that occurred. Repast allows the scheduling of methods to run at the end of a simulation run. One was setup to flush all the data collected to the database. Since this occurs in the simulation, JDBC is used to connect to the database in Java. Although this requires a bit more work writing SQL queries compared to Ruby and ActiveRecord, since the simulation was creating the data the process of adding the data to the database was not as complicated as generating schedules and so it was not a large problem.
