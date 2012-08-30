@@ -418,7 +418,7 @@ The observations are:
   \begin{itemize}
     \item{\textbf{\texttt{OutingOver}:}} Returns true if the boat is back near the boathouse and has travelled the Cox's \texttt{distance\_to\_cover} value.
     \item{\textbf{\texttt{AtRiverEnd}:}} Returns true if the boat is near the end of the river (either at the lock or the boathouse). Used so the cox knows to spin.
-    \item{\textbf{\texttt{AboveDesiredSpeed} and \texttt{BelowDesiredSpeed}:} Return true if the boat's current gear is above or below the Cox's \texttt{desired\_gear} value. 
+    \item{\textbf{\texttt{AboveDesiredSpeed} and \texttt{BelowDesiredSpeed}:}} Return true if the boat's current gear is above or below the Cox's \texttt{desired\_gear} value. 
     \item{\textbf{\texttt{BoatGear}:}} Returns the value of the boat's current gear (an integer).
     \item{\textbf{\texttt{AheadCurrentLane}, \texttt{BehindCurrentLane}, \texttt{AheadLeftLane}, \texttt{BehindLeftLane}, \texttt{AheadRightLane}, \texttt{BehindRightLane}:}} Returns the \texttt{Blockage} object based on looking in the appropriate direction and lane.
   \end{itemize}
@@ -433,14 +433,14 @@ The observations are:
   
   \begin{itemize}
   
-  \item \texttt{LetBoatRun} does nothing. The boat will continue to move forward in the same gear.
+    \item \texttt{LetBoatRun} does nothing. The boat will continue to move forward in the same gear.
   
-  \item \texttt{Spin} will turn the boat around and move it to the right hand lane over the course of 60 ticks. Because the movement of the boat during spinning is so different to the normal forward movement, the Spin instance itself calls methods on the \texttt{Boat} and \texttt{BoatNavigation} instances. When first executed the Spin action will work out the nearest node in the right hand lane (right relative to the cox when it starts). Each tick of execution the boat will rotate a small amount and move a little closer to the so that node so the boat appears to spin naturally in the visualization. During spinning the boat will occupy edges in all three lanes of the river. When spinning is complete, the boat is set to occupying the edge leading out of the node to which it spun (based on its new direction now it has spun).
+    \item \texttt{Spin} will turn the boat around and move it to the right hand lane over the course of 60 ticks. Because the movement of the boat during spinning is so different to the normal forward movement, the Spin instance itself calls methods on the \texttt{Boat} and \texttt{BoatNavigation} instances. When first executed the Spin action will work out the nearest node in the right hand lane (right relative to the cox when it starts). Each tick of execution the boat will rotate a small amount and move a little closer to the so that node so the boat appears to spin naturally in the visualization. During spinning the boat will occupy edges in all three lanes of the river. When spinning is complete, the boat is set to occupying the edge leading out of the node to which it spun (based on its new direction now it has spun).
   
-  \item \texttt{SpeedUp} and \texttt{SlowDown} simply shift the boat's gear up or down one. If the boat is in the top gear or bottom gear, respectively, the action will have no affect so it will behave just like LetBoatRun.
+    \item \texttt{SpeedUp} and \texttt{SlowDown} simply shift the boat's gear up or down one. If the boat is in the top gear or bottom gear, respectively, the action will have no affect so it will behave just like LetBoatRun.
   
-  \item \texttt{MoveToLaneOnLeft} and \texttt{MoveToLaneOnRight} behave very similarly. The work out which lane the cox is trying to move to (so the lane on the cox's left or right respectively). It then creates a path of temporary edges and nodes using the \texttt{LaneChageEdge} class as described in \ref{software:lane:lanechange}. If the cox is already changing lanes, or there is no lane on the given side (e.g. try to move left when in the left-most lane) or there is not enough of the river left to fit in the lane change, then the action will silently fail and the action will behave just like \texttt{LetBoatRun}.
-
+    \item \texttt{MoveToLaneOnLeft} and \texttt{MoveToLaneOnRight} behave very similarly. The work out which lane the cox is trying to move to (so the lane on the cox's left or right respectively). It then creates a path of temporary edges and nodes using the \texttt{LaneChageEdge} class as described in \ref{software:lane:lanechange}. If the cox is already changing lanes, or there is no lane on the given side (e.g. try to move left when in the left-most lane) or there is not enough of the river left to fit in the lane change, then the action will silently fail and the action will behave just like \texttt{LetBoatRun}.
+  \end{itemize}
 \section{Experiment package}\label{software:experiment}
 The experiment package contains classes for gathering data each time a
 simulation is run and storing the data in the database. The
