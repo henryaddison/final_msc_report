@@ -32,7 +32,7 @@ tests make use of the EasyMock mocking library
   with the Repast Simphony libraries built-in as well of lots of
   helpful functionality such a pre-setup launchers to run the simulation
   with the required libraries already on the classpath. It used
-  version 6.?? of the Java Runtime Environment and version ?? Java Development Kit.
+  version 6 of the Java Runtime Environment.
 
   Repast Simphony does allow agent behaviour to be defined using the
   ReLogo dialect of Logo, a point-and-click flowcharts or
@@ -119,7 +119,7 @@ tests make use of the EasyMock mocking library
 
 
   \subsection{MySQL}
-  This project uses MySQL version 5.?.??. The version that was already
+  This project uses MySQL version 5.1.57, the version that was already
   installed. With JDBC it is very easy to connect to databases in
   Java. The only requirements for the project code is access to the
   MySQL JDBC driver at run time, which is readily available from the
@@ -242,7 +242,7 @@ the node. This distance is defined by the \texttt{static} variable
 
 \paragraph{code listing for \texttt{extend()}}
 
-\lstinputlisting[language=Java,caption={Lane\#extend method for building a lane},label={listing:software:lane:extend}]{code/Lane.java.report}
+\lstinputlisting[language=Java,caption={\texttt{Lane\#extend} method for building a lane},label={listing:software:lane:extend}]{code/Lane.java.report}
 
 \subsection{\texttt{LaneNode} class}
 A \texttt{LaneNode} is a very simple object. It has a position attribute and
@@ -328,9 +328,10 @@ is repeated using the next edges in the sandwiching lanes and placing
 the temporary node slightly closer to the destination edge end
 node. The process stops after a fixed number of loops when rather than
 placing a temporary node, the actual node from the destination lane is
-used.
+used. The code for this can be found in Listing \ref{software:listing:lanechange}.
 
-\paragraph{LaneChageEdge build method code listing}
+\lstinputlisting[language=Java,caption={\texttt{LaneChangeEdge.createLaneChangeBranch}
+    method creating temporary branch on between two lanes to allow lane changing.},label={software:listing:lanechange}]{code/LaneChangeEdge.report.java}
 
 \subsection{\texttt{Boathouse} class}
 \paragraph{The ``agent'' which contains the methods for launching a boat}
@@ -356,7 +357,16 @@ Continuous Space projection in a suitable place.
 \paragraph{Opening paragraph and UML diagram}
 The Boat package contains classes related to the model of a boat. It
 consists of the main \texttt{Boat} class and a \texttt{BoatNavigation} class. Each Boat
-has access to a \texttt{BoatNavigation} instance.
+has access to a \texttt{BoatNavigation} instance. The main methods and instance variables of these classes are summarised in UML form in Figure \ref{software:fig:boatUML}.
+
+\begin{figure}
+\begin{center}
+  \includegraphics[scale=0.3]{images/boatpackage.png}
+  \caption{Outline of the classes in the \texttt{boat} package}
+  \label{software:fig:boatUML}
+\end{center}
+\end{figure}
+
 
 \subsection{\texttt{Boat} class}
 The \texttt{Boat} class contains the properties about the boat such as current
@@ -387,9 +397,9 @@ The main \texttt{continueForward()} function takes care of keeping the
 boat's movement within the 2D ContinuousSpace in sync with
 movement on the 1D lane graph. As part of this it also takes care of
 aiming the boat in a new direction each time it moves onto the next
-edge.
+edge. The code can be found in Listing \ref{listing:software:boatnavigation:continueForward}.
 
-\lstinputlisting[language=Java,caption={BoatNavigation\#continueForward
+\lstinputlisting[language=Java,caption={\texttt{BoatNavigation\#continueForward}
     method for moving a boat each tick},label={listing:software:boatnavigation:continueForward}]{code/BoatNavigation.report.java}
 
 \section{\texttt{cox} package}
@@ -399,7 +409,7 @@ The main aim of the \texttt{cox} package is to decide actions to execute in orde
 \begin{figure}
 \begin{center}
   \includegraphics[scale=0.3]{images/coxpackageUML.png}
-  \caption{Outline of the classes in the cox package}
+  \caption{Outline of the classes in the \texttt{cox} package}
   \label{software:fig:coxUML}
 \end{center}
 \end{figure}
@@ -466,7 +476,7 @@ time the simulation is run.
 \begin{figure}
 \begin{center}
   \includegraphics[scale=0.3]{images/eer.png}
-  \caption{EER model of database}
+  \caption{ER model of database}
   \label{software:fig:eer}
 \end{center}
 \end{figure}
