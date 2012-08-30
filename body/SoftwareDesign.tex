@@ -1,22 +1,15 @@
 \chapter{Software Design}\label{chapter:softwaredesign}
 
-\paragraph{Opening paragraph - a chapter to examine how the model was
-  broken down in to smaller software objects to be easier to manage
-  (each object has its own, tighter focus. Plus examine the
-  requirements and dependencies of this project.}
-
 Chapter \ref{chapter:model} defined the model conceptually. This
 chapter will describe the implementation of the model in software. The
 implementation has two parts. There is the application code written
 specifically for this project and there are the dependencies in the
 form of libraries and applications written by others. One aim of this
-chapter is to serve as a starting guide to anyone who wished to edit
-the code later.
+chapter is to serve as a starting guide to anyone who wishing to edit
+the code.
 
 
 \section{Requirements \& Dependencies}
-  \paragraph{Description of what fits in this requirements and
-    dependencies chapter}
 This section will give a brief description of the third-party
 libraries and applications required to run the simulation. The
 simulation is a Java application. The application uses the libraries that make up the Repast Simphony
@@ -240,8 +233,6 @@ to the extension. They are defined to be a fixed distance away from
 the node. This distance is defined by the \texttt{static} variable
 \texttt{width}. Listing \ref{listing:software:lane:extend} contains the code for the \texttt{extend()} method.
 
-\paragraph{code listing for \texttt{extend()}}
-
 \lstinputlisting[language=Java,caption={\texttt{Lane\#extend} method for building a lane},label={listing:software:lane:extend}]{code/Lane.java.report}
 
 \subsection{\texttt{LaneNode} class}
@@ -334,7 +325,6 @@ used. The code for this can be found in Listing \ref{software:listing:lanechange
     method creating temporary branch on between two lanes to allow lane changing.},label={software:listing:lanechange}]{code/LaneChangeEdge.report.java}
 
 \subsection{\texttt{Boathouse} class}
-\paragraph{The ``agent'' which contains the methods for launching a boat}
 The \texttt{BoatHouse} class is a simple class. It has methods for launching
 boats onto a River. The main launch method will create new Boat and
 \texttt{Cox} objects, add them to the main context and then launch the objects
@@ -344,9 +334,6 @@ cover and control policy to use as well as an id of a row in the
 \texttt{scheduled\_launches} table to record data.
 
 \subsection{\texttt{RiverFactory} class}
-\paragraph{Helper class for creating pre-defined Rivers, adding them
-  to context and positioning them appropriately in the Continuous
-  Space projection, e.g. the simplified Cam. c.f. Factory pattern}
 The \texttt{RiverFactory} class is a helper class with methods for easily creating
 predefined River objects such as the simplified Cam. The factory will
 define the appropriate angles to extend the River by as well as adding
@@ -354,7 +341,6 @@ the \texttt{River} and \texttt{Boathouse} to the context and placing them in the
 Continuous Space projection in a suitable place.
 
 \section{Boat package}
-\paragraph{Opening paragraph and UML diagram}
 The Boat package contains classes related to the model of a boat. It
 consists of the main \texttt{Boat} class and a \texttt{BoatNavigation} class. Each Boat
 has access to a \texttt{BoatNavigation} instance. The main methods and instance variables of these classes are summarised in UML form in Figure \ref{software:fig:boatUML}.
@@ -381,8 +367,7 @@ The scheduled method for Boat will call \texttt{continueForward()} on the
 \texttt{BoatNavigation} instance and then update the \texttt{BoatRecord}'s statistics.
 
 \subsection{\texttt{BoatNavigation} class}
-\paragraph{Keeping track of things like current edge and
-directions of travel (upstream or downstream)}
+
 \texttt{BoatNavigation} is a delegate class for \texttt{Boat}. It keeps track of the
 boat's position on a Lane's network of nodes with references to the
 current edge the boat is travelling on, the direction of travel
@@ -392,7 +377,6 @@ retrieving these properties as well as methods for getting related
 information such as a the destination node that the Boat is currently
 aiming at.
 
-\paragraph{Keeping in sync location of cox and boat in 2D space and on the 1D lane graph}
 The main \texttt{continueForward()} function takes care of keeping the
 boat's movement within the 2D ContinuousSpace in sync with
 movement on the 1D lane graph. As part of this it also takes care of
@@ -403,7 +387,7 @@ edge. The code can be found in Listing \ref{listing:software:boatnavigation:cont
     method for moving a boat each tick},label={listing:software:boatnavigation:continueForward}]{code/BoatNavigation.report.java}
 
 \section{\texttt{cox} package}
-\paragraph{Opening paragraph}
+
 The main aim of the \texttt{cox} package is to decide actions to execute in order to have the boat behave in a suitable manner. It therefore contains functionality for making observations, choosing an action based on those observations and executing the chosen action. Figure \ref{software:fig:coxUML} gives a UML sketch of the objects and their relationships in the package.
 
 \begin{figure}
@@ -415,11 +399,11 @@ The main aim of the \texttt{cox} package is to decide actions to execute in orde
 \end{figure}
 
 \subsection{\texttt{Cox} class}
-\paragraph{scheduling decision making}
+
 The \texttt{Cox} class is the main class in the package. It is responsible for conducting the observe-decide-execute cycle each tick through the \texttt{step()} scheduled method. This includes methods and variables for altering and storing the incapacitated state of the cox for crashes. It also contains variables \texttt{desired\_gear} and \texttt{distance\_to\_cover} to store the outing plan for the cox. The work for each stage of the observe-decide-execute cycle is handled by other delegate objects in the package.
 
 \subsection{Observations}
-\paragraph{how observations are made available to cox brain}
+
 The \texttt{CoxObservations} class provides access to the many observations a cox is allowed to make. It is designed to be consumed by a \texttt{ControlPolicy} instance. By wrapping the observations in a single class it provides a simple interface for a \texttt{ControlPolicy} to use when deciding what to do next. It also provides a way to restrict the \texttt{ControlPolicy} to only accessing information it is allowed based on the model rather than giving it access to raw Boat, River and Cox objects in the simulation.
 
 The Observations can return information in one of three types: simple booleans, integer values and Blockage objects, which are the result of looking down a lane. The information in the Blockage objects is inferred based on an instance of the \texttt{CoxVision} class. The \texttt{CoxVision} class provides methods for looking ahead and behind in each lane. An observation which makes use of this will return a Blockage object which will say for the fixed lane and direction, the number of edges until the blockage, whether the blockage is an edge occupied by boats or not, and the max and min relative speed of any boats on that blocked edge.
@@ -470,8 +454,6 @@ The database schema is visualized in the Figure
 experiment. The \texttt{simulation\_runs}, \texttt{boat\_records} and
 \texttt{crash\_records} tables are used to hold data generated each
 time the simulation is run.
-
-\paragraph{ER diagram}
 
 \begin{figure}
 \begin{center}

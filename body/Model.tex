@@ -166,7 +166,6 @@
       
     \section{Cox}
       \subsection{Description}
-      \paragraph{Description of duties and abilities}
       The best way to describe a cox is to consider his duties and abilities. In all rowing boats, coxed or not, someone must carry out these duties and is given these abilities. The difference in a coxed boat is that there is an individual whose sole purpose is to carry out these duties with all the abilities. But the following still applies in non-coxed boats where the cox is an abstract quantity with the duties and abilities distributed amongst the crew.
       
       The cox controls the rudder with which the direction of the boat can be altered. The cox is the authority in the boat and all the rowers are supposed to carry out his commands. In particular the cox dictates the power applied by each rower which in turn dictates the boat speed. Therefore the cox is responsible for navigating the boat safely along the river, avoiding static obstacles like the bank and moving obstacles like other rowing boats. While the rowers are supposed to focus on their rowing, the cox is free to look around him in order to avoid these obstacles. 
@@ -220,7 +219,6 @@
       There are also a couple of special actions: \textbf{Launch} and \textbf{Land}. Launching is initiated by the Boathouse depending on the schedule it is following. Launching will place the boat on the river by the boathouse in the right hand lane heading downstream. Landing is the cox's ultimate goal and will remove the boat from the river. The cox may land when it is in the first edge of any lane.
       
       \subsection{Observations} \label{model:cox:obs}
-      \paragraph{introduction to observations as the information available to a cox}
       The cox needs to be able to make observations about his environment in order to choose which action to do next. Observations are a mixture of real-time perceptions and memorized knowledge. Some of these observations are internal, relating to the boat in which the cox sits. Others are external relating to other boats on the river. 
       
       In reality the cox can only guess at his boat's speed and that of others. And the further away the other boats are the harder it is to guess. Similarly, a cox probably won't know how far he has travelled in metres. However, there are lots of landmarks along the river in the form of corners, buildings and trees and so the coach can supply distances in more human-friendly formats, such as ``to the lock and back'' or ``to the next corner.'' Therefore a cox will know fairly accurately whether he has covered enough distance and whether he is nearly at the end of the river or back at the boathouse.
@@ -247,11 +245,9 @@
       \end{itemize}
       
       \subsection{Decision making}
-      \paragraph{introduction to what observation-decision-execution cycle}
       The cox will follow a observation-decision-execution cycle. Using the observations described above the cox must decide which action to execute in order to achieve the goals. At each time tick each cox object will run a method called step(). This method will check if cox is temporarily incapacitated. This simulates the cases where for some reason the boat is not fully under the control of the cox. The most common cause for this is after a crash when the rowers will have to detangle their oars and a coach on the bank may take over to help. If not it will check if the cox is in the middle of a long lasting action like spinning and if so it will continue to execute this durative action. If it is not in the middle of an action then the cox will use its observations to decide what action to execute next based on its control policy.
       
-      \subsubsection{Control Policy/Action Scheduling}
-      \paragraph{description as the decision making process based on observations}
+      \subsubsection{Control Policy}
       The cox's control policy determines how the observations are mapped to an action to execute. The control policy will thus define the cox's, and therefore the boat's, behaviour. During this project different control policies have been explored to examine how they affect safety and traffic flow. Control policies need to be reactive as a cox's environment is constantly changing. The cox must be able to respond as its boat moves on the river and to respond to other boats on the river. Therefore the action decision comes after the cox has made its observations and uses these observations to decide what action to execute next.
       
       The control policies used are written as teleo-reactive (TR) programs as defined by Nilsson (\cite{Nilsson1994}). These may be thought of as an ordered list of condition-action pairs. Each pair is looked at in order. If the condition part is true, then the corresponding action is chosen. Otherwise the next pair is looked at.

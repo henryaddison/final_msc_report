@@ -1,5 +1,4 @@
 \chapter{Related Work}\label{chapter:background}
-  \paragraph{Introductory paragraph explaining what similar works I looked at}
   In this chapter, we look at the solutions of similar problems and argue the benefits of using an agent-based approach to create a simulation of the river Cam.
 
   \section{Scheduling problem}
@@ -26,10 +25,10 @@
   \section{Road traffic simulation}
     Boats on a river and cars on a road have similarities. They are both trying to move forwards in a narrow, bounded space. Since this project is focussed on the traffic on part of the Cam, we shall restrict ourselves to considering microscopic traffic simulations.
     
-    \subsubsection{Traditional Models}
+    \subsection{Traditional Models}
     The majority of microscopic road traffic simulations use a car-following model such as the Gipps' model (\cite{Gipps1981}). These models attempt to predict the speed and acceleration of a car based on the behaviour of the car ahead. In this way traffic patterns can be predicted without the reliance on a pre-determined schedule of behaviour. However, there are many criticisms of the car-following approach. Brackstone and Mcdonald (\cite{Brackstone2000}) review car-following models and find ``evolution of car-following models therefore has clearly been slow, and although many would argue that they are sufficiently valid for the purposes for which we require them, there is a growing belief that this is not the case." The software based on these models also has limitations. For example, a user of VISSIM found ``vehicles may pass through each other at road crossings ... the simulation software does not grant the autonomy to individuals that allow them to recognise and avoid this collision'' (\cite{Manley}). Therefore neither a car-following model nor the current software using such a model is suitable for this project.
       
-    \subsubsection{Agent Based Models}
+    \subsection{Agent Based Models}
     \paragraph{Benefits of ABM - Bonabeau paper}
       A more promising approach is offered by Agent-Based Modelling (ABM). Bonabeau (\cite{Bonabeau2002}) gives excellent arguments with examples for the benefits ABM and recently research in traffic simulation has produced models using ABM.
       
