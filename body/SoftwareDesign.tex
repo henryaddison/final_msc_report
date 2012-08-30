@@ -497,7 +497,7 @@ texttt{simulation\_parameters table. it contains historic record of parameters
   case a of a crash). Further data about the simulation run is stored
   in the \texttt{boat\_records} and \texttt{crash\_records} tables.
 
-\subsection{\texttt{boat\_records} and \texttt{crash\_records} tables}
+\subsection{\texttt{boat\_records} table}
 The \texttt{boat\_records} table contains both historic records of the
 boat's launch parameters and data about what happened to the boat
 during the simulation.
@@ -519,7 +519,7 @@ during the simulation.
     which this boat was launched.
 \end{itemize}
 
-\subsubsection{What happened}
+\subsubsection{Data gathered about boat during simulation}
 \begin{itemize}
   \item{\texttt{land\_tick}:} The tick when the boat landed. If the boat dails
     to land, this will be NULL.
@@ -527,14 +527,17 @@ during the simulation.
     course of the simulation.
   \item{\texttt{aggregate\_gear\_difference}:} At each tick, the absolute
     difference between the boat's current gear and the cox's desired
-    gear is calculated. This column contains the sum of these values.
+    gear is calculated. This column contains the sum of these values. e.g. Suppose a boat accelerated over 10 ticks from gear 1 to gear 10 and it's desired gear was 4, then the aggregate gear difference would be 
+    \[\sum_{i=1}^{10} |i - 4| = 27.\]
   \item{\texttt{aggregate\_tenth\_tick\_gear\_difference}:} As above but the
     gear difference is only recorded every tenth tick. Recording every
     tick may turn out to be too excessive. This column is useful to
     hide short-lived, infrequent variations in gear.
 \end{itemize}
 
-The \texttt{crash\_records} table contains data for each pair of boats that crash during a simulation run. When a boat occupies an edge with boats already on, then it is considered to have crashed with all those boats and creates a new row in \texttt{crash\_records} for each. Each row of data consists of the relative velocity of the crash, the number of boats on the edge where the crash occurred, and whether this edge is in the middle lane of the river.
+\subsection{\texttt{crash\_records} table}
+
+The \texttt{crash\_records} table contains data for each pair of boats that crash during a simulation run. When a boat occupies an edge with boats already on, then it is considered to have crashed with all those boats and creates a new row in \texttt{crash\_records} for each. Each row of data consists of the relative velocity of the crash, the number of boats on the edge where the crash occurred, and whether this edge is in the middle lane of the river. e.g. Suppose a boat moving at 5m/s enters an edge of the middle lane containing two other boats. Suppose hypothetically one of these boats is moving in the same direction at 3m/s and the other is moving in the opposite direction at 2m/s (this is an impossible example as the model prevents more than one boat moving on an edge but it is a useful explanatory example). Then two rows will be added to the \texttt{crash\_records} table. Both will record the same value of the current tick, true for the crash being in the middle lane. One will record a \texttt{relative_velocity} of 2 for the crash with the boat travelling in the same direction and the other 7 for the crash with the boat heading in the other direction.
 
 \section{Style and UI packages}
 The style and ui packages are both small. They are used to customise the Repast
