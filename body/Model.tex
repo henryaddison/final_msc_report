@@ -62,7 +62,7 @@
       
       The nodes have a position attribute. They are a way of modelling the various landmarks scattered along the river which coxes can use to work out where they are.
       
-      Each node is placed so its location is 20m from the next one in the graph. Therefore edges between the nodes have a length that is roughly the same as the length of a boat. This means a boat is considered to fill the edge as it travels between the nodes at either end. A boat will remain on an edge for as long as it takes to travel edge's length. Once the boat has covered this distance it will exit the current edge and occupy the next edge in the graph. This allows for a simple collision detection mechanism. If two or more boats try to occupy the same edge then they are considered to have crashed. More detail on crashing can be found in \ref{model:movement:crashing}.
+      Each node is placed so its location is 20m from the next one in the graph. Therefore edges between the nodes have a length that is roughly the same as the length of a boat. This means a boat is considered to fill the edge as it travels between the nodes at either end. \ref{model:boat:space_filling} in the Boat section of the model  gives more detail about how a boat fills an edge and how dividing the lanes up into edges roughly as long as a boat allow for a simple collision detection mechanism.
       
       \subsubsection{Lane Changing} \label{model:river:lane_changing}
       The one edge in, one edge out rule is temporarily broken when a cox decides to change lane. In this case a new set of nodes and edges are temporarily added to the graph of the target node. These nodes and edges are marked so that other coxes will ignore them. These new nodes and edges start from the boat's current location and join up with a node further along in the target lane. These new nodes are located so that the cox will smoothly steer the boat into the new lane in the visualization. For collision detection purposes the boat is considered to occupy edges in both the starting lane and the target lane until the boat is fully in the the target lane and back to following the predefined graph of the target lane. When a boat is travelling along one of the red temporary edges in Figure \ref{fig:model:lanes}, it is considered to also occupy the two black permanent lanes sandwiching temporary edge above and below.
@@ -80,8 +80,8 @@
       \subsection{Model Overview}\label{model:boat:simplified}
       For modelling purposes the boat is the object that is bound by the physical constraints of filling space around a particular location which should be entirely on the river. It is also the object moves according to its speed and orientation rather than the cox due to the indirect nature of a cox's control and the way that rowers are taught to behave. Therefore movement is a feature of the boat rather than the cox. Although the way in which the boat moves is determined by the cox's actions.
       
-      \subsection{Space filling}
-      As the most boats on the river are rowing eights it is reasonable to assume for our model all boats are rowing eights and for visualization purposes a boat fills a rigid 17m x 7m rectangle (though something that looks a little more like an eight is displayed, see Figure \ref{fig:model:boat}). More importantly for the model, since boats are restricted to lanes and each edge at 20m long is roughly the length of a boat, a boat fills an edge completely while it travels along it. This means that sometimes the visualization occasionally shows boats overlapping but not crashed. This is acceptable since the reality of the situation is there is some flexibility with drawing in oars and boats not filling a rectangle that can allow boats to travel very close together. Similarly, boats may appear not to be overlapping but still to have crashed. This also represents reality where coxes and coaches may get nervous and stop boats which get very close. Although using edge occupancy as a means of collision detection is rather crude for the scope of this project it is an acceptable simplification. A more accurate model would need to be a lot more complicated and would probably not provide much more accuracy to the simulation.
+      \subsection{Space filling}\label{model:boat:space_filling}
+      As the most boats on the river are rowing eights it is reasonable to assume for our model all boats are rowing eights and for visualization purposes a boat fills a rigid 17m x 7m rectangle (though something that looks a little more like an eight is displayed, see Figure \ref{fig:model:boat}). 
       
       \begin{figure}
       \begin{center}
@@ -90,6 +90,38 @@
       	\label{fig:model:boat}
       \end{center}
       \end{figure}
+      
+      More importantly for the model, a boat is considered to fill a 20m edge completely while it travels along it. The edge the boat occupies is determined by its centre point. At launch, the boat is placed in 2D space at the position of the first node in the downstream lane and pointing towards the second node. It is considered to occupy the edge between the first node and the second node. Suppose this boat moves at 1m/s. After the next tick, the boat will have moved 1m forwards in 2D space but it will still occupy the same, first edge. After 19 more ticks, the boat will have travelled the 20m to the second node. At this point the boat leaves the first edge and occupies the second edge. This edge occupation model is shown in Figure \ref{fig:model:edgeoccupation}.
+      
+      \begin{figure}
+      \begin{center}
+      	\includegraphics[scale=0.3]{images/edgeoccupation.png}
+      	\caption{How the edge occupied by a boat changes as it moves.}
+      	\label{fig:model:edgeoccupation}
+      \end{center}
+      \end{figure}
+      
+      A collision is detected in the model when more than one boat tries to occupy the same edge. This results in a crash whose effects are described in more detail in \ref{model:movement:crashing}. This means that sometimes the visualization can appear to be out of sync with the collision detection model. Occasionally boats may appear to be overlapping but not considered to have crashed. Similarly, boats may appear not to be overlapping and yet considered to have crashed. Figures \ref{fig:model:worstcase_overlapping} and \ref{fig:model:worstcase_no_overlap} show these two worst cases of the model.
+      
+      \begin{figure}
+      \begin{center}
+      	\includegraphics[scale=0.3]{images/overlap_worst_case.png}
+      	\caption{These boats appear to be overlapping, however in the model they are considered to be occupying different parts of the lane.}
+      	\label{fig:model:worstcase_overlapping}
+      \end{center}
+      \end{figure}
+      
+      \begin{figure}
+      \begin{center}
+      	\includegraphics[scale=0.3]{images/worstcase_no_overlap.png}
+      	\caption{These boats appear to have space between them, however in the model they are considered to be occupying the same edge.}
+      	\label{fig:model:worstcase_no_overlap}
+      \end{center}
+      \end{figure}
+      
+      In the first case, Figure \ref{fig:model:worstcase_overlapping}, the position of the centres of the two boats might differ by only the smallest of distances but they are still considered to not occupy the same edge. This is acceptable since in reality have some flexibility by drawing in oars and boats taper quickly to a point so  that can allow boats to travel very close together. In the model, this situation is likely to only arise just before or just after a crash, so such overlapping in the visualization is very likely to be detected as a collision eventually by the model.
+      
+      The second case is less of a leap. With the green boat filling 8.5 metres of the left of the edge and the red boat filling 8.5 metres of the right of the edge, there is only 3 metres of clear water between the boats. In such a situation in reality coxes and coaches may well get nervous and stop boats when they get so close. Although using edge occupancy as a means of collision detection is rather crude for the scope of this project it is an acceptable simplification. A suggestion for a more accurate model is described in the Future Work section.
       
       \subsection{Movement}
       As well as modelling how the boat physically fills space on the river, the boat is also the object that moves. During each tick after the cox has executed its action, the boat will follow the lane it is in at whatever speed it has (both of which may have been changed by the cox).
