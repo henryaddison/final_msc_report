@@ -1,5 +1,5 @@
 \chapter{Model} \label{chapter:model}
-  The model is the most important part of the project. An invalid model can only hope to produce an invalid simulation. This chapter will describe the model used during this project and compare it with the real world, noting and justifying any simplifications or assumptions used. The first section gives an overview of the model. The following sections then looks at specific parts in more detail.
+  The model is the most important part of the project. An invalid model can only hope to produce an invalid simulation. This chapter will describe the model used during this project and compare it with the real world, noting and justifying any simplifications or assumptions used. The first section gives an overview of the model. The following sections then looks at specific parts in more detail. At the end there are some suggestions for possible future improvements to the model.
   
   \section{Overview}
     The aim of modelling is to highlight which features in the environment to be simulated are important and which can be ignored\cite{Sterling2009}. For an agent-based model we wish to break these features down into the agents and their environment and their interactions with that environment so that the agents may assess their situation and make decisions\cite{Bonabeau2002}. In this section there is a summary of the important features of the model and their relationships.
@@ -43,11 +43,9 @@
       A true traffic simulation modelling conditions on the Cam might aim to carefully replicate the launch rates, matching how they vary throughout the day, week and year, and types of boat launched (e.g. fast, experienced eights or slow, novice single sculls). However, this is beyond the scope of this project and unfortunately collecting this data is difficult as the traffic pattern changes drastically when the academic year ends in June. Instead the Boathouse will launch boats by following schedules generated randomly. This will still allow coxes to experience different situations such as busy periods lots of boats launching or quiet times with only a few boats out and generating schedules which match real world conditions more closely during follow-up work is not ruled out.
       
       \subsubsection{Simplification from 3D space to into three 1D lanes}
-      The biggest simplification is to consider the river as three parallel lanes. Since the length of a boat is about the same as the width of the river it is safe to consider the lanes as 1D spaces along which the boat can move since it is only feasible for a boat to travel up and down the river (i.e. with or against the stream) but not feasible for a boat to travel to across the river other than briefly when changing lanes or spinning. The restriction to one dimension then makes it much simpler to move the boats around and detect collisions.
+      The river is condensed from a 3D space (or 2D surface) into parallel lanes. Since the length of a boat is about the same as the width of the river it is safe to consider the lanes as 1D spaces along which the boat can move since it is only feasible for a boat to travel up and down the river (i.e. with or against the stream) but not feasible for a boat to travel to across the river other than briefly when changing lanes or spinning. The restriction to one dimension then makes it much simpler to move the boats around and detect collisions.
       
-      Less justifiable is to have three lanes for the entire length of the Cam. For most of the river two-way traffic is possible but three-abreast traffic is limited to quite a small part. However, three lanes allow for some interesting behaviour with a central lane for overtaking. It also allows the assumption at any point on the river there is part of each of the three lanes nearby. Section \ref{model:river:lane_changing} on changing lanes could also be used a starting point for merging lanes. Unfortunately for this project the assumption of three lanes for the length of the river is deeply embedded so further work would be needed to remove it.
-      
-      While this project takes rowing on the Cam for inspiration as much as possible the software produced is able to simulate other three-laned rivers without much alteration. Details on how the lanes were created to match the Cam can be found in \ref{techissues:river}.
+      For simplicity in this model there are three lanes for the entire length of the Cam. For most of the river two-way traffic is possible but three-abreast traffic is limited to quite a small part. However, three lanes allow for some interesting behaviour with a central lane for overtaking. It also allows the assumption at any point on the river there is part of each of the three lanes nearby. The Future Work section at the end of this chapter describes how this assumption of 3 equal lanes could be removed.
       
       \subsubsection{Lanes}\label{model:river:lanes}
       Each lane can be thought of as a simple directed graph with each node connected by one edge in and one edge out. By making the graph directed there is a unique node that is the next node depending on whether the boat is travelling downstream (away from the boathouse) or upstream (towards the boathouse) which map to travelling with the direction of the edges or against the direction of the edges. See Figure \ref{fig:model:lanes} for a diagram representing the 3 main lanes.
@@ -232,7 +230,7 @@
       \end{itemize}
       
       \subsubsection{future improvements}
-      It would be nice to have a level of uncertainty in the cox's observations to more accurately model reality. After all humans are not perfect at determining the speed and distance of objects by sight alone. One way to model this would be to introduce some random noise. The mean and variance of this noise could grow for objects further away.
+      
       
       \subsection{Decision making}
       \paragraph{introduction to what observation-decision-execution cycle}
@@ -249,14 +247,28 @@
       The first condition-action pair in a TR program is special. The condition is the ultimate goal condition for the agent. For all control policies in this project, the goal condition is the same. As stated in \ref{model:cox:goals:simplifications} the ultimate aim of each cox is cover a minimum distance and then to the boathouse. When this condition is met the cox lands the boat and is removed from the simulation.
 
 \section{Future Work}
+This section addresses how the model just described could be improved in the future. 
 
-\paragraph{Better edge occupation model}
-\paragraph{Changing number of lanes how-to}
-\paragraph{Merging lanes how-to}
+\subsection{More flexible lane model}
+This project takes the Cam as inspiration for the shape of the river possible. However, the software produced is able to simulate other three-laned rivers without much alteration. Details on how the lanes were created to match the Cam can be found in \ref{techissues:river} along with the general algorithm for creating rivers of other shapes. 
 
-\paragraph{Delays between cox's decision and rower's implementation and perhaps some noise in rower's implementation}
+The model specifies the river is made up of three lanes. However, little is done with this assumption so it would not take much effort to adapt the model and software to add or remove lanes that run the full length of the river. A tougher challenge would be to have a model where lanes might not run the full length of the river but could branch out into new lanes and then merge back into other lanes. This would allow for a river that was not a constant width for its entire length, which is much more like the Cam.
 
-\paragraph{Noise in observations}
+Section \ref{model:river:lane_changing} on changing lanes is a good starting point for how lanes could merge. For this project it is assumed that the edges and nodes for changing lanes are specially marked as temporary so that no other cox tries to take them. Imagine instead the red edges and nodes in Figure \ref{fig:model:lanes} are permanent and edges and nodes beyond the red ones in the downstream lane are not present. A boat following such a lane would then automatically follow this and so move in a manner consistent with the river getting narrower and merge into the middle lane (which would become the bottom lane). This does throw up a problem when travelling in the other direction as now the river branches out into two lanes so the cox must choose whether to follow the middle lane or the newly formed downstream lane. This could be got round by either forcing the cox to choose (so having an extra part to the cox's control policy) or by having a sensible default, such as always taking the to the right since boats are supposed to be on the right-hand side of the river.
+
+\subsection{Improved edge occupation mechanism}
+
+The edge occupation mechanism covered in \ref{model:boat:space_filling} is not without flaws covered. The larger of these flaws is to allow boats to overlap in the 2D space of the visualization without detecting a collision. A solution to this is to treat the boat as two points - one for the front and one for the back. The same approach to edge occupation could then be applied to these two points as opposed to the one centre point (taking care that they stay in sync so they should remain 17m apart). A boat would then be considered to occupy an edge if either one of those points lies on the edge (and any boats in between if the edges were made shorter or boats longer). This would make it impossible for boats to overlap without a collision occurring. Boats might be considered to have collided when up to 20m away in this new model, but this seems a reasonable distance at which coxes might begin to get nervous.
+
+\subsection{Uncertainty in the cox's actions and observations}
+
+The model has the rowers activity occurring at the same time as the cox's decision to carry out an action. A closer model of reality would have a delay between the cox deciding what action to do and making the commands to the rowers to carry out the action and then a further delay between the 
+
+The cox's observations could more accurately model reality by adding some uncertainty to them. After all humans are not perfect at determining the speed and distance of objects by sight alone. One way to model this would be to introduce some random noise to the observations. The mean and variance of this noise could grow for objects further away.
+
+As well as noise in the observations a cox makes, a further improvement to the model would be to include some noise in how the rower's implement a cox's actions. The speed of a boat, for example, could have a more complex relationship with the boat's gear. The speed could have a small random element to model how rowers may apply slightly different efforts for the for the same requested pressure.
+
+\subsection{More closely matching real-world conditions}
 
 \paragraph{More sophisticated outing goals}
 
