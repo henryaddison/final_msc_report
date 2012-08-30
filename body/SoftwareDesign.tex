@@ -406,9 +406,9 @@ The main aim of the \texttt{cox} package is to decide actions to execute in orde
 
 \subsection{\texttt{Cox} class}
 \paragraph{scheduling decision making}
-The Cox class is the main class in the package. It is responsible for carrying out the 
+The \texttt{Cox} class is the main class in the package. It is responsible for conducting the observe-decide-execute cycle each tick through the \texttt{step()} scheduled method. This includes methods and variables for altering and storing the incapacitated state of the cox for crashes. It also contains variables \texttt{desired\_gear} and \texttt{distance\_to\_cover} to store the outing plan for the cox. The work for each stage of the observe-decide-execute cycle is handled by other delegate objects in the package.
 
-\subsection{\texttt{CoxObservations} class}
+\subsection{Observations}
 \paragraph{how observations are made available to cox brain}
 The \texttt{CoxObservations} class provides access to the many observations a cox is allowed to make. It is designed to be consumed by a \texttt{ControlPolicy} instance. By wrapping the observations in a single class it provides a simple interface for a \texttt{ControlPolicy} to use when deciding what to do next. It also provides a way to restrict the \texttt{ControlPolicy} to only accessing information it is allowed based on the model rather than giving it access to raw Boat, River and Cox objects in the simulation.
 
@@ -423,7 +423,7 @@ The observations are:
     \item{\textbf{\texttt{AheadCurrentLane}, \texttt{BehindCurrentLane}, \texttt{AheadLeftLane}, \texttt{BehindLeftLane}, \texttt{AheadRightLane}, \texttt{BehindRightLane}:}} Returns the \texttt{Blockage} object based on looking in the appropriate direction and lane.
   \end{itemize}
   
-\subsection{Control Policies}
+\subsection{Decisions}
   Each cox contains an instance of a \texttt{ControlPolicy} subclass. Each subclass will implement a different policy. The \texttt{ControlPolicy} instance is updated each tick with the latest \texttt{CoxObservations} object. It uses these observations to decide what to do next.  Each control policy has a method called \texttt{chooseAction()}. This is defined in the superclass \texttt{ControlPolicy} so that all Control Policies have the same top-level goal condition which will check the OutingOver observation. If \texttt{OutingOver} determines the outing to be over then the Land action will be executed by the cox and the cox and boat will be removed from the simulation. Otherwise, a method called \texttt{typeSpecificActionChoice()} is executed. Each different control policy defines this differently. It is written in a teleo-reactive (TR) style for all Control Policies. This is done in Java by having a list of if statements. Each if statement will check a condition and if the condition is true, it will return the associated action. Otherwise it will move on to trying the next condition-action pair. The final if statement takes the constant true condition. This ensures one action will always be returned. The more complicated control policies contain nested TR-programs to make them easier to code and to read but they remain TR in style. The actual control policies tried are covered in the Chapter \ref{chapter:control_policy}
   
 \subsection{Actions}
