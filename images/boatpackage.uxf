@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>480</x>
+      <y>20</y>
+      <w>290</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>BoatNavigation
+--
+current_edge: LaneEdge
+upstream: boolean
+till_edge_end: double
+--
+getCurrentEdge(): LaneEdge
+getDestinationNode(): LaneNode
+getCurrentLane(): Lane
+continueForward(): void
+moveAlongEdge(double distance): void
+moveToEdgeEnd(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>300</x>
+      <y>90</y>
+      <w>200</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+guided by&gt;</panel_attributes>
+    <additional_attributes>30;50;180;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>20</x>
+      <y>20</y>
+      <w>310</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Boat
+--
+gear: int
+speed_multiplier: double
+orientation: double
+total_distance_covered: double
+--
+run(): void
+move(double distance) : void
+shiftUp(): void
+shiftDown(): void
+getSpeed(): double
+setAngle(): double</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
