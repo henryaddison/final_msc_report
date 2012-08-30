@@ -51,22 +51,22 @@ This chapter covers what experiments were run to test the performance of the dif
   with the data.
 
   \begin{itemize}
-    \item{Single boat}
+    \item{\textbf{Single boat}}\\
     The simplest experiment examined the control policy in the case
     that only one boat was launched. This is almost a debugging
     exercise to check that none of the control policies does anything
     odd. However, it is still useful to rule out completely hopeless policies.
   
-    \item{Outing completion}
+    \item{\textbf{Outing completion}}\\
     The different control policies are examined to determine which
     one's are best at enabling coxes to cover their required distance
     and return to the boat house.
     
-    \item{Safety}
+    \item{\textbf{Safety}}\\
     The different control policies are examined to determine which is
     safest by looking at the crashes that occur for each policy.
 
-    \item{Following outing plan}
+    \item{\textbf{Deviation from outing plan}}\\
     The different control policies are examined to determine which is
     best at helping a boat stick to the cox's desired gear.
   \end{itemize}
@@ -95,7 +95,7 @@ This chapter covers what experiments were run to test the performance of the dif
   \label{experiments:tab:single_boat}
   \end{table}
     
-\section{Getting boats back to boat house}
+\section{Outing completion}
 In this experiment we test how well the control policies perform in allowing cox's to successfully complete outings. This is similar to the Single Boat experiment but now we examine the number of successful outing completions using launch schedules with multiple boats.
 
   \paragraph{Table of \% of each time of brain that got back to boat house}
@@ -143,7 +143,7 @@ In this experiment we test how well the control policies perform in allowing cox
   
   Another interesting outcome of this experiment is the most successful policy for coxes completing their outings. This is the RandomMovement policy. I suspect this is because it ignores the cox's desired gear and so a cox with a low desired gear launched late in a simulation are likely to travel much faster than those controlled by a policy that will keep to the desired gear. At the other end, the SafetyFocussed policy is the least successful policy is by a large margin. This suggests the SafetyFocussed is not a wise one to follow when under strict time constraints. This suggests that none of the policies are using the space available on the river to its fullest.
   
-\section{Crashes}
+\section{Safety}
 This experiment examined how safe the control policies were. The data from the \texttt{crash\_records} table was used as a proxy for safety. First stage we examine the total number of crashes that occurred for each control policy based on the different launch schedules. Then we take a closer look at how bad each crash was.
 
   \paragraph{graphs of crash no versus delay between boats for varying brains and numbers of boats}
@@ -220,7 +220,7 @@ This experiment examined how safe the control policies were. The data from the \
   
  Clearly the average speed of crashes masks a lot of the detail and there is a lot more available to study in the distributions of the crash statistics.
   
-\section{Deviation from desired gear}
+\section{Deviation from outing plan}
 
 \section{Future Work}
 There is no way for this project to exhaust all that the data produced can tell us. There are plenty of other experiments to try and this section gives some suggestions.
