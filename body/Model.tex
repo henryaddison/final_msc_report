@@ -40,7 +40,18 @@
       \subsubsection{Boathouse}
       The boathouses are all placed on the first 2km of the river from Jesus Lock and behaviour in this stretch of the river is sufficiently different that it is reasonable to merge this section of the river into a boathouse which marks the start of the river and only consider the final 3m of the river up to Baits Bite lock. It is from this Boathouse that boats are launched and to where boats aim to return at the end of their outing.
       
-      A true traffic simulation modelling conditions on the Cam might aim to carefully replicate the launch rates, matching how they vary throughout the day, week and year, and types of boat launched (e.g. fast, experienced eights or slow, novice single sculls). However, this is beyond the scope of this project and unfortunately collecting this data is difficult as the traffic pattern changes drastically when the academic year ends in June. Instead the Boathouse will launch boats by following schedules generated randomly. This will still allow coxes to experience different situations such as busy periods lots of boats launching or quiet times with only a few boats out and generating schedules which match real world conditions more closely during follow-up work is not ruled out.
+      The boathouse will follow a launch schedule which will tell it when to launch a boat and the parameters of the boat. An example schedule is shown in Table \ref{model:river:boathouse:schedule}. Chapter \ref{chapter:experiments} contains more details on the timing of launches and boat parameters in the schedules used to test the simulation. 
+      
+      \begin{table}[h]
+      \centering
+      % \csvautotabular{csv/ExampleLaunchSchedule.csv}
+      \caption{An randomly generated launch schedule with 10 boats each launched at 10 minute intervals.}
+      \label{model:river:boathouse:schedule}
+      \end{table}
+      
+      
+      
+      A true traffic simulation modelling conditions on the Cam might aim to carefully replicate the launch rates, matching how they vary throughout the day, week and year, and types of boat launched (e.g. fast, experienced eights or slow, novice single sculls). However, this is beyond the scope of this project but a description of how this might be done is given in \ref{model:future:launch_schedule} in the Future Work section at the end of the chapter. Instead the Boathouse will launch boats by following schedules generated randomly. The random launch schedules will still allow coxes to experience different situations such as busy periods lots of boats launching or quiet times with only a few boats out and generating schedules which match real world conditions more closely during follow-up work is not ruled out. The example used in \ref{model:river:boathouse:schedule} is one from a quiet time with only 10 boats each 10 minutes (600 ticks) apart. A busy time is approximated using 30 boats each launched only 1 minute (60 ticks) apart.
       
       \subsubsection{Simplification from 3D space to into three 1D lanes}
       The river is condensed from a 3D space (or 2D surface) into parallel lanes. Since the length of a boat is about the same as the width of the river it is safe to consider the lanes as 1D spaces along which the boat can move since it is only feasible for a boat to travel up and down the river (i.e. with or against the stream) but not feasible for a boat to travel to across the river other than briefly when changing lanes or spinning. The restriction to one dimension then makes it much simpler to move the boats around and detect collisions.
@@ -164,7 +175,7 @@
       The layered agent-modelling technique laid out by Sterling and Taveter \cite{Sterling2009} is loosely followed to produce the cox model. First the goals the cox wishes to achieve and the constraints placed upon the cox are defined, then the actions available to the cox and the observations and knowledge base the cox can call on. Finally the observations and knowledge are used by the cox to decide which action is performed and when in order to achieve its goal bearing in mind the constraints placed upon it and the boat.
 
       \subsection{Goals \& Constraints}
-      The overall goal for the cox is to make it back to the boathouse at the end of the outing. It is absolutely no good to leave a boat stranded in the middle of the river. Ideally the cox should be safe, so avoid hitting the river bank or colliding with other crews. If a collision is unavoidable, the relative speed of the collision should be as low as possible. The cox should also aim to maintain a speed as close as possible to outing speed and cover a distance as close as possible to the outing plan.
+      The overall goal for the cox is to make it back to the boathouse at the end of the outing. It is absolutely no good to leave a boat stranded in the middle of the river. Ideally the cox should be safe, so avoid hitting the river bank or colliding with other crews. If a collision is unavoidable, the relative speed of the collision should be as low as possible. The cox should also aim to maintain a speed as close as possible to the speeds and distances laid out by the outing plan.
       
       The cox is not completely free to achieve the goals in any possible way. There are the physically that have been mentioned before. A boat must sit fully on the river and it cannot overlap with another boat. There are also rules for river use laid down by a governing body called CUCBC \cite{CUCBC}. Unlike the previous two hard, physical constraints these rules of the river (like rowing on the right-hand side) can be ignored. It would be interesting to see which of these rules get learnt naturally and which must be included directly if there are to be followed.
       
@@ -268,11 +279,17 @@ The cox's observations could more accurately model reality by adding some uncert
 
 As well as noise in the observations a cox makes, a further improvement to the model would be to include some noise in how the rower's implement a cox's actions. The speed of a boat, for example, could have a more complex relationship with the boat's gear. The speed could have a small random element to model how rowers may apply slightly different efforts for the for the same requested pressure.
 
-\subsection{More closely matching real-world conditions}
+\subsection{More sophisticated outing plans}
 
-\paragraph{More sophisticated outing goals}
+In the model outing plans consist of a fixed gear and a fixed distance to cover, which is constant for all boats. A more realistic outing plan would have a list of gears to try and match and a corresponding distance to cover while in this gear. The overall distance of the outing would be the sum of these distances which would no longer have to be constant though the overall distance of most outing plans is a multiple of the distance to the lock and back.
 
-\paragraph{Launch patterns}
+\subsection{Launch schedules based real-world conditions}\label{model:future:launch_schedule}
+
+To produce a simulation that matches real-world conditions requires a lot of calibration work. As Lowry et al. (\cite{Lowry2011}) point out, this is not a trivial exercise. It would be necessary to determine the distribution of boat launches. This would have to contain data on the maximum speed of the boat to determine a boat's speed multiplier; the outing plan the boat intends to follow to determine in what gears and how far the boat will travel; and the time the boat is launched to determine the launch schedule.
+
+Maximum speeds of boats could be harvested from race results which are available freely on the web. Launch schedule distributions can be estimated by recording the times boats pass a fixed point on the bank. Care should be taken as the amount of traffic is very different early in the morning when a lot of boats go out before 9am lectures and the afternoon which many rowers are stuck in labs. The traffic is then very different again at the weekend compared to weekdays.
+
+The outing plans distribution is harder to mimic. A sample of outing plans could be determined by surveying coaches who use the Cam. This sample could then be used to form a distribution of outing plans. However, the outing plan of a coach will use exercises that may not be easily converted to a gear. Coaches may also not be eager to hand out outing plans. An alternative approach would be to follow some boats during an entire outing and regularly record the speed they are travelling. This would clearly be a very time-consuming activity to get a useful sample.
 
 \paragraph{Conclude model chapter}
 This concludes the description of the conceptual model. The next stage was to turn this theoretical model into computer code in order to run simulations.
