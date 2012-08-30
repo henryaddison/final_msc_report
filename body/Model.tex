@@ -44,14 +44,16 @@
       
       \begin{table}[h]
       \centering
-      % \csvautotabular{csv/ExampleLaunchSchedule.csv}
+      \csvreader[tabular=|c|c|c|c|,
+          table head=\hline Launch second & Desired Gear For Boat & Distance To Cover & Gear-to-Speed  Factor\\\hline,
+          late after last line=\\\hline]
+ {csv/ExampleLaunchSchedule.csv}{launch_tick=\tick,desired_gear=\gear,speed_multiplier=\multiplier,distance_to_cover=\distance}
+      {\tick & \gear & \distance & \multiplier}
       \caption{An randomly generated launch schedule with 10 boats each launched at 10 minute intervals.}
       \label{model:river:boathouse:schedule}
       \end{table}
       
-      
-      
-      A true traffic simulation modelling conditions on the Cam might aim to carefully replicate the launch rates, matching how they vary throughout the day, week and year, and types of boat launched (e.g. fast, experienced eights or slow, novice single sculls). However, this is beyond the scope of this project but a description of how this might be done is given in \ref{model:future:launch_schedule} in the Future Work section at the end of the chapter. Instead the Boathouse will launch boats by following schedules generated randomly. The random launch schedules will still allow coxes to experience different situations such as busy periods lots of boats launching or quiet times with only a few boats out and generating schedules which match real world conditions more closely during follow-up work is not ruled out. The example used in \ref{model:river:boathouse:schedule} is one from a quiet time with only 10 boats each 10 minutes (600 ticks) apart. A busy time is approximated using 30 boats each launched only 1 minute (60 ticks) apart.
+      A true traffic simulation modelling conditions on the Cam would aim to carefully replicate the launch rates, matching how they vary throughout the day, week and year, and types of boat launched (e.g. fast, experienced eights or slow, novice single sculls). However, this is beyond the scope of this project but a description of how this might be done is given in \ref{model:future:launch_schedule} in the Future Work section at the end of the chapter. Instead the Boathouse will launch boats by following schedules generated randomly. The random launch schedules will still allow coxes to experience different situations such as busy periods lots of boats launching or quiet times with only a few boats out and generating schedules which match real world conditions more closely during follow-up work is not ruled out. The example used in \ref{model:river:boathouse:schedule} is one from a quiet time with only 10 boats each 10 minutes (600 ticks) apart. A busy time is approximated using 30 boats each launched only 1 minute (60 ticks) apart.
       
       \subsubsection{Simplification from 3D space to into three 1D lanes}
       The river is condensed from a 3D space (or 2D surface) into parallel lanes. Since the length of a boat is about the same as the width of the river it is safe to consider the lanes as 1D spaces along which the boat can move since it is only feasible for a boat to travel up and down the river (i.e. with or against the stream) but not feasible for a boat to travel to across the river other than briefly when changing lanes or spinning. The restriction to one dimension then makes it much simpler to move the boats around and detect collisions.
