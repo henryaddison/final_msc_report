@@ -91,7 +91,7 @@ This chapter covers what experiments were run to test the performance of the dif
       late after last line=\\\hline]
   {csv/SingleBoatTable.csv}{control_policy=\cp, avg_land_tick=\land, avg_distance_covered=\distance,avg_aggregate_gear_difference=\gear}
   {\cp & \land & \gear & \distance}
-  \caption{This table shows the data recorded for a single boat launched at tick 0 with desired gear 2. The results are averaged over 5 runs with different random seeds.}
+  \caption{This table shows the data recorded for a single boat launched at tick 0 with desired gear 2. The results are averaged over 5 runs with different random seeds. See Listing \ref{listing:sql:singleBoat} for query.}
   \label{experiments:tab:single_boat}
   \end{table}
     
@@ -107,7 +107,7 @@ In this experiment we test how well the control policies perform in allowing cox
       late after last line=\\\hline]
   {csv/CompletionRateByPolicy.csv}{control_policy=\cp, percent_boats_returned=\landed}
   {\cp & \landed}
-  \caption{This table shows the percentage of boats completing outings according to control policy.}
+  \caption{This table shows the percentage of boats completing outings according to control policy. See Listing \ref{listing:sql:completionAllSchedules} for query.}
   \label{experiments:tab:returning_boats_by_policy}
   \end{table}
   
@@ -120,7 +120,7 @@ In this experiment we test how well the control policies perform in allowing cox
       late after last line=\\\hline]
   {csv/CompletionRateBySchedule.csv}{name=\name, percent_boats_returned=\landed}
   {\name & \landed}
-  \caption{This table shows the percentage of boats completing outings according to the launch schedule of the simulation run}
+  \caption{This table shows the percentage of boats completing outings according to the launch schedule of the simulation run. See Listing \ref{listing:sql:completionBySchedule} for query.}
   \label{experiments:tab:returning_boats_by_schedule}
   \end{table}
   
@@ -135,7 +135,7 @@ In this experiment we test how well the control policies perform in allowing cox
       late after last line=\\\hline]
   {csv/CompletionRateByPolicySmallDelay.csv}{control_policy=\cp, percent_boats_returned=\landed}
   {\cp & \landed}
-  \caption{This table shows the percentage of boats completing outings according to control policy for launch schedules with delays between launch of less than 10 minutes.}
+  \caption{This table shows the percentage of boats completing outings according to control policy for launch schedules with delays between launch of less than 10 minutes. See Listing \ref{listing:sql:completionSmallDelays} for query.}
   \label{experiments:tab:returning_boats_by_policy_small_delay}
   \end{table}
   
@@ -150,7 +150,7 @@ This experiment examined how safe the control policies were. The data from the \
   \begin{figure}
   \begin{center}
     \includegraphics[scale=0.8]{"images/graphs/Average\space number\space of\space crashes\space per\space control\space policy\space for\space simulation\space runs\space with\space 10\space boats\space launched"}
-    \caption{Graph plotting crash counts against launch delay for the 4 control policies for schedules with 10 boats launched.}
+    \caption{Graph plotting crash counts against launch delay for the 4 control policies for schedules with 10 boats launched. See Listing \ref{listing:R:DelayVsCrashCount} for query.}
     \label{experiments:fig:crash_counts_10_launches}
   \end{center}
   \end{figure}
@@ -158,7 +158,7 @@ This experiment examined how safe the control policies were. The data from the \
   \begin{figure}
   \begin{center}
     \includegraphics[scale=0.8]{"images/graphs/Average number of crashes per control policy for simulation runs with 20 boats launched"}
-    \caption{Graph plotting crash counts against launch delay for the 4 control policies for schedules with 20 boats launched.}
+    \caption{Graph plotting crash counts against launch delay for the 4 control policies for schedules with 20 boats launched. See Listing \ref{listing:R:DelayVsCrashCount} for query.}
     \label{experiments:fig:crash_counts_20_launches}
   \end{center}
   \end{figure}
@@ -177,7 +177,7 @@ This experiment examined how safe the control policies were. The data from the \
       late after last line=\\\hline]
   {csv/CrashStats.csv}{control_policy=\cp, speed_per_crash=\speed, crashes_per_run=\crashes}
   {\cp & \crashes & \speed}
-  \caption{This table shows the average number of crashes and the relative speed of crashes.}
+  \caption{This table shows the average number of crashes and the relative speed of crashes. See Listing \ref{listing:sql:crashStats} for query.}
   \label{experiments:tab:crashspeeds}
   \end{table}
   
@@ -190,7 +190,7 @@ This experiment examined how safe the control policies were. The data from the \
       late after last line=\\\hline]
   {csv/CrashStats.csv}{control_policy=\cp, launch_crash_percent_est=\crashes}
   {\cp & \crashes }
-  \caption{This table shows an estimate of the proportion of crashes that occur when a boat launches.}
+  \caption{This table shows an estimate of the proportion of crashes that occur when a boat launches. See Listing \ref{listing:sql:crashStats} for query.}
   \label{experiments:tab:crashtimings}
   \end{table}
   
@@ -203,7 +203,7 @@ This experiment examined how safe the control policies were. The data from the \
       late after last line=\\\hline]
   {csv/CrashStats.csv}{control_policy=\cp,, percent_middle_lane=\middle}
   {\cp & \middle }
-  \caption{This table shows an estimate of the proportion of crashes that occur when a boat launches.}
+  \caption{This table shows an estimate of the proportion of crashes that occur when a boat launches. See Listing \ref{listing:sql:crashStats} for query.}
   \label{experiments:tab:crashlane}
   \end{table}
   
@@ -218,7 +218,7 @@ Figure \ref{experiments:fig:gear_difference_10_launches} shows how the average a
 \begin{figure}
 \begin{center}
   \includegraphics[scale=0.8]{"images/graphs/Average aggregate gear difference recorded ever tick per control policy for simulation runs with 10 boats launched"}
-  \caption{Graph plotting average aggregate gear difference per boat versus launch delay for the 4 control policies for schedules with 10 boats launched.}
+  \caption{Graph plotting average aggregate gear difference per boat versus launch delay for the 4 control policies for schedules with 10 boats launched. See Listing \ref{listing:R:DelayVsGearDifference} for query.}
   \label{experiments:fig:gear_difference_10_launches}
 \end{center}
 \end{figure}
