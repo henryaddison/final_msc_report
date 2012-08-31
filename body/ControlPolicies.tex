@@ -29,7 +29,7 @@ The Safety Focussed policy's main aim is to avoid crashing. The implementation i
 
 Neither of the Gear Focussed or Safety Focussed policies make any use of the middle lane. The Overtaking policy  attempts to correct this. The implementation in Java is shown in Listing \ref{listing:control:overtaking}. As with the other policies spinning is chosen if the river is about to run out to ensure it does not get stranded at the lock. Next it checks whether the policy is in overtaking mode and if so executes a subprogram to choose the action.
 
-In overtaking mode, the cox will attempt to move back to the right as soon as it has completely moved into the middle lane and there are enough edges clear both ahead of it and behind it in the right hand lane. Moving back to the right will terminate overtaking mode. Otherwise the cox will attempt to match Gear Focussed approach of speeding up until the boat is in the cox's desired gear.
+In overtaking mode, the cox will attempt to move back to the right as soon as it has completely moved into the middle lane and there are enough edges clear both ahead of it and behind it in the right-hand lane. Moving back to the right will terminate overtaking mode. Otherwise the cox will attempt to match Gear Focussed approach of speeding up until the boat is in the cox's desired gear.
 
 If the policy is not in overtaking mode, then if the cox is close to a boat ahead that is relatively moving sufficiently slower and the lane to the left is clear for a few edges ahead and behind, then this policy will move to the lane on the left (the middle lane) and enter overtaking mode. Otherwise the cox will attempt to match Gear Focussed approach of speeding up until the boat is in the cox's desired gear.
 
