@@ -213,7 +213,7 @@ This experiment examined how safe the control policies were. The data from the \
 
 This experiment examines how well the control policies allow the cox to stick to the outing plan. For this project outing plans consist of a desired gear and a distance to cover. For all experiments the distance to cover is constant for all boats (roughly the distance to the lock and back). Therefore this experiment focussed on how well the boats stuck to the cox's desired gear.
 
-Figure \ref{experiments:fig:gear_difference_10_launches} shows how the average aggregate gear difference changed depending on the launch delay for the 4 policies of interest when 10 boats were launched in total. Appendix \ref{appendix:graphs} has similar graphs for 20 and 30 boat launches in Figures \ref{appendix:graphs:gear_difference_20_launches} and \ref{appendix:graphs:gear_difference_30_launches}.
+Figure \ref{experiments:fig:gear_difference_10_launches} shows how the average aggregate gear difference changed depending on the launch delay for the 4 policies of interest when 10 boats were launched in total. Appendix \ref{appendix:graphs} has similar graphs for 20 and 30 boat launches in Figures \ref{appendix:graphs:gear_difference_20_launches} and \ref{appendix:graphs:gear_difference_30_launches}. The larger the aggregate gear difference, the more a boat deviated from the outing plan's desired gear.
 
 \begin{figure}
 \begin{center}
@@ -223,7 +223,19 @@ Figure \ref{experiments:fig:gear_difference_10_launches} shows how the average a
 \end{center}
 \end{figure}
 
+For all 4 policies there are trends of fewer boats launched or a larger the delay between launches leading to a smaller aggregate gear difference. However, these trends are not as strong compared to the crash count graphs.
 
+There is a clear divide between the GearFocussed and Overtaking polices and the much worse performance displayed by the RandomMovement and SafetyFocussed policies. This is expected as the GearFocussed policy's is designed to try to accelerate to the desired gear and the Overtaking policy adapts the GearFocussed policy to overtake slower boats rather than ramming them from behind. Pleasingly the Overtaking policy performs best on this metric. I suspect that as Overtaking policy enables cox's to stick to the desired gear by cutting down on crashes as crashes lead to deviation from the desired gear as boats get stuck in gear 0 for a few ticks.
+
+Interestingly, the SafetyFocussed policy performs worse than the RandomMovement control policy even though the SafetyFocussed policy does contain logic to try and match the desired outing plan's desired gear. This suggests that the clause in the policy that leads to slowing down when a cox gets too near to a boat in front is the more dominant in these experiments. Indeed watching a simulation using this policy shows that a slow boat quickly leads to a long queue of faster boats trailing behind it as can be seen in a screenshot in Figure \ref{experiments:safety_queue_screenshot}. These faster boats never get the chance to accelerate to their desired gear while in RandomMovement there is at least a possibility.
+
+\begin{figure}
+\begin{center}
+  \includegraphics[scale=0.5]{images/SafetyFocussedQueue.png}
+  \caption{Screenshot of a simulation run using the SafetyFocussed policy. The lead yellow boat to the right is travelling very slowly causing all the other boats to queue slowly behind it.}
+  \label{experiments:safety_queue_screenshot}
+\end{center}
+\end{figure}
 
 \section{Future Work}
 There is no way for this project to exhaust all that the data produced can tell us. There are plenty of other experiments to try and this section gives some suggestions.
