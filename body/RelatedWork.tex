@@ -25,18 +25,26 @@
   \section{Road traffic simulation}
     Boats on a river and cars on a road have similarities. They are both trying to move forwards in a narrow, bounded space. Since this project is focussed on the traffic on part of the Cam, we shall restrict ourselves to considering microscopic traffic simulations.
     
-    \subsection{Traditional Models}
-    The majority of microscopic road traffic simulations use a car-following model such as the Gipps' model (\cite{Gipps1981}). These models attempt to predict the speed and acceleration of a car based on the behaviour of the car ahead. In this way traffic patterns can be predicted without the reliance on a pre-determined schedule of behaviour. However, there are many criticisms of the car-following approach. Brackstone and Mcdonald (\cite{Brackstone2000}) review car-following models and find ``evolution of car-following models therefore has clearly been slow, and although many would argue that they are sufficiently valid for the purposes for which we require them, there is a growing belief that this is not the case." The software based on these models also has limitations. For example, a user of VISSIM found ``vehicles may pass through each other at road crossings ... the simulation software does not grant the autonomy to individuals that allow them to recognise and avoid this collision'' (\cite{Manley}). Therefore neither a car-following model nor the current software using such a model is suitable for this project.
+    The majority of tradition microscopic road traffic simulations use a car-following model such as the Gipps' model (\cite{Gipps1981}). These models attempt to predict the speed and acceleration of a car based on the behaviour of the car ahead. In this way traffic patterns can be predicted without the reliance on a pre-determined schedule of behaviour. However, there are many criticisms of the car-following approach. Brackstone and Mcdonald (\cite{Brackstone2000}) review car-following models and find ``evolution of car-following models therefore has clearly been slow, and although many would argue that they are sufficiently valid for the purposes for which we require them, there is a growing belief that this is not the case." The software based on these models also has limitations. For example, a user of VISSIM found ``vehicles may pass through each other at road crossings ... the simulation software does not grant the autonomy to individuals that allow them to recognise and avoid this collision'' (\cite{Manley}). 
+    
+    Neither a car-following model nor the current software using such a model is suitable for this project. However, more recently has been done on traffic simulations using a more promising approach: Agent-Based Modelling (ABM).
       
-    \subsection{Agent Based Models}
+    \section{Agent Based Models}
+
     \paragraph{Benefits of ABM - Bonabeau paper}
-      A more promising approach is offered by Agent-Based Modelling (ABM). Bonabeau (\cite{Bonabeau2002}) gives excellent arguments with examples for the benefits ABM and recently research in traffic simulation has produced models using ABM.
+      Bonabeau (\cite{Bonabeau2002}) gives excellent arguments with examples for the benefits ABM and recently research in traffic simulation has produced models using ABM.
       
       \paragraph{Description of ABM traffic simulations}
 
+      \paragraph{View coxes as autonomous agents influencing the position of a boat on the river}
+      \paragraph{Desire for any solution to be human readable - goal is to come up with suggestions for coxes NOT to replace them}
+      \subsection{Uses for ABM}
+        \paragraph{biological solution}
+        \subsubsection{TR programs}
+          \paragraph{Nilsson and Kochenderfer papers}
           
     \paragraph{Conclusion about promising nature of multi-agent systems, especially on the  microscopic level as interested in effect of control policies on flow and safety safety}
-    Multi-agent system therefore offer a way to create a simulation of the river Cam which can focus on the effect of control policies both on safety, the flow of traffic and meeting the desires of individual coxes. However, there are enough differences between drivers and coxes that mean creating a model and software specifically for this project is appropriate.
+    ABM offers a way to simulate of the river Camas a multi-agent system which can focus on the effect of control policies of the cox agents on safety, the flow of traffic and meeting the desires of individual coxes. However, there are enough differences between drivers and coxes that mean creating a model and software specifically for this project is appropriate.
     
       \begin{itemize}
         \item A boat's speed and acceleration are much lower compared to their length. Olympic eights travel at around 6m/s over the 2km course. It thus takes about 3 seconds to cover the 17m length of a boat. A car travelling at a leisurely 20mph would take around 0.5 seconds to cover its 4m length.
@@ -46,16 +54,5 @@
         \item Unlike a road network, the river has no junctions. A cox has no choice about route only to cover enough distance.
       \end{itemize}
   
-  Therefore I have chosen to come up with an agent-based model specifically for this project. It is described in Chapter \ref{chapter:model}.
-  
-  \section{Agent Based Modeling}
-    \paragraph{View coxes as autonomous agents influencing the position of a boat on the river}
-    \paragraph{Desire for any solution to be human readable - goal is to come up with suggestions for coxes NOT to replace them}
-    \subsection{Uses for ABM}
-      \paragraph{biological solution}
-    
-      
-      \subsubsection{TR programs}
-        \paragraph{Nilsson and Kochenderfer papers}
-        
+  Therefore I have chosen to come up with an agent-based model specifically for this project. This model is described next in Chapter \ref{chapter:model}.
   
