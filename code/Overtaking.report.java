@@ -45,7 +45,7 @@ public class Overtaking extends ControlPolicy {
   
   private boolean slowBoatInfront() {
     Blockage blockage = latestObservations.aheadCurrentLaneLook();
-    return blockage.getMaxRelativeSpeed() > OVERTAKING_SPEED_DIFFERENCE;
+    return (aheadLeftblockage.getEdgesAway() < CLEAR_BOUNDARY)) && (blockage.getMaxRelativeSpeed() > OVERTAKING_SPEED_DIFFERENCE);
   }
   
   private boolean laneToLeftIsClear() {
