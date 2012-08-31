@@ -145,12 +145,12 @@ In this experiment we test how well the control policies perform in allowing cox
 This experiment examined how safe the control policies were. The data from the \texttt{crash\_records} table was used as a proxy for safety. First stage we examine the total number of crashes that occurred for each control policy based on the different launch schedules. Then we take a closer look at how bad each crash was.
   
   \subsection{Crash quantity}
-  Figures \ref{experiments:fig:crash_counts_10_launches}, \ref{experiments:fig:crash_counts_20_launches} and \ref{experiments:fig:crash_counts_30_launches} show the number of crashes that occurred on average in simulation runs based on the schedule type. The different lines represent the different control policies.
+  Figures \ref{experiments:fig:crash_counts_10_launches} and \ref{experiments:fig:crash_counts_20_launches} show the number of crashes that occurred on average in simulation runs based on the schedule type with 10 and 20 boats launched in total. The different lines represent the different control policies. Figure \ref{appendix:graphs:crash_counts_30_launches} in Appendix \ref{appendix:graphs} shows the results of schedules in which 30 boats were launched.
   
   \begin{figure}
   \begin{center}
     \includegraphics[scale=0.8]{"images/graphs/Average\space number\space of\space crashes\space per\space control\space policy\space for\space simulation\space runs\space with\space 10\space boats\space launched"}
-    \caption{Graphs plotting crash counts against launch delay for the 4 control policies for schedules with 10 boats launched.}
+    \caption{Graph plotting crash counts against launch delay for the 4 control policies for schedules with 10 boats launched.}
     \label{experiments:fig:crash_counts_10_launches}
   \end{center}
   \end{figure}
@@ -158,16 +158,8 @@ This experiment examined how safe the control policies were. The data from the \
   \begin{figure}
   \begin{center}
     \includegraphics[scale=0.8]{"images/graphs/Average number of crashes per control policy for simulation runs with 20 boats launched"}
-    \caption{Graphs plotting crash counts against launch delay for the 4 control policies for schedules with 20 boats launched.}
+    \caption{Graph plotting crash counts against launch delay for the 4 control policies for schedules with 20 boats launched.}
     \label{experiments:fig:crash_counts_20_launches}
-  \end{center}
-  \end{figure}
-  
-  \begin{figure}
-  \begin{center}
-    \includegraphics[scale=0.8]{"images/graphs/Average number of crashes per control policy for simulation runs with 30 boats launched"}
-    \caption{Graphs plotting crash counts against launch delay for the 4 control policies for schedules with 30 boats launched. There is no data plotted for a delay of 600 seconds as not all 30 boats get launched.}
-    \label{experiments:fig:crash_counts_30_launches}
   \end{center}
   \end{figure}
   
@@ -218,6 +210,20 @@ This experiment examined how safe the control policies were. The data from the \
  Clearly the average speed of crashes masks a lot of the detail and there is a lot more available to study in the distributions of the crash statistics.
   
 \section{Deviation from outing plan}
+
+This experiment examines how well the control policies allow the cox to stick to the outing plan. For this project outing plans consist of a desired gear and a distance to cover. For all experiments the distance to cover is constant for all boats (roughly the distance to the lock and back). Therefore this experiment focussed on how well the boats stuck to the cox's desired gear.
+
+Figure \ref{experiments:fig:gear_difference_10_launches} shows how the average aggregate gear difference changed depending on the launch delay for the 4 policies of interest when 10 boats were launched in total. Appendix \ref{appendix:graphs} has similar graphs for 20 and 30 boat launches in Figures \ref{appendix:graphs:gear_difference_20_launches} and \ref{appendix:graphs:gear_difference_30_launches}.
+
+\begin{figure}
+\begin{center}
+  \includegraphics[scale=0.8]{"images/graphs/Average aggregate gear difference recorded ever tick per control policy for simulation runs with 10 boats launched"}
+  \caption{Graph plotting average aggregate gear difference per boat versus launch delay for the 4 control policies for schedules with 10 boats launched.}
+  \label{experiments:fig:gear_difference_10_launches}
+\end{center}
+\end{figure}
+
+
 
 \section{Future Work}
 There is no way for this project to exhaust all that the data produced can tell us. There are plenty of other experiments to try and this section gives some suggestions.
