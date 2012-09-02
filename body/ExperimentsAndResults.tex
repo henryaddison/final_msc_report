@@ -60,7 +60,7 @@ This chapter covers what experiments were run to test the performance of the dif
     \item{\textbf{Outing completion}}\\
     The different control policies are examined to determine which
     one's are best at enabling coxes to cover their required distance
-    and return to the boat house.
+    and return to the boathouse.
     
     \item{\textbf{Safety}}\\
     The different control policies are examined to determine which is
@@ -79,7 +79,7 @@ This chapter covers what experiments were run to test the performance of the dif
   
   Table \ref{experiments:tab:single_boat} shows the results for running the simulation with different control policies. The RandomChoice policy's land tick is NULL. This means that the cox did not land the boat using the RandomChoice policy. When a cox follows the RandomChoice policy, we would expect a sixth of the actions executed by the cox to be Spin. Therefore a cox makes very little useful forward progress when following the RandomChoice policy and certainly not the 5000m of movement required to be able to land again. The RandomChoice policy does not allow a cox to complete an outing in the simplest of settings and so from now on we shall ignore it.
   
-  The other 4 policies successfully enable the cox to complete the outing. The SafetyFocussed, GearFocussed and Overtaking policies all have the same results as we would expect. These policies only behave differently when other boats are around. Otherwise they will accelerate into 2nd gear, spin at the lock, accelerate back to 2nd gear and return to the boat house. The deviation from the desired gear is accounted for by spinning for 60 ticks (when the gear difference will be 2 as the boat is in gear 0 when spinning) and the two ticks when it finishes in gear 1 while accelerating just after launch and spinning.
+  The other 4 policies successfully enable the cox to complete the outing. The SafetyFocussed, GearFocussed and Overtaking policies all have the same results as we would expect. These policies only behave differently when other boats are around. Otherwise they will accelerate into 2nd gear, spin at the lock, accelerate back to 2nd gear and return to the boathouse. The deviation from the desired gear is accounted for by spinning for 60 ticks (when the gear difference will be 2 as the boat is in gear 0 when spinning) and the two ticks when it finishes in gear 1 while accelerating just after launch and spinning.
   
   RandomMovement completes the outing in about half the time of the other policies. This is to be expected as it does not limit itself to 2nd gear but may randomly speed up and slow down at any point. The RandomMovement policy also causes the cox to cover a little more distance in its journey from the boathouse to the lock and back. This is because the policy allows the boat to change lane and so it will cover extra distance laterally as well as forward at some points when changing lane.
     

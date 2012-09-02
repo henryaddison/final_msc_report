@@ -171,7 +171,7 @@ This chapter covers some of the problems encountered when turning the model from
       \begin{figure}
       \begin{center}
         \includegraphics[scale=0.3]{images/SimplifiedCam.png}
-        \caption{The simplified version of the Cam as it appears in the visualization. Notice the three corners. The black box represents the boat house.}
+        \caption{The simplified version of the Cam as it appears in the visualization. Notice the three corners. The black box represents the boathouse.}
         \label{techissues:fig:simplecam}
       \end{center}
       \end{figure}
@@ -181,7 +181,7 @@ This chapter covers some of the problems encountered when turning the model from
   experiments and collect data. There are two phases to the
   experiments. First an experiment needs to be setup which includes
   scheduling boats to be launched and their launch
-  parameters. Secondly, while the simulation runs, data about the boats needs to be collected such as how many times they crash and how many ticks it takes for each to complete their outing and return to the boat house. Both these were achieved using a MySQL database despite Repast having both a batch run environment where many simulations can be run with varying parameters and a mechanism to collect data during a simulation run. 
+  parameters. Secondly, while the simulation runs, data about the boats needs to be collected such as how many times they crash and how many ticks it takes for each to complete their outing and return to the boathouse. Both these were achieved using a MySQL database despite Repast having both a batch run environment where many simulations can be run with varying parameters and a mechanism to collect data during a simulation run. 
   
   Storing data for setting up and experiment and data collected during an experiment in a database meant it was easy to organise the data and ensure it persisted so the same experiment could be run multiple times and their results compared. As each experiment requires parameters for each boat launched, a database provided an easier way to organise many schedules with lots of launches compared to setting many parameters (each launch has 5 parameters and a schedule has tens of launches and each experiment will try multiple schedules with multiple random keys) in a batch run. 
   

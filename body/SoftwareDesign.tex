@@ -58,7 +58,7 @@ tests make use of the EasyMock mocking library
   In Repast every model has a context. The context may then have
   subcontexts. One of the uses of contexts is to keep track of the
   agents in the simulation. The Repast definition of agent is very
-  broad so boats, coxes, the river and the boat house all count as
+  broad so boats, coxes, the river and the boathouse all count as
   agents that need to be added to the context. A subcontext is used
   for each lane to store the network of nodes and edges.
 
@@ -157,7 +157,7 @@ packages in more detail.
 
 The \texttt{river}, \texttt{boat} and \texttt{cox} packages map
 naturally to the 3 main types of objects in the model (with the
-Boathouse contained in the River package). The model was
+\texttt{Boathouse} contained in the \texttt{river} package). The model was
 then broken down into smaller software classes within these packages. This
 makes the software easier to manage as each class has a smaller focus
 compared to the larger objects in the model.
@@ -325,10 +325,10 @@ used. The code for this can be found in Listing \ref{software:listing:lanechange
     method creating temporary branch on between two lanes to allow lane changing.},label={software:listing:lanechange}]{code/LaneChangeEdge.report.java}
 
 \subsection{\texttt{Boathouse} class}
-The \texttt{BoatHouse} class is a simple class. It has methods for launching
+The \texttt{Boathouse} class is a simple class. It has methods for launching
 boats onto a River. The main launch method will create new Boat and
 \texttt{Cox} objects, add them to the main context and then launch the objects
-by placing them on the river by the boat house. It takes arguments to
+by placing them on the river by the boathouse. It takes arguments to
 allow the setting of desired gear, speed multiplier, distance to
 cover and control policy to use as well as an id of a row in the
 \texttt{scheduled\_launches} table to record data.
