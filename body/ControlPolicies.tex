@@ -47,7 +47,7 @@ Firstly it would be interest to try a more intelligent Overtaking policy. A more
 The current policies could also spawn a new set of policies by playing with the parameters they use. For example, it would be interesting to see what the effect of reducing the distance SafetyFocussed policy leaves to the boat ahead or to try Overtaking policies that are more defensive about overtaking, waiting until the cox can see a long way ahead.
 
 \subsection{Machine learnt policies}
-It would be very interesting to apply machine learning techniques to create a policy. This is a much larger undertaking but one possible way would be to follow Kochenderfer (\cite{Kochenderfer2003}). 
+It would be very interesting to apply machine learning techniques to create a policy. This is a much larger undertaking but one possible way would be to follow \textcite{Kochenderfer2003}. 
 
 Kochenderfer shows how to use genetic programming to learn TR programs. The overall program and the conditions themselves are treated as trees. The conditions could be put together from the boolean observations and inequalities involving the numeric observations since these are all bounded (distances are bounded by the cox's vision and speeds are bounded by the top speed of a boat). The observation-based ``atoms" could then be combined with conjunction and negation operators. 
 

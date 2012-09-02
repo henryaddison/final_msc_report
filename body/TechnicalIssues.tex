@@ -6,35 +6,35 @@ This chapter covers some of the problems encountered when turning the model from
     The first challenge was to create a software environment to run the simulation. Agent-based modelling (ABM) frameworks handle the creation of such an environment. In particular for this simulation, they break down time  into discrete ticks, during which methods scheduled on objects will run. There also provide a way to display the movement of objects about a 2D space.
     
     \subsection{Why use an ABM framework?}
-    Gilbert and Bankes (\cite{Gilbert2002}) discuss the advantages and
+    \textcite{Gilbert2002} discuss the advantages and
     disadvantages of using pre-existing libraries and frameworks for ABM rather
     than ``rolling your own.'' Using pre-existing libraries frees a
     programmer up from re-implementing common
     algorithms. However, they also require a programmer to understand the
     language they are written in and to work with the built-in
-    assumptions used by the original writers. Gilbert and Bankes state
+    assumptions used by the original writers. \textcite{Gilbert2002} state
     that agent-based modeling tools that match their ideal specifications
     do not yet exist but that there is a trend towards better
-    tools becoming available. Fortunately a few years later Allen (\cite{Allan2009}) and Berryman (\cite{Berryman2008}) survey ABM frameworks and suggest that Repast Simphony (the latest version of Repast), MASON and NetLogo are useful tools.
+    tools becoming available. Fortunately a few years later \textcite{Allan2009} and \textcite{Berryman2008} survey ABM frameworks and suggest that Repast Simphony (the latest version of Repast), MASON and NetLogo are useful tools.
     
     \subsection{ABM frameworks considered}
     \subsubsection{Repast Simphony}
     \begin{itemize}
       \item Open source so it is easy to inspect what the framework is doing behind the scenes.
       \item Java-based so can use any Java library in the agents.
-      \item Well documented and has an active mailing list (\cite{Repast}).
-      \item There are useful examples to be found on the web such as Nick Malleson's RepastCity (\cite{Malleson}).
+      \item Well documented and has an active mailing list \cite{Repast}.
+      \item There are useful examples to be found on the web such as Nick Malleson's RepastCity \cite{Malleson}.
       \item Integrates nicely with Eclipse so easy to install and quick to get started.
     \end{itemize}    
         
     \subsubsection{MASON}
-    MASON is similar to Repast Simphony (in fact it was designed as an alternative to Repast(\cite{Allan2009})). It is also Java-based and open source. It is designed to be faster than Repast and ``excels'' in its support for learning algorithms (\cite{Berryman2008}).
+    MASON is similar to Repast Simphony (in fact it was designed as an alternative to Repast \cite{Allan2009}). It is also Java-based and open source. It is designed to be faster than Repast and ``excels'' in its support for learning algorithms (\cite{Berryman2008}).
       
     \subsubsection{NetLogo}
     The main of advantage of NetLogo is its simplicity to use for people without programming experience and to this end NetLogo uses of a proprietary language to program the agents aimed at beginner programmers. However, this language is restrictive compared to a heavily-used language like Java.
     
     \subsection{ABM framework chosen}
-    With only a few months to complete this project but a good understanding of Java, using a pre-built framework would require less work than starting from the bottom and building a framework dedicated to the project. The simplicity of NetLogo ruled it out. In the end Repast was chosen. Berryman finds little to separate MASON and Repast Simphony. The integration with Eclipse made getting started with Repast Simphony easy. The improved random number support according to \cite{} would be useful for running experiments, where control over random number streams was essential to ensure reproducibility. Although Repast Simphony does have support for learning algorithms, the improved support in MASON might be missed but their use was a nice-to-have at the planning stage for this project rather than an essential. Also as the simulation would not have to handle a large number of agents (1000 boats would fill the river entirely), the optimizations in MASON would not be necessary. Finally the personal recommendation and one-to-tutorial with EngD student Ed Manley (\cite{Manley2012}) at UCL working on traffic simulations proved sufficient enough reason to confirm the choice of using Repast Simphony over MASON.
+    With only a few months to complete this project but a good understanding of Java, using a pre-built framework would require less work than starting from the bottom and building a framework dedicated to the project. The simplicity of NetLogo ruled it out. In the end Repast was chosen. Berryman finds little to separate MASON and Repast Simphony. The integration with Eclipse made getting started with Repast Simphony easy. Although Repast Simphony does have support for learning algorithms, the improved support in MASON might be missed but their use was a nice-to-have at the planning stage for this project rather than an essential. Also as the simulation would not have to handle a large number of agents (1000 boats would fill the river entirely), the optimizations in MASON would not be necessary. Finally the personal recommendation and one-to-one tutorial with EngD student Ed Manley \cite{Manley2012} at UCL working on traffic simulations proved sufficient enough reason to confirm the choice of using Repast Simphony over MASON.
   
   \section{Action execution}
     Each tick the cox chooses and executes an action and then the boat moves forward based on the state the cox's action have left the boat. The execution of actions by the cox provided a few problems. Firstly, it was  necessary to decide what period of time each of these ticks covers. Then it was necessary to ensure that if an action was misused (for instance executed in a situation where it did not make sense) then it would not break the system. Finally boats needed to react to a cox's actions rather than allowing the cox too much direct control over the boat in order to help maintain the indirectness of a cox's control over a boat in the implementation.
