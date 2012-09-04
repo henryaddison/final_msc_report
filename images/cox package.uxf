@@ -39,9 +39,9 @@ execute(): void</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>240</x>
-      <y>270</y>
-      <w>210</w>
+      <x>180</x>
+      <y>300</y>
+      <w>270</w>
       <h>120</h>
     </coordinates>
     <panel_attributes>CoxObservations
@@ -58,7 +58,7 @@ aheadCurrentLaneLook(): Blockage
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>240</x>
+      <x>220</x>
       <y>480</y>
       <w>210</w>
       <h>190</h>
@@ -75,8 +75,8 @@ calculateValue(): void
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>540</x>
-      <y>240</y>
+      <x>550</x>
+      <y>270</y>
       <w>210</w>
       <h>90</h>
     </coordinates>
@@ -103,42 +103,42 @@ current action &gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>420</x>
-      <y>300</y>
-      <w>140</w>
-      <h>320</h>
+      <x>400</x>
+      <y>330</y>
+      <w>290</w>
+      <h>290</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=0..n
 m2=1
 uses&gt;</panel_attributes>
-    <additional_attributes>30;300;120;30</additional_attributes>
+    <additional_attributes>30;270;270;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>420</x>
-      <y>280</y>
-      <w>140</w>
+      <y>310</y>
+      <w>150</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=1
 looks with&gt;</panel_attributes>
-    <additional_attributes>30;50;120;50</additional_attributes>
+    <additional_attributes>30;50;130;50</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>250</x>
+      <x>240</x>
       <y>130</y>
-      <w>120</w>
-      <h>160</h>
+      <w>112</w>
+      <h>190</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 makes&gt;</panel_attributes>
-    <additional_attributes>30;30;100;140</additional_attributes>
+    <additional_attributes>40;30;80;170</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
@@ -162,13 +162,13 @@ ChooseAction(): Action
       <x>380</x>
       <y>160</y>
       <w>130</w>
-      <h>150</h>
+      <h>160</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=1
 &lt;uses latest</panel_attributes>
-    <additional_attributes>70;130;70;30</additional_attributes>
+    <additional_attributes>70;140;70;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -185,13 +185,13 @@ chooses actions using&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>310</x>
-      <y>360</y>
+      <x>280</x>
+      <y>390</y>
       <w>50</w>
-      <h>140</h>
+      <h>110</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 m2=0..n</panel_attributes>
-    <additional_attributes>30;30;30;120</additional_attributes>
+    <additional_attributes>30;30;30;90</additional_attributes>
   </element>
 </diagram>

@@ -11,8 +11,8 @@
     </coordinates>
     <panel_attributes>Crash
 --
-countdown: int
 _HOLD_UP: int_
+countdown: int
 --
 reset(): void
 coxEscaped(): void</panel_attributes>
@@ -24,7 +24,7 @@ coxEscaped(): void</panel_attributes>
       <x>10</x>
       <y>320</y>
       <w>210</w>
-      <h>60</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>Cox
 --
