@@ -41,7 +41,7 @@ The boat waits for the lane to be clear both in front and behind before moving o
 \section{Future Work}
 There are also a couple areas in which the control policies could be studied further.
 
-\subsection{Further policies}
+\subsection{Improved policies}
 Firstly it would be interest to try a more intelligent Overtaking policy. A more advanced overtaking policy might check the speed of any boat in the lane it is moving to since a cox cannot crash into a boat ahead moving faster or a boat behind moving slower. It also looks symmetrically forwards and backwards. It might well make sense to look ahead further than behind since the boat is moving away from any obstructions behind. The policies also compares a cox's current speed with that of other boats. It might also pay to compare the cox's desired speed with other boats. This would allow a policy to stay safely behind a slow boat until there is room to overtake at which point it could accelerate again. It might also be an advantage for a cox to accelerate above its desired speed while overtaking in order to get by a slower boat and return to the right-hand lane more quickly.
 
 The current policies could also spawn a new set of policies by playing with the parameters they use. For example, it would be interesting to see what the effect of reducing the distance SafetyFocussed policy leaves to the boat ahead or to try Overtaking policies that are more defensive about overtaking, waiting until the cox can see a long way ahead.
