@@ -121,7 +121,7 @@ This chapter covers some of the problems encountered when turning the model from
       \subsubsection{Worked example for the simplified version of Cam used in simulation}
       Google Earth provided the tools for getting the inputs for the algorithm just described.
       
-      Figure \ref{techissues:fig:actualcam} highlights an aerial photo of the part of the Cam in which we are interested. The three main corners are labelled. In our simplification of the Cam the segments between the corners are considered as straight.
+      Figure \ref{techissues:fig:actualcam} shows an aerial photo with the part of the Cam in which we are interested highlighted. The three main corners are labelled. In our simplification of the Cam the segments between the corners are considered as straight.
       
       \begin{figure}
       \begin{center}
@@ -133,12 +133,12 @@ This chapter covers some of the problems encountered when turning the model from
       
       For this worked example, we will follow the algorithm the straight heading into Ditton Corner and that corner itself.
       
-      We assumed the three lanes start at (10,10), (10,20), (10,30) in the co-ordinate system for the simulation. Figure \ref{fig:thereach} shows a  screen shot of Google Earth of this first section of river. The ruler tool in Google Earth shows this straight is roughly 1400m long. This corresponds to 70 vectors each 20m long. Although the bearing of this straight is roughly 70\textdegree, for simplicity we treat this first straight as heading due East (so a heading of 0\textdegree from the origin). Everything else in the simulated version of the Cam will be rotated to match.
+      We assumed the three lanes start at (10,10), (10,20), (10,30) in the co-ordinate system for the simulation. Figure \ref{fig:thereach} shows a  screen shot of Google Earth of this first section of river. The ruler tool in Google Earth shows this straight is roughly 1400m long. This corresponds to 70 vectors each 20m long. Although the bearing of this straight is roughly 70\textdegree, for simplicity we treat this first straight as heading due East (so a heading of 0\textdegree\ from the origin). Everything else in the simulated version of the Cam will be rotated to match.
       
       \begin{figure}
       \begin{center}
         \includegraphics[scale=0.4]{images/TheReach.png}
-        \caption{The Reach: roughly 1400m long and straight. By rotating the whole river 20\textdegree \ clockwise can treat it as 70 lots of 20m vectors heading having an angle of 0\textdegree \ from the horizontal (the line apporoximation in Google Earth has a heading of 70\textdegree but this is a bearing so measured clockwise from North unlike standard geometry which measures anti-clockwise from the $x$-axis.)}
+        \caption{The Reach: roughly 1400m long and straight. By rotating the whole river 20\textdegree \ clockwise can treat it as 70 lots of 20m vectors heading having an angle of 0\textdegree \ from the horizontal (the line apporoximation in Google Earth has a heading of 70\textdegree\ but this is a bearing so measured clockwise from North unlike standard geometry which measures anti-clockwise from the $x$-axis.)}
         \label{fig:thereach}
       \end{center}
       \end{figure}
@@ -147,9 +147,9 @@ This chapter covers some of the problems encountered when turning the model from
       
       \begin{figure}
       \begin{center}
-        \includegraphics[scale=0.3]{images/DittonCornerHeadingIn.png}
-        \includegraphics[scale=0.3]{images/DittonCornerHeadingOut.png}
-        \caption{Ditton Corner: The heading in is roughly 70\textdegree and the heading out is roughly 170\textdegree so treated this corner as a 90\textdegree sector of a circle (by using a right-angle the calculations were a bit simpler).}
+        \subfigure[Bearing into corner]{\includegraphics[scale=0.6]{images/DittonCornerHeadingIn.png}}
+        \subfigure[Bearing out of corner]{\includegraphics[scale=0.6]{images/DittonCornerHeadingOut.png}}
+        \caption{Ditton Corner: The heading in is roughly 245\textdegree\ and over the course of the bend the direction of the river rotates to a heading out of roughly 350\textdegree\ so treated this corner as a 90\textdegree\ sector of a circle (by using a right-angle the calculations were a bit simpler).}
         \label{fig:dittoncorner:angle}
       \end{center}
       \end{figure}
