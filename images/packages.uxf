@@ -56,7 +56,7 @@ controls&gt;</panel_attributes>
       <h>120</h>
     </coordinates>
     <panel_attributes>lt=-
-&lt;moves on</panel_attributes>
+moves on&gt;</panel_attributes>
     <additional_attributes>70;100;70;30</additional_attributes>
   </element>
   <element>
@@ -102,7 +102,7 @@ controls&gt;</panel_attributes>
       <h>120</h>
     </coordinates>
     <panel_attributes>lt=-
-&lt;draws</panel_attributes>
+draws&gt;</panel_attributes>
     <additional_attributes>60;30;60;100</additional_attributes>
   </element>
   <element>
