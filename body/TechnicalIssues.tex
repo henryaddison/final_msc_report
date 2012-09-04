@@ -48,7 +48,7 @@ This chapter covers some of the problems encountered when turning the model from
     \subsection{Separating cox's actions and boat's ``reaction"}
     Separate scheduled methods on cox and boat objects means that the cox's method can concentrate on the cox's actions. The boat's method will then ensure, whatever the cox decides, that the boat will continue to move forward. In turn, this means that the methods for moving a boat can be shielded from the cox so reduce the risk of a cox's actions influencing the movement of a boat too directly. 
     
-    The one exception to this was the Spin action. For visualization purposes it was necessary to have the boat rotate 180\textdegree while moving in a straight-line across the river, which was very different to the usual boat movement straight forward in the direction the boat was facing. Therefore it was easier for this one off case to have the Spin action call movement methods directly on the boat object. This actually fits nicely with reality where during spinning the cox does tend to control the boat more directly by calling each stroke individually.
+    The one exception to this was the Spin action. For visualization purposes it was necessary to have the boat rotate 180\textdegree\ while moving in a straight-line across the river, which was very different to the usual boat movement straight forward in the direction the boat was facing. Therefore it was easier for this one off case to have the Spin action call movement methods directly on the boat object. This actually fits nicely with reality where during spinning the cox does tend to control the boat more directly by calling each stroke individually.
 
       Repast has a mechanism for setting the priority of scheduled methods. This means that cox's decision making method can be executed before the boat's movement method and so ensure that the boat's movement will be affected by the cox's decision.
 
@@ -149,7 +149,7 @@ This chapter covers some of the problems encountered when turning the model from
       \begin{center}
         \subfigure[Bearing into corner]{\includegraphics[scale=0.6]{images/DittonCornerHeadingIn.png}}
         \subfigure[Bearing out of corner]{\includegraphics[scale=0.6]{images/DittonCornerHeadingOut.png}}
-        \caption{Ditton Corner: The heading in is roughly 245\textdegree\ and over the course of the bend the direction of the river rotates to a heading out of roughly 350\textdegree\ so treated this corner as a 90\textdegree\ sector of a circle (by using a right-angle the calculations were a bit simpler).}
+        \caption{Ditton Corner: The heading in is roughly 250\textdegree\ and over the course of the bend the direction of the river rotates to a heading out of roughly 350\textdegree\ so treated this corner as a 90\textdegree\ sector of a circle (by using a right-angle the calculations were a bit simpler).}
         \label{fig:dittoncorner:angle}
       \end{center}
       \end{figure}
