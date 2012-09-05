@@ -5,11 +5,11 @@ There are two options for running the simulation. One of Repast's nice features 
 
 \section{Setting up MySQL database}
 
-\subsection{Installing MySQL}
+\subsection*{Installing MySQL}
 
 Users are directed to the MySQL website, \url{http://www.mysql.com/}, for instructions on how to install MySQL. The code expects the MySQL server to be accessible on localhost.
 
-\subsection{Creating the databases}
+\subsection*{Creating the databases}
 
 Next the databases used by the code need to be setup on the server. I chose to use databases called \texttt{siver\_development} and \texttt{siver\_production} to separate where data gets recorded as I worked on the code and when I was running proper experiments. The code will check an environment variable called DB\_ENV when it runs in order to determine the suffix to \texttt{siver\_}. The default database is \texttt{siver\_development} is DB\_ENV is not specified. The following SQL queries will create this database:
 
@@ -18,7 +18,7 @@ Next the databases used by the code need to be setup on the server. I chose to u
   GRANT ALL PRIVILEGES ON siver_development.* TO siver@localhost;
 \end{lstlisting}
 
-\subsection{Filling the databases}
+\subsection*{Filling the databases}
 
 The database schema also needs to be setup. This can be done in three ways:
 \begin{itemize}
@@ -28,11 +28,11 @@ The database schema also needs to be setup. This can be done in three ways:
 \end{itemize}
 For new users, I recommend the first suggestion as this will create some schedules that can be played with straight out of the box. However, new schedules can be created by the user.
 
-\subsection{Creating schedules and simulation parameters}
+\subsection*{Creating schedules and simulation parameters}
 
 % In the /db/schedule_generation directory there are a couple of ruby scripts: \texttt{create\_schedule.rb} and \texttt{create\_simulation\_parameters.rb}. Both these scripts respond to the DB\_ENV environment variable to select the database as described above and default to using the \texttt{siver\_development} database.
 
-\subsubsection{create\_schedule.rb}
+\subsubsection*{create\_schedule.rb}
 
 \texttt{create\_schedule.rb} will create entries in the \texttt{schedules} and \texttt{scheduled\_launches} tables corresponding the options provided. Below is the output of the \texttt{--help} option:
 
@@ -61,7 +61,7 @@ This will create a schedule called ``10 boats 1 minute delay'' with version numb
 \end{description}
 The desired gear for each launch is picked at random from 1 to 10. The distance to cover is fixed at 5000 and the speed multiplier for each boat is fixed at 0.5.
 
-\subsubsection{create\_simulation\_parameters.rb}
+\subsubsection*{create\_simulation\_parameters.rb}
 
 \texttt{create\_simulation\_parameters.rb} will create entries in the \texttt{simulation\_parameters} table corresponding the options provided. Below is the output of the \texttt{--help} option:
 
