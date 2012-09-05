@@ -553,6 +553,9 @@ very helpful for debugging actions and boat movement.
 \section{Future Work}
 There is still room for improvements in the software. These are outlined in this section.
 
+\subsection{Other River Shapes}
+This project takes the Cam as inspiration for the shape of the river. However, the software produced is able to simulate other three-laned rivers without much alteration. Details on how the lanes were created to match the Cam can be found in \ref{techissues:river} along with the general algorithm for creating rivers of other shapes.
+
 \subsection{Lane Changing}
 The changing lane implementation currently prevents a cox from changing lanes again while midway between lanes. It is acceptable that when moving to the lane on the left, say, the cox should not be able to move to the lane two to the left. However, the code and the model would be improved by allowing a cox to move back to the starting lane midway through a change - effectively the cox realises he should not try and change lanes
 
