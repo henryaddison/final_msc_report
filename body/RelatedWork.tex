@@ -1,57 +1,61 @@
 \chapter{Related Work}\label{chapter:background}
-  In this chapter, we look at the solutions of similar problems and argue the benefits of using an agent-based approach to create a simulation of the river Cam.
+  This chapter looks at the solutions of similar problems and argues the benefits of using an agent-based approach to create a simulation of the river Cam.
 
   \section{Scheduling problem}
-    One way to solve the problem is to treat it as a scheduling problem and come up with a time table for launching boats. Launching the boats in descending speed order with sufficient gap between them would remove much of the need for boats to interact at all with each other. However, this clearly cuts down on the total number of boats that could be launched each day. This could be solved by finding a more optimal schedule. A similar area of research where this is done is in train scheduling, such as the work done by \textcite{Ghoseiri2004}, which applies optimization techniques to choose good schedules even in multi-objective settings. However, this is not a good fit for this project's problem. 
+    One way to solve the problem is to treat it as a scheduling problem and come up with a timetable for launching boats. A very basic example would be to launch the boats in descending speed order with sufficient gap between them. This would remove much of the need for boats to interact at all with each other. However, this severely limits when and how many boats can launch each day. 
     
-    The rowing crews who use the river usual arrange outings at the last minute as they must fit rowing in around other activities (perhaps even studying!) so it would be hard to come up with a timetable quickly enough. Also the crews compete with each other but there is no mechanism for enforcing a pre-set timetable such as signals on a rail track, so crews would probably ignore the timetable in order to gain an advantage. Another approach is necessary.
+    Train scheduling is an area of research where this type of problem has been studied extensively and techniques for generating more optimal solutions exist. One such example is given by \textcite{Ghoseiri2004}, who apply optimization techniques to choose good schedules even in multi-objective settings. 
+    
+    A pre-determined schedule, alas, is not a good fit for this project's problem for a couple of reasons. The rowing crews who use the river often arrange outings at the last minute as they must fit rowing in around other activities (perhaps even studying!) so it is not feasible to come up with a pre-set timetable. Also there is no mechanism for enforcing a pre-set timetable, such as signals on a rail track, and so crews, who are in competition with each other, would soon ignore the timetable in order to gain an advantage. Another approach is necessary.
 
   \section{Work done modeling and simulating river traffic}
-  River traffic modelling is not an active area of research, particularly for recreational river users like rowing crews. Problems with congestion are unlikely to cost the economy much money or elicit much sympathy from the world at large in the same way that road traffic congestion does. However, \textcite{Lowry2011} studied the traffic flow of recreational river boats. This study looked at the amount of traffic passing through various parts of a river at given times and used the traffic simulation software VISSIM to predict the effects on traffic of possible upgrades to the river. 
+  River traffic modelling is not an active area of research, particularly for recreational river users like rowing crews. Problems with congestion are unlikely to cost the economy much money or elicit much sympathy from the world at large in the same way that road traffic congestion does. The study of the traffic flow of recreational river boats by \textcite{Lowry2011} is one of the few examples. This study looked at the amount of traffic passing through various parts of a river at given times and used the traffic simulation software VISSIM to predict the effects on traffic of possible upgrades to the river. 
   
   The paper is useful in its discussion of the difficulties of calibrating
-  the authors' simulation given limited resources and how to make guesses
-  about useful information based on the limited data that could be
+  the simulation software. The authors describe how they to made guesses
+  about desired information based on the limited data that could be
   collected. It also provides some ideas about how to get hold of data
   in order to model the topology of a river (unfortunately it would
   appear that extracting it by hand from Google Earth is the best available
   technique). 
   
-  There are limitations in their approach. They 
+  There are limitations in the approach which mean it is well suited to this project's problem. They 
   separated the river into two lanes of unidirectional traffic and the
-  vast majority of traffic was floating downstream. This cannot be taken for granted on the Cam. The overtaking model was too simplistic, requiring only that the river was wide enough at the point of overtaking.
+  vast majority of traffic was floating downstream. This cannot be taken for granted on the Cam. The collision and overtaking model was too simplistic, requiring only that the river was wide enough at the point of overtaking.
   However, the idea of using of treating the project more like a road traffic simulation is worth investigating further.
   
   \section{Road traffic simulation}
-    Boats on a river and cars on a road have similarities. They are both trying to move forwards in a narrow, bounded space. Since this project is focussed on the traffic on part of the Cam, we shall restrict ourselves to considering microscopic traffic simulations.
+    Boats on a river and cars on a road have similarities. They are both trying to move forwards in a narrow space. The speed of a car or a boat is determined by individual desire and the dynamic interactions with other road users. Since this project is focussed on the traffic on part of the Cam, we shall restrict ourselves to considering microscopic traffic simulations.
     
-    The majority of tradition microscopic road traffic simulations use a car-following model such as the Gipps' model (\cite{Gipps1981}). These models attempt to predict the speed and acceleration of a car based on the behaviour of the car ahead. In this way traffic patterns can be predicted without the reliance on a pre-determined schedule of behaviour. However, there are many criticisms of the car-following approach. \textcite{Brackstone2000} review car-following models and find ``evolution of car-following models therefore has clearly been slow, and although many would argue that they are sufficiently valid for the purposes for which we require them, there is a growing belief that this is not the case." The software based on these models also has limitations. For example, a user of VISSIM found ``vehicles may pass through each other at road crossings ... the simulation software does not grant the autonomy to individuals that allow them to recognise and avoid this collision'' \cite{Manley}.
+    The majority of traditional microscopic road traffic simulations use a car-following model such as the Gipps' model \cite{Gipps1981}. These models attempt to predict the speed and acceleration of a car based on the behaviour of the car ahead. In this way traffic patterns can be predicted without the reliance on a pre-determined schedule of behaviour. However, there are many criticisms of the car-following approach. \textcite{Brackstone2000} review car-following models and find ``evolution of car-following models \ldots\ has clearly been slow, and although many would argue that they are sufficiently valid for the purposes for which we require them, there is a growing belief that this is not the case." The software based on these models also has limitations. For example, a user of VISSIM found ``vehicles may pass through each other at road crossings \ldots\ the simulation software does not grant the autonomy to individuals that allow them to recognise and avoid this collision'' \cite{Manley}.
     
-    Neither a car-following model nor the current software using such a model is suitable for this project. However, more recently has been done on traffic simulations using a more promising approach: Agent-Based Modelling (ABM).
+    Neither a car-following model nor the current software using such a model is suitable for this project. However, more recently traffic simulations have begun taking a more promising approach: agent-based modelling.
       
-    \section{Agent Based Models}
-    According to \textcite{Bonabeau2002} ABM models a system ``as a collection of autonomous decision-making entities called agents. Each agent individually assesses its siutation and makes decisions on the basis of a set of rules". A few uses of ABM and its benefits are explored in this section.
+    \section{Agent-Based Modelling}
+    Agent-based modelling (ABM) models a system ``as a collection of autonomous decision-making entities called agents. Each agent individually assesses its siutation and makes decisions on the basis of a set of rules" \cite{Bonabeau2002}. This sections gives a few uses of ABM and its benefits.
     
     \subsection{Uses of ABM}
-    ABM has many uses. \textcite{Chen2010} survey the many applications of ABM in traffic and transport systems from urban traffic control to air traffic management. \textcite{Helbing2000} describe an agent-based model of pedestrian behaviour to investigate panicking crowds. Their simulation is found that flows of people out of room can be improved by, counter-intuitively, placing columns asymmetrically in front of the exits. And \textcite{Miller2010} give an application of ABM in the study of biological processes.
+    ABM has many uses. \textcite{Chen2010} survey the many applications of ABM in traffic and transport systems from urban traffic control to air traffic management. \textcite{Helbing2000} describe an agent-based model of pedestrian behaviour to investigate panicking crowds. Their simulation found that flows of people out of room can be improved by, counter-intuitively, placing columns in front of the exits. And \textcite{Miller2010} give an application of ABM in the study of biological processes.
     
     \subsection{Benefits of ABM}
       \textcite{Bonabeau2002} gives excellent arguments for the benefits ABM. The main benefit of ABM is it captures emergent phenomena. By defining the behaviour of the agents, a system is modelled from the bottom up. Counter-intuitive patterns may then occur in simulations as a result of the interactions between these agents that would not have been thought of in more traditional simulation techniques such as those using aggregate differential equations.
       
-      Another benefit is the natural way in which it can allow systems to be described by building them up from small units and their interactions \cite{Bonabeau2002}. This means a simulation can be made intelligible to someone without knowledge of computer simulation techniques. For example in this project, traffic flow on the river Cam to be modelled by viewing coxes as autonomous agents influencing the movement of a boat on the river. This is important as the aim is to come up with rules a cox could follow rather than to replace coxes entirely. 
+      Another benefit is the natural way in which it can describe systems by building them up from small units and their interactions \cite{Bonabeau2002}. This means a simulation can be made intelligible to someone without knowledge of computer simulation techniques. This is important as an aim of this project is to come up with rules a cox could follow rather than to replace coxes entirely. The more ordinary river users can able to understand the simulation, the more likely they will be to put into any rules suggested by it.
     
     By modelling at the level of agent behaviour rather than aggregate equations, it is much easier to simulate a population of heterogenous individuals \cite{Bonabeau2002}. This means a simulation of the river Cam can track individual coxes and see how well they match their own desired speed and avoid crashing into other boats.
     
     \section{Rowing and ABM}
-    ABM offers a way to simulate of the river Cam as a multi-agent system which can focus on the effect of coxing agents' control policies on safety, traffic flow and meeting the desires of individual coxes. As suggested earlier, coxes and boats may appear similar to road traffic so perhaps it might make sense to use an existing model or simulation software. However, there are enough differences between cars and rowing boats that mean creating a new model and software for this project is appropriate:
+    ABM offers a way to simulate of the river Cam as a multi-agent system which can focus on the effect of coxing agents' control policies on safety, traffic flow and meeting the desires of individual coxes. As suggested earlier, coxes and boats may appear similar to road traffic so perhaps it might make sense to use an existing model or simulation software. However, there are enough differences between cars and rowing boats that mean creating a new model and software for this project is appropriate.
     
       \begin{itemize}
         \item A boat's speed and acceleration are much lower compared to their length. Olympic eights travel at around 6m/s over the 2km course. It thus takes about 3 seconds to cover the 17m length of a boat. A car travelling at a leisurely 20mph would take around 0.5 seconds to cover its 4m length.
         
-        \item A cox wishes to travel a certain distance at a certain speed before returning to their starting point. It is usual to assume drivers wish to get from a starting point to a destination elsewhere. 
+        \item A cox wishes to travel a certain distance at a certain speed before returning to their starting point. It is usual to assume drivers wish to get from a starting point to a destination elsewhere, often as quickly as possible. 
         
         \item Unlike a road network, the river has no junctions. A cox has no choice about route only to cover enough distance.
+        
+        \item Boats display a greater variation in speeds when coxes are free to choose (more like country road than an urban street).
       \end{itemize}
-  
+
   Therefore I have chosen to come up with an agent-based model specifically for this project. This model is described next in Chapter \ref{chapter:model}.
   
