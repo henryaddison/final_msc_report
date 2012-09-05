@@ -54,7 +54,7 @@ This chapter covers some of the problems encountered when turning the model from
 
       Repast has a mechanism for setting the priority of scheduled methods. This means that cox's decision making method can be executed before the boat's movement method each tick and so ensure that the boat's movement will be affected by the cox's decision.
 
-      \subsubsection{Actions taking multiple time ticks}
+      \subsection{Actions taking multiple time ticks}
       Spinning is an action considered to take multiple time ticks. By making each action a class and execution of an action occurring by instantiating an instance of the relevant class and calling the \texttt{execute()} method which returns a boolean to determine whether the action was completed, it was possible to keep a reference to any unfinished actions. These unfinished actions can then be continued at the time tick without the danger of the cox choosing another action which would not make sense. For example, until spinning is complete, it makes no sense to execute any other action.
   
     \section{Visualization}
@@ -97,7 +97,7 @@ This chapter covers some of the problems encountered when turning the model from
       
       The next challenge was to work out the number of vectors to use and the heading of each one. The algorithm used to calculate these follows. 
       
-      \subsubsection{General algorithm for calculating the heading of each vector}
+      \subsection{General algorithm for calculating the vectors used to display river}
       First split the river up into straight sections and corners connecting them. 
       
       The vectors that make up all three lanes of a straight section all have the same angle. The number of vectors is the length of the straight section is the length of the straight divided by the length of each vector (so 20m in this case). Google Earth made it easy to determine the length and heading of each straight with it's ruler tool.
@@ -120,7 +120,7 @@ This chapter covers some of the problems encountered when turning the model from
       
        It is worth drawing the output for each corner as the lanes can get slightly out of sync due to rounding errors and so may need an edge added by hand.
       
-      \subsubsection{Worked example for the simplified version of Cam used in simulation}
+      \subsection{Worked example for the simplified version of Cam used in simulation}
       Google Earth provided the tools for getting the inputs for the algorithm just described.
       
       Figure \ref{techissues:fig:actualcam} shows an aerial photo with the part of the Cam in which we are interested highlighted. The three main corners are labelled. In our simplification of the Cam the segments between the corners are considered as straight.
