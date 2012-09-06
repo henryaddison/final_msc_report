@@ -46,8 +46,10 @@ Firstly it would be interesting to try a more intelligent Overtaking policy. A m
 
 The current policies could also spawn a new set of policies by playing with the parameters they use. For example, it would be interesting to see what the effect of reducing the distance SafetyFocussed policy leaves to the boat ahead or to try Overtaking policies that are more defensive about overtaking, waiting until the cox can see a long way ahead before pulling out.
 
-\subsection{Machine learnt policies}
-Creating more complex control policies by hand is a very laborious process as each edge case must be considered and implemented as a logical rule. Using machine learning techniques to design new policies could carry some of this burden. Such policies may contain interesting new rules that a human would not think of. This is a large undertaking but one possible way would be to follow \textcite{Kochenderfer2003}. 
+\subsection{Machine learnt policies}\label{control:future:machinelearnt}
+Creating more complex control policies by hand is a long process as each condition must be considered and implemented as a logical rules built out of observations. This is made harder as it the policies adding more rules quickly adds to the number of edge cases or can lead to undesired emergent behaviour when used by lots of coxes. These edge cases or bad behaviour may not be obvious from looking at the code. This means it is recommended to build the control policies up slowly and test them carefully using the simulation (for example by running the experiments in Chapter \ref{chapter:experiments}).
+
+Using machine learning techniques to design new policies could carry some of this burden. Such policies may contain interesting new rules that a human would not think of. This is a large undertaking but one possible way would be to follow \textcite{Kochenderfer2003}. 
 
 Kochenderfer shows how to use genetic programming to learn TR programs. The overall program and the conditions themselves are treated as trees. The conditions could be put together from the boolean observations and inequalities involving the numeric observations since these are all bounded (distances are bounded by the cox's vision and speeds are bounded by the top speed of a boat). The observation-based condition ``atoms" could then be combined with conjunction and negation operators to form more complex conditions.
 
