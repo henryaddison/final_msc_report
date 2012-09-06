@@ -579,7 +579,9 @@ The \texttt{BoatNavigation} object is referenced from the \texttt{Cox} class, wh
 Secondly, a \texttt{LaneEdge} object keeps track of the \texttt{Cox} objects that currently occupy it. The code would match the model much more directly if instead it kept track of \texttt{Boat} objects.
 
 \subsection{Optimized observation code so policies can have a memory}
-The observation code could be optimized. At one point I tried to have the cox's observations frozen each tick so that each \texttt{CoxObservation} object would return the same value during later ticks. This would then allow a cox to build up a sort of memory by storing these observations objects, which might allow some interesting new control policies.
+The observation code could be optimized. At one point I tried to have the cox's observations frozen each tick so that each \texttt{CoxObservation} object would return the same value during later ticks. This would then allow a cox to build up a sort of memory by storing these observations objects.
+
+Some interesting new control policies would be possible with a memory. For instance, this memory could be used by a cox to determine the acceleration as well as the speed of any blockage. This could be used in a policy that would choose not to try and overtake an accelerating boat which may end up travelling faster.
 
 
 This ends the description of the software behind the simulation and some possible future improvements. Appendix \ref{appendix:user_guide} also gives some more detail, especially on how to get the application running. Hopefully this chapter gives enough of an introduction to the software that any further questions can be answered by looking in the source code.
