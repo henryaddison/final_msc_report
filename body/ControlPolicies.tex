@@ -1,10 +1,12 @@
 \chapter{Control Policies}\label{chapter:control_policy}
 
-This chapter describes the aims of each control policy evaluated in the next chapter by taking a quick dive into the logic behind the control policies.
+This chapter describes the aims of each control policy evaluated in the next chapter by taking a quick dive into the logic behind the control policies. 
+
+Section \ref{software:cox:decisions} in the previous chapter described how the TR programs are implemented in Java as \texttt{if(\emph{condition}) \{ return \textbf{Action} \}} clauses. This chapter therefore will list the control policies as Java programs. 
+
+Section \ref{software:cox:decisions} also described the design of the \texttt{ControlPolicy} superclass and its subclasses, in particular how all policies have the same goal rule while behaving differently otherwise through the main entry method \texttt{chooseAction()} in \texttt{ControlPolicy} class and the subclass-defined method \texttt{typeSpecificActionChoice()}. The code for the superclass be found in Listing \ref{listing:control_policy} in Appendix \ref{appendix:code}. Therefor this chapter only lists subclass code. The shared goal rule should be understood implicitly for all the polices.
 
 Five different control policies were studied for this project: RandomChoice, RandomMovement, GearFocussed, SafetyFocussed and Overtaking. A couple of other policies were implemented, DemoChangeSpeed and DemoChangeLane, but as their names suggest these were only created for demonstrating and verfiying the actions.
-
-All policies first check the goal condition (being back at the boathouse after travelling at least the desired distance). After this the policies follow different rules for choosing an action.
 
 \section{RandomChoice}
 This policy was created to act as a control in experiments. No effort is made to choose a sensible action. Instead actions are chosen completely at random.
