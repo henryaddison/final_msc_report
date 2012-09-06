@@ -1,6 +1,6 @@
 \chapter{Experiments \& Results}\label{chapter:experiments}
 
-This chapter covers what experiments were run to test the performance of the different types of cox control policies. Schedules were created for these experiments with different numbers of boats and different delays between boat launch. Data were collect for simulation runs of each of theses schedules using different control policies. These data were then analysed from different perspectives to determine the relative strengths and weaknesses of each type of control policy.
+This chapter covers what experiments were run to test the performance of the different types of cox control policies. Schedules were created for these experiments with different numbers of boats and different delays between boat launch. Data were collect from simulation runs of each of these schedules using different control policies. These data were then analysed from different perspectives to determine the relative strengths and weaknesses of each control policy.
 
 \section{Overview of experiments run}
   For each experiment the simulation was run with a variety of
@@ -12,12 +12,12 @@ This chapter covers what experiments were run to test the performance of the dif
   \subsection{Simulation Parameters}
   For the experiments, the simulation was setup according to the
   parameters associated with a single row in the
-  simulation\_parameters table. These parameters are the control
+  \texttt{simulation\_parameters} table. These parameters are the control
   policy, the random seed and the launch schedule to use. The launch
   schedule is made of up lists of parameters for each boat to be
   launched. These are the launch tick, desired gear, the speed
   multiplier and the minimum distance to cover for each boat in the
-  schedule. These parameters are described in more detail in Section \ref{software:experiment:db}.
+  schedule.
   
   The launch schedules were created by specifying a number of boats
   and a fixed delay between each boat launch. Each boat was assigned a
@@ -28,9 +28,11 @@ This chapter covers what experiments were run to test the performance of the dif
   roughly equivalent to a outing going to the lock and back (5400m in
   the simulation's version of the Cam). It is important to set this
   quite high so that control policies are not rewarded for spinning on
-  launch and immediately landing with going anywhere. There are 16 broadly different types of schedules. There is a one-off schedule where just one boat is launched. There are schedules where the number of boats was either 10, 20 or 30 and the delay between boat launches was 1, 2, 3, 5 or 10 minutes (60, 120, 180, 300, 600 ticks respectively).  For each of these 15 schedule types with more than one boat, 5 different versions were created with a different random assignment of desired gear. This was to ensure experimental results were not determined by any specific selection desired speed (e.g. imagine launching the boats in descending order of desired gear, any reasonable set of policies would likely give the same outcome of boats processing forwards and never coming into contact).
+  launch and immediately landing without going anywhere. 
   
-  From these schedules sets of simulation parameters were created
+  There are 16 broadly different types of schedules. There is a one-off schedule where just one boat is launched. There are schedules where the number of boats was either 10, 20 or 30 and the delay between boat launches was 1, 2, 3, 5 or 10 minutes (60, 120, 180, 300, 600 ticks respectively).  For each of these 15 schedule types with more than one boat, 5 different versions were created with a different random assignments of desired gear. This was to ensure experimental results were not determined by any specific selection desired gear (e.g. imagine launching the boats in descending order of desired gear, any reasonable set of policies would likely give the same outcome of boats processing forwards and never coming into contact).
+  
+  From these schedules, sets of simulation parameters were created
   using a fixed random seed with each of the 5 different control
   policies and each of the 76 schedules. 5 random seeds were used to
   create 5 otherwise identical sets of 380 simulation parameters. This
@@ -81,7 +83,7 @@ This chapter covers what experiments were run to test the performance of the dif
   
   The other 4 policies successfully enable the cox to complete the outing. The SafetyFocussed, GearFocussed and Overtaking policies all have the same results as we would expect. These policies only behave differently when other boats are around. Otherwise they will accelerate into 2nd gear, spin at the lock, accelerate back to 2nd gear and return to the boathouse. The deviation from the desired gear is accounted for by spinning for 60 ticks (when the gear difference will be 2 as the boat is in gear 0 when spinning) and the two ticks when it finishes in gear 1 while accelerating just after launch and spinning.
   
-  RandomMovement completes the outing in about half the time of the other policies. This is to be expected as it does not limit itself to 2nd gear but may randomly speed up and slow down at any point. The RandomMovement policy also causes the cox to cover a little more distance in its journey from the boathouse to the lock and back. This is because the policy allows the boat to change lane and so it will cover extra distance laterally as well as forward at some points when changing lane.
+  RandomMovement completes the outing in about half the time of the other policies. This is to be expected as it does not limit itself to 2nd gear but may randomly speed up or slow down at any point. The RandomMovement policy also causes the cox to cover a little more distance in its journey from the boathouse to the lock and back. This is because the policy allows the boat to change lane and so it will cover distance laterally as well as forward at some points when changing lane.
     
 
   \begin{table}[h]
@@ -98,7 +100,7 @@ This chapter covers what experiments were run to test the performance of the dif
 \section{Outing completion}
 In this experiment we test how well the control policies perform in allowing cox's to successfully complete outings. This is similar to the Single Boat experiment but now we examine the number of successful outing completions using launch schedules with multiple boats.
 
-  Table \ref{experiments:tab:returning_boats_by_policy} shows the per-control-policy proportion of boats launched that managed to return to the boathouse before time ran out (after 14400 ticks). All 4 policies perform pretty well though SafetyFocussed is noticeably worse. This is to be expected as it is the most conservative of the 4 policies when it comes to accelerating.
+  Table \ref{experiments:tab:returning_boats_by_policy} shows the per-control-policy proportion of boats launched that managed to return to the boathouse before time ran out (after 14400 ticks). All 4 policies perform well though SafetyFocussed is worst. This is to be expected as it is the most conservative of the 4 policies when it comes to accelerating.
 
   \begin{table}[h]
   \centering
@@ -111,7 +113,7 @@ In this experiment we test how well the control policies perform in allowing cox
   \label{experiments:tab:returning_boats_by_policy}
   \end{table}
   
-  Table \ref{experiments:tab:returning_boats_by_schedule} shows the per-schedule proportion of boats launched that manage to complete their outings. This suggests that for boats that fail to complete their outings, it is the schedule that is to blame much more than the policy. There are a couple of clear trends: the more boats launched, the less likely a boat is to complete its outing; and the larger the delay between launches the less likely a boat is to complete its outing.
+  Table \ref{experiments:tab:returning_boats_by_schedule} shows the per-schedule proportion of boats launched that manage to complete their outings for all policies. This suggests that for boats that fail to complete their outings, it is the schedule that is to blame much more than the policy. There are a couple of clear trends: the more boats launched, the less likely a boat is to complete its outing; and the larger the delay between launches the less likely a boat is to complete its outing.
 
   \begin{table}[h]
   \centering
@@ -124,9 +126,9 @@ In this experiment we test how well the control policies perform in allowing cox
   \label{experiments:tab:returning_boats_by_schedule}
   \end{table}
   
-  This makes sense as the more boats launched and the larger the delay, the less time the later boats launched have to complete their outings. Consider the extreme case, launching 30 boats with a 10 minute delay. In fact on the 14400 tick, the 25th boat gets launched. The simulation then ends immediately so there is no chance for this 25th boat to finish it's outing at all (and the 26th to 30th boats never get launched on this schedule). 
+  This makes sense as the more boats launched and the larger the delay, the less time the later boats launched have to complete their outings. Consider the extreme case: launching 30 boats with a 10 minute delay. In fact on the 14400 tick, the 25th boat gets launched. The simulation then ends immediately so there is no chance for this 25th boat to finish its outing at all (and the 26th to 30th boats never get launched on this schedule). 
   
-  Table \ref{experiments:tab:returning_boats_by_policy_small_delay} is similar to Table \ref{experiments:tab:returning_boats_by_policy} except schedules with longer delays (over 10 minutes) are ruled out. The completion rates for all policies are much healthier. This suggests that even in the more congested environments used in this experiment compared to the single boat, all the policies allow a cox to eventually complete an outing. 
+  Table \ref{experiments:tab:returning_boats_by_policy_small_delay} is similar to Table \ref{experiments:tab:returning_boats_by_policy} except schedules with longer delays (over 10 minutes) are ruled out. The completion rates for all policies are much healthier. This suggests that even in the more congested environments used in this experiment compared to the single boat environment of the last experiment, all the policies allow a cox to eventually complete an outing. 
   
   \begin{table}[h]
   \centering
@@ -139,13 +141,15 @@ In this experiment we test how well the control policies perform in allowing cox
   \label{experiments:tab:returning_boats_by_policy_small_delay}
   \end{table}
   
-  Another interesting outcome of this experiment is the most successful policy for coxes completing their outings. This is the RandomMovement policy. I suspect this is because it ignores the cox's desired gear and so a cox with a low desired gear launched late in a simulation are likely to travel much faster than those controlled by a policy that will keep to the desired gear. At the other end, the SafetyFocussed policy is the least successful policy is by a large margin. This suggests the SafetyFocussed is not a wise one to follow when under strict time constraints. This suggests that none of the policies are using the space available on the river to its fullest.
+  Another interesting outcome of this experiment is the most successful policy for coxes completing their outings. This is the RandomMovement policy by a fraction. I suspect this is because it ignores the cox's desired gear and so a cox with a low desired gear launched late in a simulation are likely to travel much faster than those controlled by a policy that will keep to the desired gear. It also suggests that none of the policies are using the space available on the river to its fullest.
+  
+  At the other end, the SafetyFocussed policy is the least successful policy. This suggests the SafetyFocussed is not a wise one to follow when under strict time constraints. 
   
 \section{Safety}
 This experiment examined how safe the control policies were. The data from the \texttt{crash\_records} table was used as a proxy for safety. First stage we examine the total number of crashes that occurred for each control policy based on the different launch schedules. Then we take a closer look at how bad each crash was.
   
   \subsection{Crash quantity}
-  Figures \ref{experiments:fig:crash_counts_10_launches} and \ref{experiments:fig:crash_counts_20_launches} show the number of crashes that occurred on average in simulation runs based on the schedule type with 10 and 20 boats launched in total. The different lines represent the different control policies. Figure \ref{appendix:graphs:crash_counts_30_launches} in Appendix \ref{appendix:graphs} shows the results of schedules in which 30 boats were launched.
+  Figures \ref{experiments:fig:crash_counts_10_launches} and \ref{experiments:fig:crash_counts_20_launches} show the number of crashes that occurred on average in simulation runs plotted against launch delay. Figure \ref{experiments:fig:crash_counts_10_launches} uses schedules with 10 boats in toal and Figure \ref{experiments:fig:crash_counts_20_launches} uses schedules with 20. The different lines represent the different control policies. Figure \ref{appendix:graphs:crash_counts_30_launches} in Appendix \ref{appendix:graphs} shows the results of schedules in which 30 boats were launched.
   
   \begin{figure}
   \begin{center}
@@ -165,10 +169,12 @@ This experiment examined how safe the control policies were. The data from the \
   
   Two trends appear immediately in these graphs. The more boats that are launched, the greater the number of crashes. And the larger the delay between launches, the fewer crashes. These are both intuitive results. With a greater number of boats there are more possibilities for crashes and the simulation runs for longer with boats on the river. A larger delay between launches gives each boat more space between it and the next so there is less scope for crashing.
   
-  There is also a clear distinction between the control policies. The SafetyFocussed policy is, reassuringly, the policy with the fewest crashes. This makes sense as it is the control policy which makes the most effort not to crash into a boat. Pleasingly, the Overtaking policy leads to half the number of crashes compared to the GearFocussed policy. This suggests the rules for overtaking do allow the cox to make better use of the space available. Unlike the completion rates experiment, RandomMovement is by far the worst policy. This is perhaps because the RandomMovement policy makes no effort to avoid crashes like SafetyFocussed but also unlike Overtaking and GearFocussed policies it does not guarantee that faster boats will eventually get ahead of slower boats and stop crashing into them. Instead boats will randomly speed up and slow down so that same two boats could crash into each other many times over.
+  There is also a clear distinction between the control policies. The SafetyFocussed policy is, reassuringly, the policy with the fewest crashes. This makes sense as it is the control policy which makes the most effort not to crash into a boat. Pleasingly, the Overtaking policy leads to half the number of crashes compared to the GearFocussed policy. This suggests the rules for overtaking do allow the cox to make better use of the space available. 
+  
+  Unlike the completion rates experiment, RandomMovement is by far the worst policy. This is perhaps because the RandomMovement policy makes no effort to avoid crashes like SafetyFocussed but also unlike Overtaking and GearFocussed policies it does not guarantee that faster boats will eventually get ahead of slower boats and stop crashing into them. Instead boats will randomly speed up and slow down so that same two boats could crash into each other many times over.
 
   \subsection{Crash quality}
-  Let us take a look next at the nature of crashes that occur for each different control policy. Table \ref{experiments:tab:crashspeeds} compares the average relative speed of each crash. The results are quite counter-intuitive. I would have expected SafetyFocussed to have the lowest relative speed since the policy makes the most effort to keep the speed low. I would also have expected the Overtaking policy to lead to higher relative speeds compared to the GearFocussed policy, because boats now share the middle lane going both directions which could lead to head on crashes with much higher relative speeds.
+  The nature of crashes that occur for each different control policy as well as the number is important. Table \ref{experiments:tab:crashspeeds} compares the average relative speed of each crash. The results are quite counter-intuitive. I would have expected SafetyFocussed to have the lowest relative speed since the policy makes the most effort to keep the speed low. I would also have expected the Overtaking policy to lead to higher relative speeds compared to the GearFocussed policy, because boats now share the middle lane going both directions which could lead to head on crashes with much higher relative speeds.
   
   \begin{table}[h]
   \centering
@@ -194,7 +200,7 @@ This experiment examined how safe the control policies were. The data from the \
   \label{experiments:tab:crashtimings}
   \end{table}
   
-  The unexpected difference in Overtaking and GearFocussed can be explained by looking at the proportion of crashes that occur in the middle lane. Table \ref{experiments:tab:crashlane} shows this. Overtaking policy leads obviously to a higher proportion in the middle lane as crashes can only occur in the middle lane with the GearFocussed policy when it involves a spinning boat. Even so with the Overtaking policy only about 10\% of crashes occur in the middle lane. This suggests that rather slower crashes in the right-hand lane being replaced with faster head on crashes in the middle lane, the Overtaking policy allows a cox to make use of the middle lane to avoiding ramming a much slower boat from behind.
+  The unexpected difference in Overtaking and GearFocussed can be explained by looking at the proportion of crashes that occur in the middle lane. Table \ref{experiments:tab:crashlane} shows this. Overtaking policy leads obviously to a higher proportion in the middle lane as crashes can only occur in the middle lane with the GearFocussed policy when it involves a spinning boat. Even so with the Overtaking policy only about 10\% of crashes occur in the middle lane. This suggests that rather slower crashes in the right-hand lane being replaced with faster head on crashes in the middle lane, the Overtaking policy allows a cox to make use of the middle lane to avoid ramming a much slower boat from behind.
   
   \begin{table}[h]
   \centering
@@ -225,9 +231,9 @@ Figure \ref{experiments:fig:gear_difference_10_launches} shows how the average a
 
 For all 4 policies there are trends of fewer boats launched or a larger the delay between launches leading to a smaller aggregate gear difference. However, these trends are not as strong compared to the crash count graphs.
 
-There is a clear divide between the GearFocussed and Overtaking polices and the much worse performance displayed by the RandomMovement and SafetyFocussed policies. This is expected as the GearFocussed policy's is designed to try to accelerate to the desired gear and the Overtaking policy adapts the GearFocussed policy to overtake slower boats rather than ramming them from behind. Pleasingly the Overtaking policy performs best on this metric. I suspect that as Overtaking policy enables cox's to stick to the desired gear by cutting down on crashes as crashes lead to deviation from the desired gear as boats get stuck in gear 0 for a few ticks.
+There is a clear divide between the GearFocussed and Overtaking polices. Both these policies perform much better than the RandomMovement and SafetyFocussed policies. This is expected as the GearFocussed policy is designed to try to accelerate to the desired gear and the Overtaking policy adapts the GearFocussed policy to overtake slower boats rather than ramming them from behind. Pleasingly the Overtaking policy performs best on this metric. I suspect that as Overtaking policy enables coxes to stick to the desired gear by cutting down on crashes as crashes lead to deviation from the desired gear as boats get stuck in gear 0 for a few ticks.
 
-Interestingly, the SafetyFocussed policy performs worse than the RandomMovement control policy even though the SafetyFocussed policy does contain logic to try and match the desired outing plan's desired gear. This suggests that the clause in the policy that leads to slowing down when a cox gets too near to a boat in front is the more dominant in these experiments. Indeed watching a simulation using this policy shows that a slow boat quickly leads to a long queue of faster boats trailing behind it as can be seen in a screenshot in Figure \ref{experiments:safety_queue_screenshot}. These faster boats never get the chance to accelerate to their desired gear while in RandomMovement there is at least a possibility.
+Interestingly, the SafetyFocussed policy performs worse than the RandomMovement control policy even though the SafetyFocussed policy does contain logic to try and match the desired outing plan's desired gear. This suggests that the clause in the policy that leads to slowing down when a cox gets too near to a boat in front is the more dominant in these experiments. Indeed watching a simulation using this policy shows that a slow boat quickly leads to a long queue of faster boats trailing behind it as can be seen in a screenshot in Figure \ref{experiments:safety_queue_screenshot}. These faster boats never get the chance to accelerate to near their desired gear while in RandomMovement there is at least the possibility.
 
 \begin{figure}
 \begin{center}
@@ -238,12 +244,12 @@ Interestingly, the SafetyFocussed policy performs worse than the RandomMovement 
 \end{figure}
 
 \section{Future Work}
-There is no way for this project to exhaust all that the data produced can tell us. There are plenty of other experiments to try and this section gives some suggestions.
+It is too big a task for this project to exhaust all that can be learnt from the data produced, more analysis can be done. There are also other experiments to try. This section gives some suggestions of both.
 
 The analysis of the data could be made more sophisticated. The Safety experiment suggests that the analysis so far is over-reliant on the use of averages. A further study could look harder at the distribution of crash counts, speeds and locations.
 
 A further study could look at the sensitivity of the data to some of the constants used. For example, crashes cause a delay of 10 ticks. This is a rough guess about the delay a crash causes. It would be very interesting to see how the results changes if crashes were made more punishing and delay boats for longer.
 
-Finally, the launch schedules followed are all follow the same pattern of a fixed delay between boats and the use of a fixed control policy. It would be interesting to examine the launch schedules that match the traffic patterns of the actual Cam much more closely. Another way to improve the safety and efficiency of a cox might be for different types of boats to follow different control policies. So a cox that is aiming to move quickly could follow the Overtaking policy while coxes aiming to move below a certain threshold should follow the more conservative SafetyFocussed policy.
+Finally, the launch schedules all follow the same pattern of a fixed delay between boats and the use of a fixed control policy. It would be interesting to examine the launch schedules that match the traffic patterns of the actual Cam much more closely. Another way to improve the safety and efficiency of a cox might be for different types of boats to follow different control policies. So a cox that is aiming to move quickly could follow the Overtaking policy while coxes aiming to move below a certain threshold should follow the more conservative SafetyFocussed policy.
 
-This concludes the look at the data produced by the simulation under different parameters. As the Future Work section shows there still much more that could be studied. Unfortunately time will not allow us to go any further for this report.
+This concludes the look at the data produced by the simulation with different parameters. The next chapter will sum up and evaluate the achievements of this project.
