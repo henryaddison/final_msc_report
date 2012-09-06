@@ -4,6 +4,17 @@
   \section{What I achieved}
   I created an agent-based model of cox and boat behaviour on a narrow river that was described in Chapter \ref{chapter:model}. Chapters \ref{chapter:technicalissues}, \ref{chapter:softwaredesign} and \ref{chapter:control_policy} describe how the model was implemented in software to produce a computer simulation of coxes and boat on an approximation of the Cam. The software also contained a framework for running and collecting data from the simulation. Chapter \ref{chapter:experiments} show how this was used to test the suitability of different control policies under different starting conditions.
   
+  \subsection{Evaluation of model}
+  The division of the river into lanes modelled as a graph with short edges proved particularly powerful. Since length of the edges matched the space filled by the boat meant it was possible to have a fine-grained yet discrete model of the cox's vision and boat collision detection. The edges and nodes provided excellent mechanisms for guiding the boat's movement while the ability to move between lanes kept the model true to its 2D space real-world counterpart. The shortness of the edges also meant that it was easy to capture geographical features of the river such as smooth bends by breaking them up into short line segments. Section \ref{conclusions:applications} later in this chapter gives some other problem domains in which this model might be useful.
+  
+  \subsection{Evaluation of software}
+  I found Repast Simphony a very powerful framework to work with. Thanks to the documentation it was also extremely easy to start being productive with it. It made it easy to add the visualization and keep track of objects moving around a 2D space, which meant I could focus on the simulation. Similarly, by making it easier to schedule methods, I could focus on the logic in those methods without worrying about how to ensure they were called at the right time.
+  
+  Perhaps the biggest draw back with Repast Simphony was its lack of support for connecting to databases (though it's competitors do not offer this feature either). It was worth the time to add code to read from and write data to the database. It made it easy to store data in a structured way for analyse and much easier to add new data compared to keeping track of some csv files, particularly for the large volumes that experiments could produce. 
+  
+  I am also pleased with the model implementation within the Repast Simphony framework. I believe it is an accurate implementation of the model. Section \ref{software:future} in the Software Design chapter lists some improvements that could be made but none of these represent areas in which the software deviated from the model. I am particularly pleased with how a boat's movement is kept separate from the cox's actions. Similarly I am pleased with how the \texttt{CoxObservation} class allows control policies to be shielded from the raw objects of the simulation and so ensure that the observations available to a cox are carefully thought through to be a valid simulation of the information available to a cox in the real world situation.
+  
+  \subsection{Results roundup}
   The results in Chapter \ref{chapter:experiments} did not give a clear winner in all three fields of outing completion, safety and sticking to the outing plan. A cox who is too cautious and hangs back behind a slow boat may avoid crashing but he will not stick well to his outing plan and may spend more time on the river than his crew can spare. On the other hand a cox who tries to stick to his outing plan and ignores other boats will crash too often to maintain his desired speed. The rules for overtaking slower boats appear to be the most important as they allow a boat to be safe and a cox to stick to his outing plan. 
   
   Of the policies tested, I recommend the Overtaking policy. It is the only policy that performs well in all three measures. It successfully gets boats back to the boathouse whilst sticking most closely to the cox's desired gear. Although following this policy results in more crashes than the SafetyFocussed policy, it is not vastly more crashes and the SafetyFocussed policy performs much worse when comparing how well the policy allows a cox to stick to his desired gear.
@@ -26,10 +37,18 @@
   
   After that I would like to model launch schedules which match more closely the traffic conditions of the Cam (see \ref{model:future:launch_schedule} in Model chapter). However, I fear that this work may require a lot of time and the reward be only personal satisfaction (I cannot see large EPSRC grants being awarded to fund such an endeavour).
   
-  \section{Other applications of the software}
+  \section{Other applications of the software}\label{conclusions:applications}
   This project took rowing on the river Cam as its inspiration. However, there are other uses for the model and software. It would be very easy to alter the software to simulation traffic on another river.
   
   More radical departures from the original source are also possible. The model and software could be applied to other areas with lanes. It could even be adapted so that the lanes are not even physically adjacent. Simulating cars on motorways, ships in shipping lanes or aircraft on flight paths spring to mind.
+  
+  \subsection{How it might be used for cars on a motorway}
+  
+  Let us look at a possible application to cars on the motorway. The motorway is already broken up into lanes so the model fits well in this respect. The length of the edges should be changed to reflect more than the car length since the speeds are higher. A better length might include the area around a car which would make a driver nervous and behave erratically. 
+  
+  The higher speeds have a couple of other impacts. Time ticks should be scaled down to represent a shorter time or else there is the danger that cars would move across many edges in a single tick. Fortunately the code is running fast enough that should be possible without making the simulation run too slowly. Secondly crashes should have a much greater effect. A more accurate representation might be to have them cause a permanent blockage in the lane (if not all the lanes).
+  
+  The driver agents would have different ``outing plans'' compared to the coxes of this project. The driver's goal would most likely be to get from one end of the motorway to the other. Alternatively, several ``boathouses'' could be added to the motorway model to represent junctions. Launching would be synonymous with a car joining the motorway at the junction and landing with a car leaving the motorway at a later junction.
 
   \section{Closing Remarks}
   On a personal level I am very proud of this project and the software produced as part of it. It has been a fascinating introduction to agent-based modelling and teleo-reactive programs. It has given me the opportunity to build a computer simulation and use it to evaluate intelligent agents. It has given me experience of technologies such as the Java programming language and SQL databases.
