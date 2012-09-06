@@ -182,7 +182,7 @@ pre-defined schedule of an experiment).
 
 
 \section{\texttt{river} package}
-The \texttt{river} package contains the classes that represent the river from our model. Figure \ref{software:fig:riverUML} gives an overview of the most important methods in the classes and the relationships between the classes.
+The \texttt{river} package contains the classes that represent the river from our model. Figure \ref{software:fig:riverUML} gives an overview of the most important attributes and methods in the classes and the relationships between the classes.
 
 \begin{figure}
 \begin{center}
@@ -196,7 +196,7 @@ The \texttt{river} package contains the classes that represent the river from ou
 The \texttt{River} is a container object. It holds the three lanes and the
 boathouse. It is used to determine the relative positions of the lanes
 (the lanes are stored in order in an array with the right-most lane when
-heading downstream stored at the 0th index). The river overall
+heading downstream stored at the 0th index). The river's overall
 boundary for visualization purposes is defined by the boundaries of
 the lanes. The river's top boundary is the bottom boundary of
 the bottom lane and the it's top boundary is the top boundary
@@ -205,7 +205,7 @@ complete the river.
 
 \subsection{Lane class}
 
-The lanes holds a network of nodes and edges using a Network
+A lane holds a network of nodes and edges using a Network
 projection provided by Repast (see
 \ref{software:dependencies:repast:network}). The \texttt{Lane} class uses the
 Network methods provided by Repast to create helper methods for
@@ -223,14 +223,14 @@ its own boundary.
 The \texttt{Lane} class also has methods for building up a lane. There is a
 \texttt{start()} method used to place the first node of a lane's
 graph. There is an \texttt{extend()} method to place the next node in
-the lane and join them with a graph. The extend method takes the angle
-the joining line between the last placed node and the next node to be
-place should be make with the horizontal as an argument. The distance
-between each node is defined by the \texttt{static} variable
+the lane and join them with a graph. The extend method takes as an argument the angle made with the horizontal
+by the line joining the last placed node and the next node to be
+place. The distance
+between each node is defined by the class variable
 \texttt{edge\_length}. This will also place points in the top and
 bottom boundaries. These points are placed on the lane perpendicular
-to the extension. They are defined to be a fixed distance away from
-the node. This distance is defined by the \texttt{static} variable
+to the line joining the node just added. They are defined to be a fixed distance away from
+the node. This distance is defined by the class variable
 \texttt{width}. Listing \ref{listing:software:lane:extend} contains the code for the \texttt{extend()} method.
 
 \lstinputlisting[language=Java,caption={\texttt{Lane\#extend} method for building a lane},label={listing:software:lane:extend}]{code/Lane.java.report}
@@ -241,18 +241,17 @@ distance method. It also has a reference back to the \texttt{Lane} object in
 which it is contained.
 
 \subsection{\texttt{LaneEdge} class}
-The \texttt{LaneEdge} class extends the Repast class \texttt{RepastEdge<T>}. This is so
-the Repast \texttt{Network} interface can be used. The weight of an LaneEdge is
+The \texttt{LaneEdge} class extends the Repast class \texttt{RepastEdge<T>}. This is so Repast's \texttt{Network} interface can be used. The weight of an LaneEdge is
 set to be the distance between the source and destination
 nodes. LaneEdges are always directed edges. When travelling downstream
 a boat travels with the direction of the edges, when travelling
 upstream a boat travels against the direction of the edges. Therefore
-for a given direction every node has a single edge leading out of it.
+for a given direction each node has a single edge leading out of it.
 
 \subsubsection{Crashing}
 
 \texttt{LaneEdge} class also keeps track of the coxes currently occupying it
-in an array with methods add or a remove a cox from this array. (For
+in an array with methods to add or remove a cox from this array. (For
 legacy reasons coxes rather than boats are tracked. It would fit the
 model better to track the boats but since there is a one-to-one
 mapping between boats and coxes this has not caused problems and so
@@ -272,9 +271,9 @@ Figure \ref{software:fig:crashingUML} shows the classes and main methods involve
 \end{figure}
 
 
-When \texttt{reset()} is called on a Crash object, all the
+When \texttt{reset()} is called on a \texttt{Crash} object, the
 \texttt{incapcitate()} method is called on all the coxes
-occupying the edge associated with the Crash. This will prevent the
+occupying the edge associated with the \texttt{Crash} object. This will prevent the
 coxes from choosing and executing any actions. It will also bring the
 cox's boat to an instant stop.
 
@@ -285,34 +284,34 @@ again (by calling the \texttt{recapcitate()} method on it).
 
 Each time a cox moves off the edge, another cox is chosen at
 random and \texttt{recapcitate()} is called on it. This continues
-until all coxes have moved off the edge or if a new boat moves onto
-the edge, then the \texttt{Crash} is \texttt{reset} and the process starts
+until all coxes have moved off the edge or, if a new boat moves onto
+the edge, the \texttt{Crash} is \texttt{reset} and the process starts
 again from the beginning.
 
 \subsection{\texttt{LaneChangeEdge} and \texttt{TemporaryNode} classes}\label{software:lane:lanechange}
 
-The \texttt{LaneChangeEdge} class is an subclass of \texttt{LaneEdge} class. The
-\texttt{TemporaryNode} class ian a subclass of \texttt{LaneNode} class. They are used
+The \texttt{LaneChangeEdge} class is a subclass of \texttt{LaneEdge} class. The
+\texttt{TemporaryNode} class is a subclass of \texttt{LaneNode} class. They are used
 for the temporary graph branches that are created when a cox decides
 to change lane.
 
-\texttt{TemporaryNode} class is much the same LaneNode class except that
-instances of TemporaryNode will respond \texttt{true} to the
+\texttt{TemporaryNode} class is much the same \texttt{LaneNode} class except that
+instances of \texttt{TemporaryNode} will respond \texttt{true} to the
 \texttt{isTemporary()} method unlike
-LaneNode. The same goes for \texttt{LaneChangeEdge} and \texttt{LaneEdge} classes. This
+\texttt{LaneNode}. The same goes for \texttt{LaneChangeEdge} and \texttt{LaneEdge} classes. This
 means it is possible to identify these temporary nodes and edges which
 should be ignored by other boats.
 
 \texttt{LaneChangeEdge} also holds the edge sandwiching LaneEdge objects from
-the start and destination Lanes of the lane-change. When a cox is
-added to or removed from a LaneChangeEdge, it is added to or removed
-from these sandwiching LaneEdges. This means a boat effectively fills
+the start and destination \texttt{Lane}s of the lane-change. When a cox is
+added to or removed from a \texttt{LaneChangeEdge} instance, it is added to or removed
+from these sandwiching \texttt{LaneEdge}s. This means a boat effectively fills
 two lanes when changing lanes.
 
-\texttt{LaneChangeEdge} also has a \texttt{static} method called \texttt{createLaneChangeBranch}. It is used to creating this
-set of TemporaryNode and LaneChangeEdge objects from the starting
+\texttt{LaneChangeEdge} also has a class method called \texttt{createLaneChangeBranch()}. It is used to creating this
+set of \texttt{TemporaryNode} and \texttt{LaneChangeEdge} objects from the starting
 point to the destination lane. It does this by finding the nearest
-edge to the starting point in the starting and destination lane. The
+edge to the starting point in the starting and destination lanes. The
 first temporary node is placed at the starting point. The next node is
 placed part way between the end nodes of the edges found. The process
 is repeated using the next edges in the sandwiching lanes and placing
@@ -326,23 +325,23 @@ used. The code for this can be found in Listing \ref{software:listing:lanechange
 
 \subsection{\texttt{Boathouse} class}
 The \texttt{Boathouse} class is a simple class. It has methods for launching
-boats onto a River. The main launch method will create new Boat and
+boats onto a river. The main launch method will create new \texttt{Boat} and
 \texttt{Cox} objects, add them to the main context and then launch the objects
-by placing them on the river by the boathouse. It takes arguments to
+by placing them on at the start of the first edge of the right-hand lane heading downstream (and in the corresponding place in the 2D Continuous Space projection). It takes arguments to
 allow the setting of desired gear, speed multiplier, distance to
 cover and control policy to use as well as an id of a row in the
-\texttt{scheduled\_launches} table to record data.
+\texttt{scheduled\_launches} table to record data in the case the launch is part of a pre-defined schedule.
 
 \subsection{\texttt{RiverFactory} class}
 The \texttt{RiverFactory} class is a helper class with methods for easily creating
-predefined River objects such as the simplified Cam. The factory will
-define the appropriate angles to extend the River by as well as adding
-the \texttt{River} and \texttt{Boathouse} to the context and placing them in the
+predefined \texttt{River} objects such as the simplified Cam. The factory will
+define the appropriate angles to extend the lanes by as well as adding
+the \texttt{River} and \texttt{Boathouse} instances to the context and placing them in the
 Continuous Space projection in a suitable place.
 
-\section{Boat package}
-The Boat package contains classes related to the model of a boat. It
-consists of the main \texttt{Boat} class and a \texttt{BoatNavigation} class. Each Boat
+\section{\texttt{boat} package}
+The \texttt{boat} package contains classes related to the model of a boat. It
+consists of the main \texttt{Boat} class and a \texttt{BoatNavigation} class. Each \texttt{Boat} instance
 has access to a \texttt{BoatNavigation} instance. The main methods and instance variables of these classes are summarised in UML form in Figure \ref{software:fig:boatUML}.
 
 \begin{figure}
@@ -355,13 +354,15 @@ has access to a \texttt{BoatNavigation} instance. The main methods and instance 
 
 
 \subsection{\texttt{Boat} class}
-The \texttt{Boat} class contains the properties about the boat such as current
-orientation and gear, the speed multiplier. There are methods for
+The \texttt{Boat} class contains the properties about a boat such as current
+orientation and gear, the speed multiplier and the total distance covered. There are methods for
 getting and, where appropriate, setting these properties. \texttt{Boat} objects are also the
 objects that move around the Continuous Space projection and so the
 \texttt{Boat} class contains methods for moving the boat in this
-projection. The \texttt{Boat} object also holds a reference to a \texttt{BoatRecord}
-object for collecting experimental data.
+projection. 
+
+A \texttt{Boat} object also holds a reference to a \texttt{BoatRecord}
+object for collecting experimental data such as distance covered and deviation from the desired gear.
 
 The scheduled method for Boat will call \texttt{continueForward()} on the
 \texttt{BoatNavigation} instance and then update the \texttt{BoatRecord}'s statistics.
@@ -369,16 +370,16 @@ The scheduled method for Boat will call \texttt{continueForward()} on the
 \subsection{\texttt{BoatNavigation} class}
 
 \texttt{BoatNavigation} is a delegate class for \texttt{Boat}. It keeps track of the
-boat's position on a Lane's network of nodes with references to the
+boat's position on a \texttt{Lane}'s network of nodes with references to the
 current edge the boat is travelling on, the direction of travel
 (stored as a boolean for upstream or not) and the amount of the edge
 remaining before the next node. There are getter methods for
 retrieving these properties as well as methods for getting related
-information such as a the destination node that the Boat is currently
+information such as the destination node that the Boat is currently
 aiming at.
 
 The main \texttt{continueForward()} function takes care of keeping the
-boat's movement within the 2D ContinuousSpace in sync with
+boat's movement within the 2D Continuous Space projection in sync with
 movement on the 1D lane graph. As part of this it also takes care of
 aiming the boat in a new direction each time it moves onto the next
 edge. The code can be found in Listing \ref{listing:software:boatnavigation:continueForward}.
@@ -388,7 +389,7 @@ edge. The code can be found in Listing \ref{listing:software:boatnavigation:cont
 
 \section{\texttt{cox} package}
 
-The main aim of the \texttt{cox} package is to decide actions to execute in order to have the boat behave in a suitable manner. It therefore contains functionality for making observations, choosing an action based on those observations and executing the chosen action. Figure \ref{software:fig:coxUML} gives a UML sketch of the objects and their relationships in the package.
+The main purpose of the \texttt{cox} package is to decide actions to execute in order to have the boat behave in a suitable manner. It therefore contains functionality for making observations, choosing an action based on those observations and executing the chosen action. Figure \ref{software:fig:coxUML} gives a UML sketch of the objects and their relationships in the package.
 
 \begin{figure}
 \begin{center}
@@ -400,41 +401,46 @@ The main aim of the \texttt{cox} package is to decide actions to execute in orde
 
 \subsection{\texttt{Cox} class}
 
-The \texttt{Cox} class is the main class in the package. It is responsible for conducting the observe-decide-execute cycle each tick through the \texttt{step()} scheduled method. This includes methods and variables for altering and storing the incapacitated state of the cox for crashes. It also contains variables \texttt{desired\_gear} and \texttt{distance\_to\_cover} to store the outing plan for the cox. The work for each stage of the observe-decide-execute cycle is handled by other delegate objects in the package.
+The \texttt{Cox} class is the main class in the package. It is responsible for conducting the observe-decide-execute cycle each tick through the \texttt{step()} scheduled method. This class includes methods and variables for altering and storing the incapacitated state of the cox used for crashes. It also contains variables \texttt{desired\_gear} and \texttt{distance\_to\_cover} to store the outing plan for the cox. The work for each stage of the observe-decide-execute cycle is handled by other delegate objects in the package.
 
 \subsection{Observations}
 
-The \texttt{CoxObservations} class provides access to the many observations a cox is allowed to make. It is designed to be consumed by a \texttt{ControlPolicy} instance. By wrapping the observations in a single class it provides a simple interface for a \texttt{ControlPolicy} to use when deciding what to do next. It also provides a way to restrict the \texttt{ControlPolicy} to only accessing information it is allowed based on the model rather than giving it access to raw Boat, River and Cox objects in the simulation.
+The \texttt{CoxObservations} class provides access to the many observations a cox is allowed to make. It is designed to be consumed by a \texttt{ControlPolicy} instance. By wrapping the observations in a single class it provides a simple interface for a \texttt{ControlPolicy} to use when deciding what to do next. It also provides a way to restrict the \texttt{ControlPolicy} to only accessing information it is allowed based on the model rather than giving it access to raw \texttt{Boat}, \texttt{River} and \texttt{Cox} objects in the simulation.
 
-The Observations can return information in one of three types: simple booleans, integer values and Blockage objects, which are the result of looking down a lane. The information in the Blockage objects is inferred based on an instance of the \texttt{CoxVision} class. The \texttt{CoxVision} class provides methods for looking ahead and behind in each lane. An observation which makes use of this will return a Blockage object which will say for the fixed lane and direction, the number of edges until the blockage, whether the blockage is an edge occupied by boats or not, and the max and min relative speed of any boats on that blocked edge.
+The observations can return information in one of three types: simple booleans, integer values and Blockage objects, which are the result of looking down a lane. The information in the \texttt{Blockage} objects is inferred based on an instance of the \texttt{CoxVision} class. The \texttt{CoxVision} class provides methods for looking ahead and behind in each lane. An observation which makes use of this will return a \texttt{Blockage} object which will say for the fixed lane and direction, the number of edges until the blockage, whether the blockage is an edge occupied by boats or not, and the maximum and minimum relative speed of any boats on that blocked edge.
 
 The observations are:
   \begin{itemize}
-    \item{\textbf{\texttt{OutingOver}:}} Returns true if the boat is back near the boathouse and has travelled the Cox's \texttt{distance\_to\_cover} value.
+    \item{\textbf{\texttt{OutingOver}:}} Returns true if the boat is back near the boathouse and has travelled the \texttt{Cox} instance's \texttt{distance\_to\_cover} value.
     \item{\textbf{\texttt{AtRiverEnd}:}} Returns true if the boat is near the end of the river (either at the lock or the boathouse). Used so the cox knows to spin.
-    \item{\textbf{\texttt{AboveDesiredSpeed} and \texttt{BelowDesiredSpeed}:}} Return true if the boat's current gear is above or below the Cox's \texttt{desired\_gear} value. 
+    \item{\textbf{\texttt{AboveDesiredSpeed} and \texttt{BelowDesiredSpeed}:}} Return true if the boat's current gear is above or below the \texttt{Cox} instance's \texttt{desired\_gear} value. 
     \item{\textbf{\texttt{BoatGear}:}} Returns the value of the boat's current gear (an integer).
     \item{\textbf{\texttt{AheadCurrentLane}, \texttt{BehindCurrentLane}, \texttt{AheadLeftLane}, \texttt{BehindLeftLane}, \texttt{AheadRightLane}, \texttt{BehindRightLane}:}} Returns the \texttt{Blockage} object based on looking in the appropriate direction and lane.
   \end{itemize}
   
 \subsection{Decisions}
-  Each cox contains an instance of a \texttt{ControlPolicy} subclass. Each subclass will implement a different policy. The \texttt{ControlPolicy} instance is updated each tick with the latest \texttt{CoxObservations} object. It uses these observations to decide what to do next.  Each control policy has a method called \texttt{chooseAction()}. This is defined in the superclass \texttt{ControlPolicy} so that all Control Policies have the same top-level goal condition which will check the OutingOver observation. If \texttt{OutingOver} determines the outing to be over then the Land action will be executed by the cox and the cox and boat will be removed from the simulation. Otherwise, a method called \texttt{typeSpecificActionChoice()} is executed. Each different control policy defines this differently. It is written in a teleo-reactive (TR) style for all Control Policies. This is done in Java by having a list of if statements. Each if statement will check a condition and if the condition is true, it will return the associated action. Otherwise it will move on to trying the next condition-action pair. The final if statement takes the constant true condition. This ensures one action will always be returned. The more complicated control policies contain nested TR-programs to make them easier to code and to read but they remain TR in style. The actual control policies tried are covered in the Chapter \ref{chapter:control_policy}
+  Each \texttt{Cox} object contains an instance of a \texttt{ControlPolicy} subclass. Each of these subclasses will implement a different policy. The actual control policies tried are covered in the Chapter \ref{chapter:control_policy}. 
+  
+  The \texttt{ControlPolicy} instance is updated each tick with the latest \texttt{CoxObservations} object. It uses these observations to decide what to do next.  Each control policy has a method called \texttt{chooseAction()}. This is defined in the superclass \texttt{ControlPolicy} so that all control policies have the same top-level goal condition which will check the \texttt{OutingOver} observation. If \texttt{OutingOver} returns true then the \texttt{Land} action will be executed by the cox and the cox and boat will be removed from the simulation. Otherwise, a method called \texttt{typeSpecificActionChoice()} is executed. Each different control policy defines this differently. 
+  
+  The \texttt{typeSpecificActionChoice()} method is written in a teleo-reactive (TR) style for all control policies. This is done in Java by having a list of \texttt{if} statements. Each \texttt{if} statement will check a condition and if the condition is true, it will return the associated action. Otherwise it will move on to trying the next condition-action pair. The final if statement takes the constant true condition. This ensures one action will always be returned. The more complicated control policies contain nested TR-programs to make them easier to code and to read but they remain TR in style. 
   
 \subsection{Actions}
-  Each action the cox can carry out has its own class. Every action provides a \texttt{typeSpecificExecute()} method. This method defines what happens when the cox executes the corresponding action. Since actions like spinning can carry on for more than one turn, this action returns true only when the action is complete. The abstract superclass \texttt{Action} defines the main \texttt{execute()} method. This checks the return value of \texttt{typeSpecificExecute()} and nullifies the Cox object's reference to current action, so that next turn the cox is free to choose again.
+  Each action the cox can carry out has its own class. Every action class provides a \texttt{typeSpecificExecute()} method. This method defines what happens when the cox executes the corresponding action. Since actions like spinning can carry on for more than one turn, this action returns true only when the action is complete. The abstract superclass \texttt{Action} defines the main \texttt{execute()} method. This checks the return value of \texttt{typeSpecificExecute()} and, if true, nullifies the \texttt{Cox} object's reference to the current action, so that next turn the cox is free to choose again.
 
-  There are 6 actions: \texttt{LetBoatRun}, \texttt{Spin}, \texttt{SlowDown}, \texttt{SpeedUp}, \texttt{MoveToLaneOnLeft} and \texttt{MoveToLaneOnRight}.
+  There are 6 actions:
   
   \begin{itemize}
   
     \item \texttt{LetBoatRun} does nothing. The boat will continue to move forward in the same gear.
   
-    \item \texttt{Spin} will turn the boat around and move it to the right-hand lane over the course of 60 ticks. Because the movement of the boat during spinning is so different to the normal forward movement, the Spin instance itself calls methods on the \texttt{Boat} and \texttt{BoatNavigation} instances. When first executed the Spin action will work out the nearest node in the right-hand lane (right relative to the cox when it starts). Each tick of execution the boat will rotate a small amount and move a little closer to the so that node so the boat appears to spin naturally in the visualization. During spinning the boat will occupy edges in all three lanes of the river. When spinning is complete, the boat is set to occupying the edge leading out of the node to which it spun (based on its new direction now it has spun).
+    \item \texttt{Spin} will turn the boat around and move it to the right-hand lane over the course of 60 ticks. Because the movement of the boat during spinning is so different to the normal forward movement, the \texttt{Spin} instance itself calls methods on the \texttt{Boat} and \texttt{BoatNavigation} instances. When first executed the \texttt{Spin} action will work out the nearest node in the left-hand lane (left relative to the cox when it starts). Each tick of execution the boat will rotate a small amount and move a little closer to the so that node so the boat appears to spin naturally in the visualization. During spinning the boat will occupy edges in all three lanes of the river. When spinning is complete, the boat is set to occupying the edge leading out of the node to which it spun (based on its new direction now it has spun).
   
-    \item \texttt{SpeedUp} and \texttt{SlowDown} simply shift the boat's gear up or down one. If the boat is in the top gear or bottom gear, respectively, the action will have no affect so it will behave just like LetBoatRun.
+    \item \texttt{SpeedUp} and \texttt{SlowDown} shift the boat's gear up or down one. If the boat is in the top gear or bottom gear, respectively, the action will have no effect so it will behave just like \texttt{LetBoatRun}.
   
-    \item \texttt{MoveToLaneOnLeft} and \texttt{MoveToLaneOnRight} behave very similarly. The work out which lane the cox is trying to move to (so the lane on the cox's left or right respectively). It then creates a path of temporary edges and nodes using the \texttt{LaneChageEdge} class as described in \ref{software:lane:lanechange}. If the cox is already changing lanes, or there is no lane on the given side (e.g. try to move left when in the left-most lane) or there is not enough of the river left to fit in the lane change, then the action will silently fail and the action will behave just like \texttt{LetBoatRun}.
+    \item \texttt{MoveToLaneOnLeft} and \texttt{MoveToLaneOnRight} behave similarly to each other. They work out which lane the cox is trying to move to (so the lane on the cox's left or right respectively). It then creates a path of temporary edges and nodes using the \texttt{LaneChageEdge} class as described in \ref{software:lane:lanechange}. If the cox is already changing lanes, or there is no lane on the given side (e.g. try to move left when in the left-most lane) or there is not enough of the river left to fit in the lane change, then the action will fall back to behaving just like \texttt{LetBoatRun}.
   \end{itemize}
+  
 \section{Experiment package}\label{software:experiment}
 The experiment package contains classes for gathering data each time a
 simulation is run and storing the data in the database. The
