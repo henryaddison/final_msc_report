@@ -31,7 +31,7 @@ This chapter covers some of the problems encountered when turning the model from
     MASON is similar to Repast Simphony (in fact it was designed as an alternative to Repast \cite{Allan2009}). It is also Java-based and open source. It is designed to be faster than Repast and ``excels'' in its support for learning algorithms \cite{Berryman2008}.
       
     \subsubsection{NetLogo}
-    The main of advantage of NetLogo is its simplicity to use for people without programming experience. To this end NetLogo uses a proprietary language to program the agents aimed at beginner programmers. However, this language is restrictive compared to a heavily-used language like Java.
+    The main of advantage of NetLogo is its simple-to-use design for people without programming experience. To this end NetLogo uses a proprietary language to program the agents aimed at beginner programmers. However, this language is restrictive compared to a heavily-used language like Java.
     
     \subsection{ABM framework chosen}
     With only a few months to complete this project but a good understanding of Java, using a pre-built framework would require less work than starting from scratch and building a framework dedicated to the project. The simplicity of NetLogo ruled it out. \textcite{Berryman2008} finds little to separate MASON and Repast Simphony. In the end Repast was chosen. 
@@ -39,7 +39,7 @@ This chapter covers some of the problems encountered when turning the model from
     The integration with Eclipse made getting started with Repast Simphony easy. Although Repast Simphony does have support for learning algorithms, the improved support in MASON might be missed but their use was a nice-to-have at the planning stage for this project rather than an essential. Also the simulation will not have to handle a large number of agents (1000 boats would fill the river entirely), so the optimizations in MASON would not be necessary. Finally the personal recommendation and one-to-one tutorial with Ed Manley \cite{Manley2012}, an EngD student at UCL working on traffic simulations, proved sufficient enough reason to confirm the choice of using Repast Simphony over MASON.
   
   \section{Action execution}
-    During each tick the cox chooses and executes an action and then the boat moves forward based on the state the cox's action have left the boat. The execution of actions by the cox provided a few problems. Firstly, it was  necessary to decide what period of time each of these ticks covers. Then it was necessary to ensure that if an action was misused (for instance executed in a situation where it did not make sense) then it would not break the system. Finally boats needed to react to a cox's actions rather than allowing the cox too much direct control over the boat in order to help maintain the indirectness of a cox's control over a boat in the implementation.
+    On each tick the cox chooses and executes an action and then the boat moves forward based on the state the cox's action have left the boat. The execution of actions by the cox provided a few problems. Firstly, it was  necessary to decide what period of time each of these ticks covers. Then it was necessary to ensure that if an action was misused (for instance executed in a situation where it did not make sense) then it would not break the system. Finally boats needed to react to a cox's actions rather than allowing the cox too much direct control over the boat in order to help maintain the indirectness of a cox's control over a boat in the implementation.
     
     \subsection{Time discretization and scale}
     An obvious choice was to make each tick stand for one second. This meant it was possible to store distances as metres and speeds as metres per second in a natural way. Fortunately this choice of tick length also worked well with the visualization as Repast offered a way to put delays between the ticks so that a simulation can either be run very quickly or slowed down to watch it in closer to real time. This tick length also meant a boat would move a relatively short distance each tick so movement appears smooth and there is less danger of getting into unpredictable situations after a boat jumps a long distance.
@@ -52,7 +52,7 @@ This chapter covers some of the problems encountered when turning the model from
     
     The one exception to this was the Spin action. For visualization purposes it was necessary to have the boat rotate 180\textdegree\ while moving in a straight-line across the river, which was very different to the usual boat movement straight forward in the direction the boat was facing. Therefore it was easier for this one off case to have the Spin action call movement methods directly on the boat object. This actually fits nicely with reality where during spinning the cox does tend to control the boat more directly by calling each stroke individually.
 
-      Repast has a mechanism for setting the priority of scheduled methods. This means that cox's decision making method can be executed before the boat's movement method each tick and so ensure that the boat's movement will be affected by the cox's decision.
+      Repast has a mechanism for setting the priority of scheduled methods. This means that a cox's decision making method can be executed before the boat's movement method each tick and so ensure that the boat's movement will be affected by the cox's decision.
 
       \subsection{Actions taking multiple time ticks}
       Spinning is an action considered to take multiple time ticks. By making each action a class and execution of an action occurring by instantiating an instance of the relevant class and calling the \texttt{execute()} method which returns a boolean to determine whether the action was completed, it was possible to keep a reference to any unfinished actions. These unfinished actions can then be continued at the time tick without the danger of the cox choosing another action which would not make sense. For example, until spinning is complete, it makes no sense to execute any other action.
@@ -159,7 +159,7 @@ This chapter covers some of the problems encountered when turning the model from
       \begin{figure}
       \begin{center}
         \includegraphics[scale=0.55]{images/DittonCornerRadius.png}
-        \caption{Ditton Corner: This shows two approximate radii of the sector that makes up Ditton Corner. Their total length is 202m. Rounded this down, the approximated the radius of Ditton Corner is 100m.}
+        \caption{Ditton Corner: This shows two approximate radii of the sector that makes up Ditton Corner. Their total length is 202m. Rounding this down, the approximated radius of Ditton Corner is 100m.}
         \label{fig:dittoncorner:radius}
       \end{center}
       \end{figure}
