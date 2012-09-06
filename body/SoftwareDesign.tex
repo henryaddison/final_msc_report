@@ -5,7 +5,7 @@ chapter will describe the implementation of the model in software. The
 implementation has two parts. There is the application code written
 specifically for this project and there are the dependencies in the
 form of libraries and applications written by others. This
-chapter should also serve as a starting guide to anyone who wishing to edit
+chapter should also serve as a starting guide to anyone wishing to edit
 the code.
 
 
@@ -14,7 +14,7 @@ This section will give a brief description of the third-party
 libraries and applications required to run the simulation. The
 simulation is a Java application. The application uses the libraries that make up the Repast Simphony
 framework. In order to run the simulation it is also necessary for the
-application to talk to a MySQL database. Finally some of the unit 
+application to talk to a MySQL database. Finally, some of the unit 
 tests make use of the EasyMock mocking library 
 
   \subsection{Java}
@@ -209,7 +209,7 @@ A lane holds a network of nodes and edges using a Network
 projection provided by Repast (see
 \ref{software:dependencies:repast:network}). The \texttt{Lane} class uses the
 Network methods provided by Repast to create helper methods for
-navigating and searching a lane's graph. There are for getting the
+navigating and searching a lane's graph. There methods are for getting the
 next node or edge from a given node depending on the direction of
 travel (upstream or not). There are also methods for finding the
 nearest node or edge based on a provided location. These are useful
@@ -251,11 +251,8 @@ for a given direction each node has a single edge leading out of it.
 \subsubsection{Crashing}
 
 \texttt{LaneEdge} class also keeps track of the coxes currently occupying it
-in an array with methods to add or remove a cox from this array. (For
-legacy reasons coxes rather than boats are tracked. It would fit the
-model better to track the boats but since there is a one-to-one
-mapping between boats and coxes this has not caused problems and so
-has not been updated.) When a
+in an array with methods to add or remove a cox from this array. Coxes rather than boats as in the model. Since there is a one-to-one
+mapping between boats and coxes this is not a problem. When a
 cox is added, if there is already a cox occupying the edge then a
 \texttt{Crash} object is created and associated with edge (unless there is
 already one there) and the \texttt{Crash} object is reset.
@@ -539,7 +536,9 @@ The \texttt{crash\_records} table contains data for each pair of boats that cras
 
 Each row of data in this table consists of the relative velocity of the crash, the number of boats on the edge where the crash occurred, and whether this edge is in the middle lane of the river. 
 
-For example, suppose a boat moving at 5m/s enters an edge of the middle lane containing two other boats. Suppose hypothetically one of these boats is moving in the same direction at 3m/s and the other is moving in the opposite direction at 2m/s (this is an impossible example as the model prevents more than one boat moving on an edge but it is a useful explanatory example). Then two rows will be added to the \texttt{crash\_records} table. Both will record the same value of the current tick, true for the crash being in the middle lane. One will record a relative velocity of 2 for the crash with the boat travelling in the same direction (difference of speeds) and the other 7 for the crash with the boat heading in the opposite direction (sum of speeds).
+For example, suppose a boat moving at 5m/s enters an edge of the middle lane containing two other boats. Suppose one of these boats has been chosen to move after an earlier crash and is moving in the same direction at 3m/s and the other is stopped. Then two rows will be added to the \texttt{crash\_records} table. Both will record the same value of the current tick, true for the crash being in the middle lane. One will record a relative velocity of 2 for the crash with the boat travelling in the same direction (difference of speeds) and the other 3 for the stationary boat.
+
+If instead the moving boat was moving at 3m/s but travelling in the opposite direction to the new boat, then the same two rows would be records except that for the crash with the moving boat the relative velocity would be 8 as boats moving in different directions (sum of speeds).
 
 \section{\texttt{style} and \texttt{ui} packages}
 The \texttt{style} and \texttt{ui} packages are both small. They are used to customise the Repast
